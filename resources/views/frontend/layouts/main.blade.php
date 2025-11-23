@@ -12,6 +12,8 @@
     @include('frontend.layouts.partials.footer')
 
     @vite('resources/js/app.js')
+
+    @yield('scripts')
 </body>
 
 </html>

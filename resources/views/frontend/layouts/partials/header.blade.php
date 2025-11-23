@@ -1,13 +1,14 @@
-<header id="headerTop" class="w-full fixed top-0 z-50 transition-all duration-300 bg-transparent">
+<header id="headerTop" class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
+
     <div class="max-w-7xl mx-auto flex items-center justify-between py-3 px-4">
 
         <!-- Logo + Nama Desa -->
         <a href="/" class="flex items-center gap-3 text-white">
-            <img src="https://ridhokurniawan.my.id/img/rk.png" class="w-10 md:w-14 lg:w-16" alt="Logo Desa">
+            <img src="{{ asset('images/lambang_daerah.png') }}" class="w-10 md:w-14 lg:w-16" alt="Logo Desa">
 
             <div class="flex flex-col leading-tight">
-                <p class="font-bold text-sm md:text-base lg:text-lg">Desa Contoh</p>
-                <p class="text-xs md:text-sm lg:text-base">Kabupaten Contoh</p>
+                <p class="font-bold text-sm md:text-base lg:text-lg">Desa Kembiritan</p>
+                <p class="text-xs md:text-sm lg:text-base">Kab. Banyuwangi</p>
             </div>
         </a>
 
@@ -29,61 +30,54 @@
                 </button>
                 <div
                     class="hidden group-hover:block absolute left-0 top-full mt-0 z-50 w-52 bg-white text-gray-800 shadow-lg rounded">
-                    <a href="/sejarah" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Sejarah Desa</a>
                     <a href="/visi-misi" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Visi & Misi</a>
-                    <a href="/pemerintahan" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Pemerintahan
+                    <a href="/sejarah-desa" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Sejarah
                         Desa</a>
-                    <a href="/wilayah" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Wilayah</a>
-                    <a href="/lembaga" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Lembaga Desa</a>
+                    <a href="/perangkat-desa" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Perangkat
+                        Desa</a>
+                    <a href="/peta-desa" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Peta Desa</a>
                 </div>
             </div>
 
-            <!-- Data & Infografis -->
+            <!-- Informasi -->
             <div class="relative group">
                 <button class="mantine-font-size-lg flex items-center gap-1 px-2 py-1 text-white">
-                    Data & Infografis
+                    Informasi
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path d="M6 9l6 6 6-6" />
                     </svg>
                 </button>
                 <div
                     class="hidden group-hover:block absolute left-0 top-full mt-0 z-50 w-52 bg-white text-gray-800 shadow-lg rounded">
-                    <a href="/infografis" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Infografis</a>
-                    <a href="/idm" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">IDM</a>
-                    <a href="/statistik" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Statistik</a>
-                </div>
-            </div>
+                    <a href="/syarat-syarat-administrasi-desa"
+                        class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Syarat-syarat Administrasi
+                        Desa</a>
+                    <a href="/berita" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Berita Desa</a>
+                    <a href="/produk-hukum-desa" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Produk
+                        Hukum Desa</a>
 
-            <!-- Layanan -->
-            <div class="relative group">
-                <button class="mantine-font-size-lg flex items-center gap-1 px-2 py-1 text-white">
-                    Layanan
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path d="M6 9l6 6 6-6" />
-                    </svg>
-                </button>
-                <div
-                    class="hidden group-hover:block absolute left-0 top-full mt-0 z-50 w-52 bg-white text-gray-800 shadow-lg rounded">
-                    <a href="/layanan-online" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Layanan
-                        Online</a>
-                    <a href="/pengaduan" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Pengaduan</a>
-                    <a href="/ppid" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">PPID</a>
-                </div>
-            </div>
-
-            <!-- Berita -->
-            <div class="relative group">
-                <button class="mantine-font-size-lg flex items-center gap-1 px-2 py-1 text-white">
-                    Berita
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path d="M6 9l6 6 6-6" />
-                    </svg>
-                </button>
-                <div
-                    class="hidden group-hover:block absolute left-0 top-full mt-0 z-50 w-52 bg-white text-gray-800 shadow-lg rounded">
-                    <a href="/berita" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Berita</a>
-                    <a href="/agenda" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Agenda</a>
-                    <a href="/pengumuman" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Pengumuman</a>
+                    <div class="relative group/sub">
+                        <button
+                            class="mantine-font-size-lg flex justify-between items-center w-full px-4 py-2 hover:bg-gray-100 text-left">
+                            Lembaga Desa
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                        <div
+                            class="hidden group-hover/sub:block absolute left-full top-0 mt-0 z-50 w-64 bg-white text-gray-800 shadow-lg rounded">
+                            <a href="/lpmd" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">LPMD</a>
+                            <a href="/posyandu"
+                                class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Posyandu</a>
+                            <a href="/pkk" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">PKK</a>
+                            <a href="/bumdes" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">BUMDes</a>
+                            <a href="/karang-taruna"
+                                class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Karang Taruna</a>
+                            <a href="/koperasi-desa-merah-putih"
+                                class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Koperasi Desa Merah
+                                Putih</a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -98,10 +92,17 @@
                 <div
                     class="hidden group-hover:block absolute left-0 top-full mt-0 z-50 w-52 bg-white text-gray-800 shadow-lg rounded">
                     <a href="/apbdes" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">APBDes</a>
-                    <a href="/belanja" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Belanja</a>
-                    <a href="/realisasi" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Realisasi</a>
+                    <a href="/realisasi-apbdes" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Realisasi
+                        APBDes</a>
+                    <a href="/pembangunan-desa"
+                        class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Pembangunan Desa</a>
                 </div>
             </div>
+
+            <!-- galeri -->
+            <a href="/galeri" class="mantine-font-size-lg hover:opacity-80 px-2 py-1">
+                Galeri
+            </a>
 
             <!-- Kontak -->
             <a href="/kontak" class="mantine-font-size-lg hover:opacity-80 px-2 py-1">
@@ -120,64 +121,62 @@
     </div>
 
     <!-- MOBILE MENU -->
-    <nav id="mobileMenu" class="hidden md:hidden bg-green-600 text-white px-6 pb-4">
+    <nav id="mobileMenu" class="hidden md:hidden bg-green-800 text-white px-6 pb-4">
 
         <!-- HOME -->
         <a href="/" class="block py-3 mantine-font-size-lg font-semibold border-b border-green-700">
             Beranda
         </a>
 
-        <!-- TEMPLATE ACCORDION -->
+        <!-- PROFIL DESA -->
         <div class="border-b border-green-700 py-2">
             <button class="w-full flex justify-between items-center mobile-accordion mantine-font-size-lg">
                 Profil Desa
                 <span class="icon">+</span>
             </button>
             <div class="hidden ml-4 mt-2 flex flex-col gap-1 mantine-font-size-lg">
-                <a href="/sejarah">Sejarah Desa</a>
                 <a href="/visi-misi">Visi & Misi</a>
-                <a href="/pemerintahan">Pemerintahan Desa</a>
-                <a href="/wilayah">Wilayah</a>
-                <a href="/lembaga">Lembaga Desa</a>
+                <a href="/sejarah-desa">Sejarah Desa</a>
+                <a href="/perangkat-desa">Perangkat Desa</a>
+                <a href="/peta-desa">Peta Desa</a>
             </div>
         </div>
 
+        <!-- INFORMASI -->
         <div class="border-b border-green-700 py-2">
             <button class="w-full flex justify-between items-center mobile-accordion mantine-font-size-lg">
-                Data & Infografis
+                Informasi
                 <span class="icon">+</span>
             </button>
             <div class="hidden ml-4 mt-2 flex flex-col gap-1 mantine-font-size-lg">
-                <a href="/infografis">Infografis</a>
-                <a href="/idm">IDM</a>
-                <a href="/statistik">Statistik</a>
+
+                <a href="/syarat-syarat-administrasi-desa">Syarat-syarat Administrasi Desa</a>
+                <a href="/berita">Berita Desa</a>
+                <a href="/produk-hukum-desa">Produk Hukum Desa</a>
+
+                <!-- SUB/child menu lembaga -->
+                <div class="border-l border-green-700 pl-3 mt-2">
+
+                    <button class="w-full flex justify-between items-center mobile-accordion mantine-font-size-lg">
+                        Lembaga Desa
+                        <span class="icon">+</span>
+                    </button>
+
+                    <div class="hidden ml-4 mt-2 flex flex-col gap-1 mantine-font-size-lg">
+                        <a href="/lpmd">LPMD</a>
+                        <a href="/posyandu">Posyandu</a>
+                        <a href="/pkk">PKK</a>
+                        <a href="/bumdes">BUMDes</a>
+                        <a href="/karang-taruna">Karang Taruna</a>
+                        <a href="/koperasi-desa-merah-putih">Koperasi Desa Merah Putih</a>
+                    </div>
+
+                </div>
+
             </div>
         </div>
 
-        <div class="border-b border-green-700 py-2">
-            <button class="w-full flex justify-between items-center mobile-accordion mantine-font-size-lg">
-                Layanan Publik
-                <span class="icon">+</span>
-            </button>
-            <div class="hidden ml-4 mt-2 flex flex-col gap-1 mantine-font-size-lg">
-                <a href="/layanan-online">Layanan Online</a>
-                <a href="/pengaduan">Pengaduan</a>
-                <a href="/ppid">PPID</a>
-            </div>
-        </div>
-
-        <div class="border-b border-green-700 py-2">
-            <button class="w-full flex justify-between items-center mobile-accordion mantine-font-size-lg">
-                Berita
-                <span class="icon">+</span>
-            </button>
-            <div class="hidden ml-4 mt-2 flex flex-col gap-1 mantine-font-size-lg">
-                <a href="/berita">Berita</a>
-                <a href="/agenda">Agenda</a>
-                <a href="/pengumuman">Pengumuman</a>
-            </div>
-        </div>
-
+        <!-- TRANSPARANSI -->
         <div class="border-b border-green-700 py-2">
             <button class="w-full flex justify-between items-center mobile-accordion mantine-font-size-lg">
                 Transparansi
@@ -185,42 +184,59 @@
             </button>
             <div class="hidden ml-4 mt-2 flex flex-col gap-1 mantine-font-size-lg">
                 <a href="/apbdes">APBDes</a>
-                <a href="/belanja">Belanja</a>
-                <a href="/realisasi">Realisasi</a>
+                <a href="/realisasi-apbdes">Realisasi APBDes</a>
+                <a href="/pembangunan-desa">Pembangunan Desa</a>
             </div>
         </div>
 
+        <!-- GALERI -->
+        <a href="/galeri" class="block py-3 mantine-font-size-lg border-b border-green-700">
+            Galeri
+        </a>
+
+        <!-- KONTAK -->
         <a href="/kontak" class="block py-3 mantine-font-size-lg">
             Kontak
         </a>
+
     </nav>
+
 
 </header>
 
 <script>
     document.getElementById('mobileMenuBtn').onclick = () =>
         document.getElementById('mobileMenu').classList.toggle('hidden');
-</script>
-<script>
+
     const accordions = document.querySelectorAll('.mobile-accordion');
 
     accordions.forEach((btn) => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation(); // penting supaya child accordion tidak menutup parent
+
             const content = btn.nextElementSibling;
             const icon = btn.querySelector('.icon');
 
-            // Tutup semua accordion lainnya
-            accordions.forEach((otherBtn) => {
-                const otherContent = otherBtn.nextElementSibling;
-                const otherIcon = otherBtn.querySelector('.icon');
+            // DETEKSI LEVEL (parent atau child)
+            const isChild = btn.closest('.border-l') !== null;
 
-                if (otherBtn !== btn) {
-                    otherContent.classList.add('hidden');
-                    otherIcon.textContent = '+';
-                }
-            });
+            // Jika bukan child → tutup accordion utama lainnya
+            if (!isChild) {
+                accordions.forEach((otherBtn) => {
+                    const otherContent = otherBtn.nextElementSibling;
+                    const otherIcon = otherBtn.querySelector('.icon');
 
-            // Toggle yang dipilih
+                    const otherIsChild = otherBtn.closest('.border-l') !== null;
+
+                    // Jangan menutup child saat parent yang diklik
+                    if (otherBtn !== btn && !otherIsChild) {
+                        otherContent.classList.add('hidden');
+                        if (otherIcon) otherIcon.textContent = '+';
+                    }
+                });
+            }
+
+            // Toggle accordion yang dipilih
             if (content.classList.contains('hidden')) {
                 content.classList.remove('hidden');
                 icon.textContent = '–';
@@ -230,8 +246,7 @@
             }
         });
     });
-</script>
-<script>
+
     const header = document.getElementById('headerTop');
 
     window.addEventListener('scroll', () => {
