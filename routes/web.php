@@ -25,6 +25,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Route::get('/profil-desa', [ProfilController::class, 'index'])->name('profil.index');
 Route::get('/visi-misi', [ProfilController::class, 'visiMisi'])->name('profil.visimisi');
 Route::get('/sejarah-desa', [ProfilController::class, 'sejarah'])->name('profil.sejarah');
+Route::get('/perangkat-desa', [ProfilController::class, 'perangkat'])->name('profil.perangkat');
 Route::get('/peta-desa', [ProfilController::class, 'peta'])->name('profil.peta');
 
 // Pemerintahan Desa

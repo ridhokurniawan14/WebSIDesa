@@ -73,51 +73,67 @@
                 <div class="relative border-l-4 border-green-600 ml-4">
 
                     {{-- Item 1 --}}
-                    <div data-aos="fade-up" data-aos-delay="100" class="mb-10 ml-8">
-                        <div class="absolute -left-3 w-6 h-6 bg-green-600 rounded-full"></div>
-                        <h3 class="text-xl font-semibold text-gray-800">1900 – Awal Pembentukan</h3>
-                        <p class="text-gray-600 mt-2">
-                            Pemukiman kecil mulai terbentuk oleh beberapa keluarga.
-                        </p>
+                    <div class="mb-10 ml-8 relative">
+                        <div class="absolute -left-11 w-6 h-6 bg-green-600 rounded-full"></div>
+
+                        <div data-aos="fade-up" data-aos-delay="100">
+                            <h3 class="text-xl font-semibold text-gray-800">1900 – Awal Pembentukan</h3>
+                            <p class="text-gray-600 mt-2">
+                                Pemukiman kecil mulai terbentuk oleh beberapa keluarga.
+                            </p>
+                        </div>
                     </div>
 
                     {{-- Item 2 --}}
-                    <div data-aos="fade-up" data-aos-delay="100" class="mb-10 ml-8">
-                        <div class="absolute -left-3 w-6 h-6 bg-green-600 rounded-full"></div>
-                        <h3 class="text-xl font-semibold text-gray-800">1950 – Pengakuan Administratif</h3>
-                        <p class="text-gray-600 mt-2">
-                            Desa resmi diakui sebagai wilayah administrasi pemerintahan.
-                        </p>
+                    <div class="mb-10 ml-8 relative">
+                        <div class="absolute -left-11 w-6 h-6 bg-green-600 rounded-full"></div>
+
+                        <div data-aos="fade-up" data-aos-delay="150">
+                            <h3 class="text-xl font-semibold text-gray-800">1950 – Pengakuan Administratif</h3>
+                            <p class="text-gray-600 mt-2">
+                                Desa resmi diakui sebagai wilayah administrasi pemerintahan.
+                            </p>
+                        </div>
                     </div>
 
                     {{-- Item 3 --}}
-                    <div data-aos="fade-up" data-aos-delay="100" class="mb-10 ml-8">
-                        <div class="absolute -left-3 w-6 h-6 bg-green-600 rounded-full"></div>
-                        <h3 class="text-xl font-semibold text-gray-800">1980 – Pembangunan Infrastruktur</h3>
-                        <p class="text-gray-600 mt-2">
-                            Mulai dibangun jalan desa, irigasi, dan fasilitas publik.
-                        </p>
+                    <div class="mb-10 ml-8 relative">
+                        <div class="absolute -left-11 w-6 h-6 bg-green-600 rounded-full"></div>
+
+                        <div data-aos="fade-up" data-aos-delay="200">
+                            <h3 class="text-xl font-semibold text-gray-800">1980 – Pembangunan Infrastruktur</h3>
+                            <p class="text-gray-600 mt-2">
+                                Mulai dibangun jalan desa, irigasi, dan fasilitas publik.
+                            </p>
+                        </div>
                     </div>
 
                     {{-- Item 4 --}}
-                    <div data-aos="fade-up" data-aos-delay="100" class="mb-10 ml-8">
-                        <div class="absolute -left-3 w-6 h-6 bg-green-600 rounded-full"></div>
-                        <h3 class="text-xl font-semibold text-gray-800">2000 – Modernisasi</h3>
-                        <p class="text-gray-600 mt-2">
-                            Desa mulai menerima akses teknologi dan program pemberdayaan masyarakat.
-                        </p>
+                    <div class="mb-10 ml-8 relative">
+                        <div class="absolute -left-11 w-6 h-6 bg-green-600 rounded-full"></div>
+
+                        <div data-aos="fade-up" data-aos-delay="250">
+                            <h3 class="text-xl font-semibold text-gray-800">2000 – Modernisasi</h3>
+                            <p class="text-gray-600 mt-2">
+                                Desa mulai menerima akses teknologi dan program pemberdayaan masyarakat.
+                            </p>
+                        </div>
                     </div>
 
                     {{-- Item 5 --}}
-                    <div data-aos="fade-up" data-aos-delay="100" class="mb-10 ml-8">
-                        <div class="absolute -left-3 w-6 h-6 bg-green-600 rounded-full"></div>
-                        <h3 class="text-xl font-semibold text-gray-800">Sekarang – Era Digital</h3>
-                        <p class="text-gray-600 mt-2">
-                            Pemerintah Desa mengembangkan layanan digital dan transparansi publik.
-                        </p>
+                    <div class="mb-10 ml-8 relative">
+                        <div class="absolute -left-11 w-6 h-6 bg-green-600 rounded-full"></div>
+
+                        <div data-aos="fade-up" data-aos-delay="300">
+                            <h3 class="text-xl font-semibold text-gray-800">Sekarang – Era Digital</h3>
+                            <p class="text-gray-600 mt-2">
+                                Pemerintah Desa mengembangkan layanan digital dan transparansi publik.
+                            </p>
+                        </div>
                     </div>
 
                 </div>
+
             </div>
 
         </section>
