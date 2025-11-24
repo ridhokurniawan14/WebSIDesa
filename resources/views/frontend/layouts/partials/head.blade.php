@@ -61,4 +61,5 @@
             animation: gradientMove 10s ease-in-out infinite;
         }
     </style>
+    @stack('styles')
 </head>
