@@ -13,7 +13,6 @@
     }
 </style>
 
-{{-- <section class="py-12 w-full" style="background-color: rgba(6, 78, 55, 0.85);"> --}}
 <section class="py-12 w-full relative overflow-hidden" style="background-color: rgba(6, 78, 55, 0.85);">
 
     <!-- Canvas Animasi di Belakang -->
@@ -22,13 +21,13 @@
     <div class="max-w-7xl mx-auto px-4 apbdes-content">
 
         <!-- Judul -->
-        <div class="text-center mb-10 text-white">
+        <div data-aos="fade-in" data-aos-delay="100" class="text-center mb-10 text-white">
             <h2 class="text-3xl font-bold">APBDes Tahun 2024</h2>
             <p class="opacity-90 mt-2">Rangkuman Anggaran Pendapatan dan Belanja Desa</p>
         </div>
 
         <!-- Chart Section -->
-        <div class="bg-white rounded-2xl shadow-lg p-6 mb-10">
+        <div data-aos="flip-down" data-aos-delay="100" class="bg-white rounded-2xl shadow-lg p-6 mb-10">
             <h3 class="text-xl font-bold text-gray-800 mb-4">Grafik APBDes 2024</h3>
 
             <div id="chartApbdes" class="w-full h-[350px]"></div>
@@ -38,7 +37,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
             <!-- Pendapatan -->
-            <div
+            <div data-aos="flip-down" data-aos-delay="100"
                 class="bg-white p-6 rounded-xl shadow flex items-center gap-4
                     transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
                 <div class="p-3 bg-green-100 rounded-full transition-all duration-300 hover:scale-110">
@@ -51,7 +50,7 @@
             </div>
 
             <!-- Belanja -->
-            <div
+            <div data-aos="flip-down" data-aos-delay="100"
                 class="bg-white p-6 rounded-xl shadow flex items-center gap-4
                     transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
                 <div class="p-3 bg-red-100 rounded-full transition-all duration-300 hover:scale-110">
@@ -64,7 +63,7 @@
             </div>
 
             <!-- Pembiayaan -->
-            <div
+            <div data-aos="flip-down" data-aos-delay="100"
                 class="bg-white p-6 rounded-xl shadow flex items-center gap-4
                     transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
                 <div class="p-3 bg-blue-100 rounded-full transition-all duration-300 hover:scale-110">
@@ -77,7 +76,7 @@
             </div>
 
             <!-- Surplus/Defisit -->
-            <div
+            <div data-aos="flip-down" data-aos-delay="100"
                 class="bg-white p-6 rounded-xl shadow flex items-center gap-4
         transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
                 <div class="p-3 bg-yellow-100 rounded-full transition-all duration-300 hover:scale-110">
@@ -90,7 +89,7 @@
             </div>
 
             <!-- SiLPA -->
-            <div
+            <div data-aos="flip-down" data-aos-delay="100"
                 class="bg-white p-6 rounded-xl shadow flex items-center gap-4
                     transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
                 <div class="p-3 bg-purple-100 rounded-full transition-all duration-300 hover:scale-110">
@@ -103,7 +102,7 @@
             </div>
 
             <!-- Tahun -->
-            <div
+            <div data-aos="flip-down" data-aos-delay="100"
                 class="bg-white p-6 rounded-xl shadow flex items-center gap-4
                     transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
                 <div class="p-3 bg-teal-100 rounded-full transition-all duration-300 hover:scale-110">

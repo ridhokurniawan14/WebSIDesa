@@ -32,7 +32,7 @@
         text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
     }
 </style>
-</style>
+
 <!-- Hero Section -->
 <section class="w-full h-screen relative overflow-hidden">
 
@@ -57,7 +57,7 @@
     </div>
 
     <!-- Overlay -->
-    <div class="absolute inset-0 bg-black/40 flex items-center">
+    <div data-aos="fade-in" data-aos-delay="100" class="absolute inset-0 bg-black/40 flex items-center">
         <div class="max-w-7xl mx-auto px-4 text-white">
             <h1 class="text-4xl md:text-5xl font-bold mb-3 text-shadow-lg">
                 Selamat Datang di Website <span class="subtle-underline">Desa Kembiritan</span>

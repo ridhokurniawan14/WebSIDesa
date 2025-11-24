@@ -1,4 +1,6 @@
-<header id="headerTop" class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
+<header id="header"
+    class="fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out
+    {{ request()->is('/') ? 'header-home' : 'header-normal' }}">
 
     <div class="max-w-7xl mx-auto flex items-center justify-between py-3 px-4">
 
@@ -247,13 +249,25 @@
         });
     });
 
-    const header = document.getElementById('headerTop');
+    document.addEventListener("DOMContentLoaded", () => {
+        const header = document.getElementById("header");
 
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 10) {
-            header.classList.add('bg-green-700', 'shadow-lg');
-        } else {
-            header.classList.remove('bg-green-700', 'shadow-lg');
+        // Jika bukan halaman home → tidak usah diproses scroll
+        if (!header.classList.contains("header-home")) {
+            return;
         }
+
+        function handleScroll() {
+            if (window.scrollY > 10) {
+                header.classList.add("header-scrolled");
+            } else {
+                header.classList.remove("header-scrolled");
+            }
+        }
+
+        // jalankan di awal (biar rapi kalau refresh di tengah scroll)
+        handleScroll();
+
+        window.addEventListener("scroll", handleScroll);
     });
 </script>

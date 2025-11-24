@@ -23,13 +23,13 @@
     <div class="max-w-7xl mx-auto px-6 sambutan-content">
 
         <!-- Judul -->
-        <div class="text-center mb-12">
+        <div data-aos="fade-in" data-aos-delay="100" class="text-center mb-12">
             <h2 class="text-4xl font-bold text-gray-900">Sambutan Kepala Desa</h2>
             <p class="text-lg text-green-600 mt-2">Pesan untuk masyarakat Desa</p>
         </div>
 
         <!-- Box Konten -->
-        <div class="bg-white shadow-2xl rounded-3xl p-10">
+        <div data-aos="flip-up" data-aos-delay="100" class="bg-white shadow-2xl rounded-3xl p-10">
             <div class="md:grid md:grid-cols-3 md:gap-10 items-center">
 
                 <!-- Foto -->

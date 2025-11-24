@@ -3,7 +3,7 @@
     <!-- Hero Section -->
     @include('frontend.components.hero')
 
-    <!-- Sambtuan Kepala Desa -->
+    <!-- Sambutan Kepala Desa -->
     @include('frontend.components.sambutan-kepala-desa')
 
     <!-- Data Penduduk -->

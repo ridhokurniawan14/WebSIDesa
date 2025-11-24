@@ -11,7 +11,7 @@
     </div>
 
     <div class="max-w-7xl mx-auto px-6 relative z-10">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div data-aos="fade-in" data-aos-delay="100" class="grid grid-cols-1 md:grid-cols-3 gap-12">
 
             <!-- BRAND -->
             <div>
@@ -59,7 +59,7 @@
 
             <!-- MAP -->
             <div>
-                <h3 class="text-lg font-bold text-white mb-4 border-b border-gray-700 pb-2">🌐 Peta Lokasi</h3>
+                <h3 class="text-lg font-bold text-white mb-4 border-b border-gray-700 pb-2">🗺️ Peta Lokasi</h3>
                 <div class="rounded-lg overflow-hidden shadow-2xl">
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4857.084405882541!2d114.18541967589385!3d-8.367703684351222!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd15562ff3a6b3f%3A0x3b0181738285d4bc!2sBalai%20desa%20kembiritan!5e1!3m2!1sid!2sid!4v1763930591999!5m2!1sid!2sid"
@@ -72,7 +72,8 @@
         </div>
 
         <!-- COPYRIGHT -->
-        <div class="text-center border-t border-gray-800 mt-12 pt-6 text-sm">
+        <div data-aos="fade-up" data-aos-delay="100" data-aos-offset="0"
+            class="text-center border-t border-gray-800 mt-12 pt-6 text-sm">
             <p class="mb-2">
                 © {{ date('Y') }} Desa Cipta Makmur. Semua Hak Dilindungi.
             </p>
