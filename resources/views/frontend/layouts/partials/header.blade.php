@@ -51,8 +51,8 @@
                 </button>
                 <div
                     class="hidden group-hover:block absolute left-0 top-full mt-0 z-50 w-52 bg-white text-gray-800 shadow-lg rounded">
-                    <a href="/syarat-syarat-administrasi-desa"
-                        class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Syarat-syarat Administrasi
+                    <a href="/administrasi" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Syarat-syarat
+                        Administrasi
                         Desa</a>
                     <a href="/berita" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Berita Desa</a>
                     <a href="/produk-hukum-desa" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Produk
@@ -152,7 +152,7 @@
             </button>
             <div class="hidden ml-4 mt-2 flex flex-col gap-1 mantine-font-size-lg">
 
-                <a href="/syarat-syarat-administrasi-desa">Syarat-syarat Administrasi Desa</a>
+                <a href="/administrasi">Syarat-syarat Administrasi Desa</a>
                 <a href="/berita">Berita Desa</a>
                 <a href="/produk-hukum-desa">Produk Hukum Desa</a>
 

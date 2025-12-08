@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdministrasiController;
 use App\Http\Controllers\Frontend\{
     AgendaController,
     BeritaController,
@@ -53,6 +54,9 @@ Route::prefix('layanan')->group(function () {
 // Berita
 Route::get('/berita', [BeritaController::class, 'index'])->name('berita.index');
 Route::get('/berita/{slug}', [BeritaController::class, 'show'])->name('berita.show');
+
+// Administrasi Desa
+Route::get('/administrasi', [AdministrasiController::class, 'index'])->name('administrasi.index');
 
 // Pengumuman
 Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman.index');

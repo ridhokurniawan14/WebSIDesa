@@ -2,7 +2,7 @@
 
     <!-- Animated Gradient Background -->
     <div
-        class="absolute inset-0 bg-gradient-to-br from-green-700 via-gray-900 to-green-900 opacity-40 animate-gradientMove">
+        class="absolute inset-0 bg-gradient-to-br from-green-400 via-gray-900 to-green-900 opacity-40 animate-gradientMove">
     </div>
 
     <!-- Grid Texture Overlay -->
