@@ -1,8 +1,37 @@
 @extends('frontend.layouts.main')
 
 @section('content')
+    <style>
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            20% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            80% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+        }
+
+        .animate-fadeIn {
+            animation: fadeInOut 2.8s ease-in-out;
+        }
+    </style>
     <!-- Gunakan bg-gray-50 agar kontras dengan kartu putih -->
-    <div class="content-offset bg-gray-100 min-h-screen">
+    <div class="content-offset bg-gray-100 min-h-screen relative">
+        {{-- Canvas ini diposisikan fixed di belakang konten --}}
+        <canvas id="particleCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-60"></canvas>
 
         <!-- HEADER SECTION -->
         <section class="pt-16 pb-10 bg-white shadow-sm relative overflow-hidden">
@@ -216,11 +245,19 @@
                                         title="Facebook">
                                         <i class="bi bi-facebook"></i>
                                     </a>
-                                    <button onclick="copyLink('{{ url()->current() }}', '{{ $item['id'] }}')"
-                                        class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 text-gray-600 hover:bg-gray-300 hover:-translate-y-1 transition-all shadow-sm"
-                                        title="Copy Link">
-                                        <i class="bi bi-link-45deg text-lg"></i>
-                                    </button>
+                                    <div class="flex justify-center gap-2 relative">
+                                        <button onclick="copyLink('{{ url()->current() }}', '{{ $item['id'] }}')"
+                                            class="w-10 cursor-pointer h-10 flex items-center justify-center rounded-full bg-gray-200 text-gray-600 hover:bg-gray-300 hover:-translate-y-1 transition-all shadow-sm"
+                                            title="Copy Link">
+                                            <i class="bi bi-link-45deg text-lg"></i>
+                                        </button>
+
+                                        <div id="copyAlert-{{ $item['id'] }}"
+                                            class="hidden absolute bottom-[-35px] bg-green-600 text-white px-3 py-1 rounded text-sm shadow-md animate-fadeIn">
+                                            Link tersalin!
+                                        </div>
+                                    </div>
+
                                 </div>
 
                                 <div id="copyAlert-{{ $item['id'] }}"
@@ -237,6 +274,98 @@
 
         <!-- SCRIPT -->
         <script>
+            // --- PARTICLE ANIMATION LOGIC ---
+            (function() {
+                const canvas = document.getElementById('particleCanvas');
+                const ctx = canvas.getContext('2d');
+                let width, height;
+                let particles = [];
+
+                // Konfigurasi Kepadatan dan Jarak
+                // Semakin besar angka divider, semakin sedikit partikel (semakin renggang)
+                const particleDensityDivider = 25000;
+                // Jarak maksimal untuk menarik garis antar titik
+                const connectionDistance = 150;
+
+                function resize() {
+                    width = canvas.width = window.innerWidth;
+                    height = canvas.height = window.innerHeight;
+                }
+
+                class Particle {
+                    constructor() {
+                        this.x = Math.random() * width;
+                        this.y = Math.random() * height;
+                        // Kecepatan sangat lambat agar santai
+                        this.vx = (Math.random() - 0.5) * 0.3;
+                        this.vy = (Math.random() - 0.5) * 0.3;
+                        this.size = Math.random() * 2 + 1; // Ukuran titik variatif
+                    }
+
+                    update() {
+                        this.x += this.vx;
+                        this.y += this.vy;
+
+                        // Bounce off edges
+                        if (this.x < 0 || this.x > width) this.vx *= -1;
+                        if (this.y < 0 || this.y > height) this.vy *= -1;
+                    }
+
+                    draw() {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        // Warna titik hijau pudar
+                        ctx.fillStyle = 'rgba(16, 185, 129, 0.6)';
+                        ctx.fill();
+                    }
+                }
+
+                function initParticles() {
+                    particles = [];
+                    const numberOfParticles = (width * height) / particleDensityDivider;
+                    for (let i = 0; i < numberOfParticles; i++) {
+                        particles.push(new Particle());
+                    }
+                }
+
+                function animate() {
+                    ctx.clearRect(0, 0, width, height);
+
+                    for (let i = 0; i < particles.length; i++) {
+                        particles[i].update();
+                        particles[i].draw();
+
+                        // Cek jarak dengan partikel lain untuk menggambar garis
+                        for (let j = i; j < particles.length; j++) {
+                            const dx = particles[i].x - particles[j].x;
+                            const dy = particles[i].y - particles[j].y;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+
+                            if (distance < connectionDistance) {
+                                ctx.beginPath();
+                                // Semakin jauh, garis semakin transparan
+                                const opacity = 1 - (distance / connectionDistance);
+                                ctx.strokeStyle = 'rgba(16, 185, 129, ' + (opacity * 0.5) + ')'; // Line color sangat tipis
+                                ctx.lineWidth = 1.5;
+                                ctx.moveTo(particles[i].x, particles[i].y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                    requestAnimationFrame(animate);
+                }
+
+                window.addEventListener('resize', () => {
+                    resize();
+                    initParticles();
+                });
+
+                resize();
+                initParticles();
+                animate();
+            })();
+
             function openModal(id) {
                 const modal = document.getElementById('modal-' + id);
                 const backdrop = document.getElementById('backdrop-' + id);
@@ -271,9 +400,17 @@
 
             function copyLink(link, id) {
                 navigator.clipboard.writeText(link);
+
                 const alertBox = document.getElementById('copyAlert-' + id);
+
                 alertBox.classList.remove('hidden');
 
+                // reset animasi biar muncul terus setiap klik
+                alertBox.classList.remove('animate-fadeIn');
+                void alertBox.offsetWidth; // trigger reflow
+                alertBox.classList.add('animate-fadeIn');
+
+                // auto hide
                 setTimeout(() => {
                     alertBox.classList.add('hidden');
                 }, 3000);

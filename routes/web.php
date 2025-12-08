@@ -19,6 +19,7 @@ use App\Http\Controllers\Frontend\{
     SitemapController,
     UmkmController
 };
+use App\Http\Controllers\ProdukHukumController;
 use Illuminate\Support\Facades\Route;
 
 // Halaman Utama & Statis
@@ -57,6 +58,9 @@ Route::get('/berita/{slug}', [BeritaController::class, 'show'])->name('berita.sh
 
 // Administrasi Desa
 Route::get('/administrasi', [AdministrasiController::class, 'index'])->name('administrasi.index');
+
+// Produk Hukum Desa
+Route::get('/produk-hukum', [ProdukHukumController::class, 'index'])->name('produk-hukum.index');
 
 // Pengumuman
 Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman.index');

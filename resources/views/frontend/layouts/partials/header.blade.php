@@ -55,7 +55,7 @@
                         Administrasi
                         Desa</a>
                     <a href="/berita" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Berita Desa</a>
-                    <a href="/produk-hukum-desa" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Produk
+                    <a href="/produk-hukum" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Produk
                         Hukum Desa</a>
 
                     <div class="relative group/sub">
