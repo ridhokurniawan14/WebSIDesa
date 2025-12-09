@@ -93,10 +93,11 @@
                 </button>
                 <div
                     class="hidden group-hover:block absolute left-0 top-full mt-0 z-50 w-52 bg-white text-gray-800 shadow-lg rounded">
-                    <a href="/apbdes" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">APBDes</a>
-                    <a href="/realisasi-apbdes" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Realisasi
-                        APBDes</a>
-                    <a href="/pembangunan-desa"
+                    <a href="{{ route('informasi.apbdes.tahun', date('Y')) }}"
+                        class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">APBDes</a>
+                    {{-- <a href="/realisasi-apbdes" class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Realisasi
+                        APBDes</a> --}}
+                    <a href="{{ route('informasi.pembangunan') }}"
                         class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-100">Pembangunan Desa</a>
                 </div>
             </div>

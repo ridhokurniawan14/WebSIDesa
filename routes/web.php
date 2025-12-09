@@ -88,8 +88,8 @@ Route::prefix('informasi')->group(function () {
     Route::get('/apbdes', [InformasiController::class, 'apbdes'])->name('informasi.apbdes');
     Route::get('/apbdes/{tahun}', [InformasiController::class, 'apbdesTahun'])->name('informasi.apbdes.tahun');
 
-    Route::get('/dokumen', [InformasiController::class, 'dokumen'])->name('informasi.dokumen');
-    Route::get('/dokumen/{slug}', [InformasiController::class, 'dokumenShow'])->name('informasi.dokumen.show');
+    Route::get('/pembangunan', [InformasiController::class, 'pembangunan'])->name('informasi.pembangunan');
+    Route::get('/pembangunan/{slug}', [InformasiController::class, 'pembangunanShow'])->name('informasi.pembangunan.show');
 });
 
 // Data Desa

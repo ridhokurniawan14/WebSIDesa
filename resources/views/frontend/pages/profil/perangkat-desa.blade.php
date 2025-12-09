@@ -1,6 +1,94 @@
 @extends('frontend.layouts.main')
 
 @section('content')
+    <style>
+        /* CSS Khusus untuk Efek Aurora */
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -10;
+            /* Pastikan di paling belakang */
+            background-color: #f8fafc;
+            /* Warna dasar putih tulang */
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            /* Efek blur yang kuat */
+            opacity: 0.6;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+
+        /* Bola 1: Hijau Desa */
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background-color: #86efac;
+            /* green-300 */
+            animation-delay: 0s;
+        }
+
+        /* Bola 2: Biru Langit */
+        .blob-2 {
+            bottom: -10%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background-color: #bae6fd;
+            /* sky-200 */
+            animation-delay: -2s;
+        }
+
+        /* Bola 3: Kuning Matahari (Aksen) */
+        .blob-3 {
+            top: 40%;
+            left: 40%;
+            width: 400px;
+            height: 400px;
+            background-color: #fef08a;
+            /* yellow-200 */
+            animation-delay: -4s;
+            opacity: 0.4;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+        }
+
+        /* Agar konten tetap terbaca jelas */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+        }
+    </style>
+    <!-- BAGIAN 1: Elemen Background Aurora -->
+    <div class="aurora-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
     <div class="content-offset">
         {{-- HERO --}}
         <section class="w-full h-[300px] bg-cover bg-center flex items-center justify-center relative"
