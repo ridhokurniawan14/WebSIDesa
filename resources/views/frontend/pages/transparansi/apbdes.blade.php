@@ -28,7 +28,8 @@
             animation: fadeInOut 2.8s ease-in-out;
         }
     </style>
-    <div class="min-h-screen bg-gray-100 content-offset pb-20 relative">
+
+    <div class="content-offset min-h-screen bg-gray-100 content-offset">
         {{-- Canvas ini diposisikan fixed di belakang konten --}}
         <canvas id="particleCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-60"></canvas>
 
