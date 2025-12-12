@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AdministrasiController;
+// use App\Http\Controllers\AdministrasiController;
 use App\Http\Controllers\Frontend\{
     AgendaController,
     BeritaController,
@@ -11,15 +11,18 @@ use App\Http\Controllers\Frontend\{
     KontakController,
     LayananController,
     PemerintahanController,
-    PengaduanController,
     PengumumanController,
     PotensiController,
     ProfilController,
     SearchController,
     SitemapController,
-    UmkmController
+    PosyanduController,
+    LpmdController,
+    ProdukHukumController,
+    AdministrasiController
 };
-use App\Http\Controllers\ProdukHukumController;
+// use App\Http\Controllers\LpmdController;
+// use App\Http\Controllers\ProdukHukumController;
 use Illuminate\Support\Facades\Route;
 
 // Halaman Utama & Statis
@@ -81,7 +84,6 @@ Route::prefix('potensi')->group(function () {
 
 // Galeri
 Route::get('/galeri', [GaleriController::class, 'index'])->name('galeri.index');
-Route::get('/galeri/{slug}', [GaleriController::class, 'show'])->name('galeri.show');
 
 // Informasi Publik & Transparansi Desa
 Route::prefix('informasi')->group(function () {
@@ -103,15 +105,19 @@ Route::prefix('data')->group(function () {
 });
 
 // UMKM / Produk Desa
-Route::get('/umkm', [UmkmController::class, 'index'])->name('umkm.index');
-Route::get('/umkm/{slug}', [UmkmController::class, 'show'])->name('umkm.show');
+// Route::get('/umkm', [UmkmController::class, 'index'])->name('umkm.index');
+// Route::get('/umkm/{slug}', [UmkmController::class, 'show'])->name('umkm.show');
 
 // Kontak & Pengaduan
 Route::get('/kontak', [KontakController::class, 'index'])->name('kontak.index');
 Route::post('/kontak/kirim', [KontakController::class, 'kirim'])->name('kontak.kirim');
 
-Route::get('/pengaduan', [PengaduanController::class, 'index'])->name('pengaduan.index');
-Route::post('/pengaduan/kirim', [PengaduanController::class, 'kirim'])->name('pengaduan.kirim');
+// Route::get('/pengaduan', [PengaduanController::class, 'index'])->name('pengaduan.index');
+// Route::post('/pengaduan/kirim', [PengaduanController::class, 'kirim'])->name('pengaduan.kirim');
+
+// Lembaga Mitra Desa
+Route::get('/lpmd', [LpmdController::class, 'index'])->name('lpmd.index');
+Route::get('/posyandu', [PosyanduController::class, 'index'])->name('posyandu.index');
 
 // Halaman Pencarian
 Route::get('/search', [SearchController::class, 'index'])->name('search');

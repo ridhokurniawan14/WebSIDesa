@@ -1,6 +1,33 @@
 @extends('frontend.layouts.main')
 
 @section('content')
+    <style>
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            20% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            80% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+        }
+
+        .animate-fadeIn {
+            animation: fadeInOut 2.8s ease-in-out;
+        }
+    </style>
 
     {{-- 
         =============================================
@@ -96,6 +123,7 @@
     </style>
 
     <div class="bg-gray-50 min-h-screen font-sans text-gray-800 mt-10">
+        <canvas id="particleCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-60"></canvas>
 
         {{-- 
             =============================================
@@ -442,13 +470,13 @@
                         </h4>
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             ${item.foto.map(img => `
-                                    <div class="group relative aspect-square overflow-hidden rounded-xl bg-gray-200 cursor-pointer shadow-sm hover:shadow-md transition" onclick="zoomImage('${img}')">
-                                        <img src="${img}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.onerror=null; this.src='https://placehold.co/300?text=No+Img'">
-                                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
-                                            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
-                                        </div>
-                                    </div>
-                                `).join('')}
+                                                    <div class="group relative aspect-square overflow-hidden rounded-xl bg-gray-200 cursor-pointer shadow-sm hover:shadow-md transition" onclick="zoomImage('${img}')">
+                                                        <img src="${img}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.onerror=null; this.src='https://placehold.co/300?text=No+Img'">
+                                                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
+                                                            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                                                        </div>
+                                                    </div>
+                                                `).join('')}
                         </div>
                     </div>
                 </div>
@@ -505,5 +533,98 @@
                 setTimeout(() => overlay.remove(), 300);
             };
         }
+    </script>
+    <script>
+        // --- PARTICLE ANIMATION LOGIC ---
+        (function() {
+            const canvas = document.getElementById('particleCanvas');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let particles = [];
+
+            // Konfigurasi Kepadatan dan Jarak
+            // Semakin besar angka divider, semakin sedikit partikel (semakin renggang)
+            const particleDensityDivider = 25000;
+            // Jarak maksimal untuk menarik garis antar titik
+            const connectionDistance = 150;
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    // Kecepatan sangat lambat agar santai
+                    this.vx = (Math.random() - 0.5) * 0.3;
+                    this.vy = (Math.random() - 0.5) * 0.3;
+                    this.size = Math.random() * 2 + 1; // Ukuran titik variatif
+                }
+
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+
+                    // Bounce off edges
+                    if (this.x < 0 || this.x > width) this.vx *= -1;
+                    if (this.y < 0 || this.y > height) this.vy *= -1;
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    // Warna titik hijau pudar
+                    ctx.fillStyle = 'rgba(16, 185, 129, 0.6)';
+                    ctx.fill();
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                const numberOfParticles = (width * height) / particleDensityDivider;
+                for (let i = 0; i < numberOfParticles; i++) {
+                    particles.push(new Particle());
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw();
+
+                    // Cek jarak dengan partikel lain untuk menggambar garis
+                    for (let j = i; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < connectionDistance) {
+                            ctx.beginPath();
+                            // Semakin jauh, garis semakin transparan
+                            const opacity = 1 - (distance / connectionDistance);
+                            ctx.strokeStyle = 'rgba(16, 185, 129, ' + (opacity * 0.5) + ')'; // Line color sangat tipis
+                            ctx.lineWidth = 1.5;
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+
+            window.addEventListener('resize', () => {
+                resize();
+                initParticles();
+            });
+
+            resize();
+            initParticles();
+            animate();
+        })();
     </script>
 @endsection
