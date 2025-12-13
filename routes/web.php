@@ -19,7 +19,9 @@ use App\Http\Controllers\Frontend\{
     PosyanduController,
     LpmdController,
     ProdukHukumController,
-    AdministrasiController
+    AdministrasiController,
+    PkkController,
+    BumdesController
 };
 // use App\Http\Controllers\LpmdController;
 // use App\Http\Controllers\ProdukHukumController;
@@ -118,6 +120,8 @@ Route::post('/kontak/kirim', [KontakController::class, 'kirim'])->name('kontak.k
 // Lembaga Mitra Desa
 Route::get('/lpmd', [LpmdController::class, 'index'])->name('lpmd.index');
 Route::get('/posyandu', [PosyanduController::class, 'index'])->name('posyandu.index');
+Route::get('/pkk', [PkkController::class, 'index'])->name('pkk.index');
+Route::get('/bumdes', [BumdesController::class, 'index'])->name('bumdes.index');
 
 // Halaman Pencarian
 Route::get('/search', [SearchController::class, 'index'])->name('search');
