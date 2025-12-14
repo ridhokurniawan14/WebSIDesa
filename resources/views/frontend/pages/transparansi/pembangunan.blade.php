@@ -70,6 +70,102 @@
                 'thumbnail' => '/img/pembangunan/2/thumb.jpg',
                 'foto' => ['/img/pembangunan/2/1.jpg', '/img/pembangunan/2/2.jpg'],
             ],
+            [
+                'slug' => 'pembangunan-1',
+                'judul' => 'Pembangunan Jalan RT 2 RW 1',
+                'desa' => 'Krajan Satu',
+                'anggaran' => 51575000,
+                'lokasi' => 'RT 2 / RW 1 - SUSUKAN KIDUL',
+                'volume' => '200 m',
+                'sumber_dana' => 'Dana Desa',
+                'tahun' => '2024',
+                'pelaksana' => 'Hariyanto',
+                'status' => 'Selesai',
+                'status_color' => 'bg-blue-100 text-blue-700',
+                'keterangan' => 'Pekerjaan sudah selesai 100%',
+                'thumbnail' => '/img/pembangunan/1/thumb.jpg',
+                'foto' => ['/img/pembangunan/1/1.jpg', '/img/pembangunan/1/2.jpg', '/img/pembangunan/1/3.jpg'],
+            ],
+            [
+                'slug' => 'pembangunan-2',
+                'judul' => 'TPT Sungai Dusun Pandan',
+                'desa' => 'Pandan',
+                'anggaran' => 87500000,
+                'lokasi' => 'RT 1 / RW 2',
+                'volume' => '150 m',
+                'sumber_dana' => 'Dana Desa',
+                'tahun' => '2024',
+                'pelaksana' => 'Sutarman',
+                'status' => 'Proses',
+                'status_color' => 'bg-yellow-100 text-yellow-700',
+                'keterangan' => 'Progres 90%',
+                'thumbnail' => '/img/pembangunan/2/thumb.jpg',
+                'foto' => ['/img/pembangunan/2/1.jpg', '/img/pembangunan/2/2.jpg'],
+            ],
+            [
+                'slug' => 'pembangunan-1',
+                'judul' => 'Pembangunan Jalan RT 2 RW 1',
+                'desa' => 'Krajan Satu',
+                'anggaran' => 51575000,
+                'lokasi' => 'RT 2 / RW 1 - SUSUKAN KIDUL',
+                'volume' => '200 m',
+                'sumber_dana' => 'Dana Desa',
+                'tahun' => '2024',
+                'pelaksana' => 'Hariyanto',
+                'status' => 'Selesai',
+                'status_color' => 'bg-blue-100 text-blue-700',
+                'keterangan' => 'Pekerjaan sudah selesai 100%',
+                'thumbnail' => '/img/pembangunan/1/thumb.jpg',
+                'foto' => ['/img/pembangunan/1/1.jpg', '/img/pembangunan/1/2.jpg', '/img/pembangunan/1/3.jpg'],
+            ],
+            [
+                'slug' => 'pembangunan-2',
+                'judul' => 'TPT Sungai Dusun Pandan',
+                'desa' => 'Pandan',
+                'anggaran' => 87500000,
+                'lokasi' => 'RT 1 / RW 2',
+                'volume' => '150 m',
+                'sumber_dana' => 'Dana Desa',
+                'tahun' => '2024',
+                'pelaksana' => 'Sutarman',
+                'status' => 'Proses',
+                'status_color' => 'bg-yellow-100 text-yellow-700',
+                'keterangan' => 'Progres 90%',
+                'thumbnail' => '/img/pembangunan/2/thumb.jpg',
+                'foto' => ['/img/pembangunan/2/1.jpg', '/img/pembangunan/2/2.jpg'],
+            ],
+            [
+                'slug' => 'pembangunan-1',
+                'judul' => 'Pembangunan Jalan RT 2 RW 1',
+                'desa' => 'Krajan Satu',
+                'anggaran' => 51575000,
+                'lokasi' => 'RT 2 / RW 1 - SUSUKAN KIDUL',
+                'volume' => '200 m',
+                'sumber_dana' => 'Dana Desa',
+                'tahun' => '2024',
+                'pelaksana' => 'Hariyanto',
+                'status' => 'Selesai',
+                'status_color' => 'bg-blue-100 text-blue-700',
+                'keterangan' => 'Pekerjaan sudah selesai 100%',
+                'thumbnail' => '/img/pembangunan/1/thumb.jpg',
+                'foto' => ['/img/pembangunan/1/1.jpg', '/img/pembangunan/1/2.jpg', '/img/pembangunan/1/3.jpg'],
+            ],
+            [
+                'slug' => 'pembangunan-2',
+                'judul' => 'TPT Sungai Dusun Pandan',
+                'desa' => 'Pandan',
+                'anggaran' => 87500000,
+                'lokasi' => 'RT 1 / RW 2',
+                'volume' => '150 m',
+                'sumber_dana' => 'Dana Desa',
+                'tahun' => '2024',
+                'pelaksana' => 'Sutarman',
+                'status' => 'Proses',
+                'status_color' => 'bg-yellow-100 text-yellow-700',
+                'keterangan' => 'Progres 90%',
+                'thumbnail' => '/img/pembangunan/2/thumb.jpg',
+                'foto' => ['/img/pembangunan/2/1.jpg', '/img/pembangunan/2/2.jpg'],
+            ],
         ];
 
         // Filter Logic
@@ -130,7 +226,7 @@
             HEADER SECTION
             ============================================= 
         --}}
-        <div class="bg-emerald-700 pt-24 pb-32 rounded-b-[3rem] shadow-xl relative overflow-hidden">
+        <div data-aos="fade-down" class="bg-emerald-700 pt-24 pb-32 rounded-b-[3rem] shadow-xl relative overflow-hidden">
             <!-- Decorative patterns -->
             <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
                 <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
@@ -161,7 +257,7 @@
             MAIN CONTENT (FILTER & GRID)
             ============================================= 
         --}}
-        <div class="max-w-7xl mx-auto px-6 -mt-20 relative z-20">
+        <div data-aos="fade-up" class="max-w-7xl mx-auto px-6 -mt-20 relative z-20">
 
             {{-- FILTER CARD --}}
             <div class="bg-white rounded-2xl shadow-lg p-6 mb-10 border border-gray-100">
@@ -470,13 +566,13 @@
                         </h4>
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             ${item.foto.map(img => `
-                                                    <div class="group relative aspect-square overflow-hidden rounded-xl bg-gray-200 cursor-pointer shadow-sm hover:shadow-md transition" onclick="zoomImage('${img}')">
-                                                        <img src="${img}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.onerror=null; this.src='https://placehold.co/300?text=No+Img'">
-                                                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
-                                                            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
-                                                        </div>
-                                                    </div>
-                                                `).join('')}
+                                                                    <div class="group relative aspect-square overflow-hidden rounded-xl bg-gray-200 cursor-pointer shadow-sm hover:shadow-md transition" onclick="zoomImage('${img}')">
+                                                                        <img src="${img}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.onerror=null; this.src='https://placehold.co/300?text=No+Img'">
+                                                                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
+                                                                            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                                                                        </div>
+                                                                    </div>
+                                                                `).join('')}
                         </div>
                     </div>
                 </div>

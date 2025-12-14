@@ -1,14 +1,23 @@
-<footer class="relative bg-gray-900 text-gray-300 mt-20 pt-16 pb-6 overflow-hidden">
+<footer data-aos="fade-up" class="relative bg-gray-900 text-gray-300 mt-20 pt-16 pb-6">
+    <!-- Catatan: Class 'overflow-hidden' saya hapus dari tag footer utama agar tombol di atas tidak terpotong -->
 
-    <!-- Animated Gradient Background -->
+    <!-- Animated Gradient Background (Overflow hidden dipindah ke sini) -->
     <div
-        class="absolute inset-0 bg-gradient-to-br from-green-400 via-gray-900 to-green-900 opacity-40 animate-gradientMove">
+        class="absolute inset-0 bg-gradient-to-br from-green-400 via-gray-900 to-green-900 opacity-40 animate-gradientMove overflow-hidden">
     </div>
 
     <!-- Grid Texture Overlay -->
-    <div class="absolute inset-0 bg-repeat opacity-10"
+    <div class="absolute inset-0 bg-repeat opacity-10 pointer-events-none"
         style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%2210%22 viewBox=%220 0 10 10%22><rect width=%2210%22 height=%2210%22 fill=%22none%22 /><rect x=%220%22 y=%220%22 width=%221%22 height=%221%22 fill=%22%232d3748%22 /></svg>');">
     </div>
+
+    <!-- TOMBOL SCROLL TO TOP (BARU) -->
+    <!-- Posisi absolute, ditarik ke atas (-top-6) dan di kanan (right-6/8/10 sesuai selera) -->
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+        class="absolute cursor-pointer -top-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 transform hover:-translate-y-1 hover:shadow-green-500/50 focus:outline-none focus:ring-4 focus:ring-green-300"
+        aria-label="Kembali ke atas">
+        <i class="bi bi-arrow-up text-xl font-bold"></i>
+    </button>
 
     <div class="max-w-7xl mx-auto px-6 relative z-10">
         <div data-aos="fade-in" data-aos-delay="100" class="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -75,7 +84,7 @@
         <div data-aos="fade-up" data-aos-delay="100" data-aos-offset="0"
             class="text-center border-t border-gray-800 mt-12 pt-6 text-sm">
             <p class="mb-2">
-                © {{ date('Y') }} Desa Cipta Makmur. Semua Hak Dilindungi.
+                © 2025 Desa Cipta Makmur. Semua Hak Dilindungi.
             </p>
             <p class="text-xs text-gray-500 hover:text-green-500 transition duration-300">
                 Dibuat dengan <i class="bi bi-heart-fill text-red-500 mx-1"></i> oleh

@@ -45,7 +45,7 @@
             <div class="max-w-7xl mx-auto px-4">
 
                 {{-- Breadcrumb --}}
-                <nav class="text-sm mb-6 text-gray-600">
+                <nav data-aos="fade-right" class="text-sm mb-6 text-gray-600">
                     <a href="/" class="hover:underline">Beranda</a> /
                     <a href="/berita" class="hover:underline">Berita</a> /
                     <span class="text-gray-800 font-semibold">{{ $berita['title'] }}</span>
@@ -56,26 +56,28 @@
                     {{-- Konten Utama --}}
                     <div class="md:col-span-2">
 
-                        <h1 class="text-3xl font-bold mb-3">{{ $berita['title'] }}</h1>
+                        <h1 data-aos="fade-up" class="text-3xl font-bold mb-3">{{ $berita['title'] }}</h1>
 
-                        <div class="text-sm text-gray-500 mb-6">
+                        <div data-aos="fade-up" class="text-sm text-gray-500 mb-6">
                             Dipublikasikan pada
                             <span class="font-medium">{{ $berita['date'] }}</span>
                             oleh <span class="font-medium">Admin</span>
                         </div>
 
                         {{-- Gambar + Modal --}}
-                        <img src="{{ $berita['thumbnail'] }}" class="rounded-xl w-full mb-8 cursor-pointer"
+                        <img data-aos="fade-up" src="{{ $berita['thumbnail'] }}"
+                            class="rounded-xl w-full mb-8 cursor-pointer"
                             onclick="openImageModal('{{ $berita['thumbnail'] }}')">
 
                         {{-- Isi Artikel --}}
-                        <article class="prose max-w-none prose-li:marker:text-green-600 prose-h3:mt-6 prose-h3:mb-2"
+                        <article data-aos="fade-up"
+                            class="prose max-w-none prose-li:marker:text-green-600 prose-h3:mt-6 prose-h3:mb-2"
                             style="text-align: justify;">
                             {!! $berita['content'] !!}
                         </article>
 
                         {{-- Bagikan Ke Sosmed --}}
-                        <div class="mt-10 text-center">
+                        <div data-aos="flip-up" class="mt-10 text-center">
                             <h5 class="text-lg font-bold mb-4">📢 Bagikan Berita Ini</h5>
 
                             @php
@@ -127,12 +129,12 @@
                         {{-- Navigasi Sebelumnya / Selanjutnya --}}
                         <div class="flex justify-between mt-12 border-t pt-6">
 
-                            <a href="#"
+                            <a data-aos="fade-right" href="#"
                                 class="px-5 py-3 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold text-gray-700">
                                 ← Berita Sebelumnya
                             </a>
 
-                            <a href="#"
+                            <a data-aos="fade-left" href="#"
                                 class="px-5 py-3 bg-green-600 hover:bg-green-700 rounded-lg font-semibold text-white">
                                 Berita Selanjutnya →
                             </a>
@@ -144,12 +146,11 @@
                     {{-- Sidebar Berita Lain --}}
                     <div class="md:col-span-1">
 
-                        <div class="bg-white shadow-md rounded-xl p-5">
+                        <div data-aos="fade-left" class="bg-white shadow-md rounded-xl p-5">
 
                             <h3 class="text-xl font-bold  bg-green-800 text-white px-4 py-3 -mx-5 -mt-5 mb-5 rounded-t-xl">
                                 Berita Terbaru
                             </h3>
-
 
                             <div class="space-y-5">
 
@@ -188,8 +189,6 @@
         <img id="modalImage" onclick="event.stopPropagation()"
             class="max-w-[85%] max-h-[85%] rounded shadow-lg cursor-default">
     </div>
-
-
 
     {{-- Script --}}
     <script>

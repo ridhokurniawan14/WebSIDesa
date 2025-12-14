@@ -32,6 +32,34 @@ class ProdukHukumController extends Controller
                 'tahun' => 2024,
                 'file' => '/pdf/contoh3.pdf',
             ],
+            [
+                'id' => 4,
+                'judul' => 'Surat Edaran Kepala Desa Tentang Peringatan Kebersihan',
+                'jenis' => 'Surat Edaran Kepala Desa',
+                'tahun' => 2024,
+                'file' => '/pdf/contoh3.pdf',
+            ],
+            [
+                'id' => 5,
+                'judul' => 'Surat Edaran Kepala Desa Tentang Peringatan Kebersihan',
+                'jenis' => 'Surat Edaran Kepala Desa',
+                'tahun' => 2024,
+                'file' => '/pdf/contoh3.pdf',
+            ],
+            [
+                'id' => 6,
+                'judul' => 'Surat Edaran Kepala Desa Tentang Peringatan Kebersihan',
+                'jenis' => 'Surat Edaran Kepala Desa',
+                'tahun' => 2024,
+                'file' => '/pdf/contoh3.pdf',
+            ],
+            [
+                'id' => 7,
+                'judul' => 'Surat Edaran Kepala Desa Tentang Peringatan Kebersihan',
+                'jenis' => 'Surat Edaran Kepala Desa',
+                'tahun' => 2024,
+                'file' => '/pdf/contoh3.pdf',
+            ],
         ];
 
         return view('frontend.pages.produk-hukum.index', compact('data'));

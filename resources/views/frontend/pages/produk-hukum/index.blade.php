@@ -7,9 +7,7 @@
         <canvas id="particleCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-60"></canvas>
 
         {{-- HEADER SECTION --}}
-        {{-- Menggunakan padding bottom besar (pb-24) untuk memberi ruang bagi kartu filter yang akan naik ke atas --}}
-        <section class="pt-16 pb-24 bg-white shadow-sm relative overflow-hidden">
-            {{-- Top Gradient Line --}}
+        <section data-aos="fade-down" class="pt-16 pb-24 bg-white shadow-sm relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-green-400 to-emerald-600"></div>
 
             <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
@@ -26,14 +24,13 @@
                 </p>
             </div>
 
-            {{-- Background Decoration (Optional Pattern) --}}
+            {{-- Background Decoration --}}
             <div class="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-green-50 rounded-full opacity-50 blur-3xl"></div>
             <div class="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-blue-50 rounded-full opacity-50 blur-3xl"></div>
         </section>
 
         {{-- CONTENT SECTION --}}
-        {{-- Margin top negatif (-mt-16) membuat konten naik menutupi sebagian header --}}
-        <section class="-mt-16 pb-12 relative z-20">
+        <section data-aos="fade-up" class="-mt-16 relative z-20">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {{-- FILTER CARD --}}
@@ -101,7 +98,7 @@
                 </div>
 
                 {{-- TABLE CARD --}}
-                <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+                <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden mb-10">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse" id="produkTable">
                             <thead class="bg-gray-50 border-b border-gray-200">
@@ -120,23 +117,23 @@
                             </thead>
                             <tbody class="divide-y divide-gray-100">
                                 @foreach ($data as $i => $item)
-                                    <tr class="hover:bg-green-50/50 transition-colors duration-200 group">
-                                        <td class="py-4 px-6 text-center text-gray-500 font-medium">{{ $i + 1 }}</td>
+                                    <tr class="hover:bg-green-50/50 transition-colors duration-200 group data-row">
+                                        {{-- Gunakan class 'data-row' untuk selector JS --}}
+                                        <td class="py-4 px-6 text-center text-gray-500 font-medium row-number">
+                                            {{ $i + 1 }}</td>
 
                                         <td class="py-4 px-6 align-middle">
                                             <div
-                                                class="text-sm font-bold text-gray-800 group-hover:text-green-700 transition-colors line-clamp-2">
+                                                class="text-sm font-bold text-gray-800 group-hover:text-green-700 transition-colors line-clamp-2 title-cell">
                                                 {{ $item['judul'] }}
                                             </div>
-                                            {{-- Mobile helper --}}
                                             <div class="text-xs text-gray-500 mt-1 md:hidden">
                                                 {{ $item['jenis'] }} • {{ $item['tahun'] }}
                                             </div>
                                         </td>
 
-                                        <td class="py-4 px-6 align-middle">
+                                        <td class="py-4 px-6 align-middle category-cell">
                                             <div class="flex flex-col items-start gap-2">
-                                                {{-- Badge Logic --}}
                                                 @php
                                                     $badgeColor = match ($item['jenis']) {
                                                         'Peraturan Desa'
@@ -187,6 +184,22 @@
                             </tbody>
                         </table>
                     </div>
+
+                    {{-- PAGINATION & INFO SECTION (BARU) --}}
+                    <div id="paginationWrapper"
+                        class="bg-gray-50 border-t border-gray-200 px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+                        {{-- Info Text (Kiri) --}}
+                        <div class="text-sm text-gray-500 text-center md:text-left">
+                            Menampilkan <span id="startInfo" class="font-semibold text-gray-900">0</span> sampai <span
+                                id="endInfo" class="font-semibold text-gray-900">0</span> dari <span id="totalInfo"
+                                class="font-semibold text-gray-900">0</span> data
+                        </div>
+
+                        {{-- Pagination Buttons (Kanan) --}}
+                        <div class="flex items-center gap-1" id="paginationControls">
+                            {{-- Tombol akan digenerate via JS --}}
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -195,19 +208,13 @@
     </div>
 
     {{-- MODAL PDF --}}
-    <div id="pdfModal" class="fixed inset-0 z-[100] hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        {{-- Backdrop --}}
+    <div id="pdfModal" class="fixed inset-0 z-[100] hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
         <div class="fixed inset-0 bg-gray-900/70 backdrop-blur-sm transition-opacity opacity-0" id="modalBackdrop"></div>
-
-        {{-- Scrollable Wrapper with Click Handler --}}
         <div class="fixed inset-0 z-10 overflow-y-auto" id="modalWrapper">
             <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
-
-                {{-- Modal Panel --}}
                 <div class="relative transform overflow-hidden rounded-xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-5xl opacity-0 scale-95"
                     id="modalPanel">
-
-                    {{-- Modal Header --}}
                     <div class="bg-white px-4 py-3 sm:px-6 flex justify-between items-center border-b border-gray-100">
                         <div class="flex items-center gap-3 overflow-hidden">
                             <div
@@ -215,16 +222,13 @@
                                 <i class="fa-solid fa-file-pdf"></i>
                             </div>
                             <h3 class="text-sm md:text-base font-semibold text-gray-800 truncate" id="modalTitle">
-                                Pratinjau Dokumen
-                            </h3>
+                                Pratinjau Dokumen</h3>
                         </div>
                         <button type="button" onclick="closePdfModal()"
                             class="text-gray-400 hover:text-red-500 hover:bg-red-50 p-2 rounded-full transition-all focus:outline-none">
                             <i class="fa-solid fa-xmark text-lg w-5 h-5 flex items-center justify-center"></i>
                         </button>
                     </div>
-
-                    {{-- Modal Body --}}
                     <div class="bg-gray-100 h-[80vh] relative">
                         <div id="loadingIndicator"
                             class="absolute inset-0 flex items-center justify-center bg-gray-100 z-10 hidden">
@@ -240,195 +244,308 @@
 
 @section('scripts')
     <script>
-        const modal = document.getElementById('pdfModal');
-        const backdrop = document.getElementById('modalBackdrop');
-        const wrapper = document.getElementById('modalWrapper');
-        const panel = document.getElementById('modalPanel');
-        const viewer = document.getElementById('pdfViewer');
-        const modalTitle = document.getElementById('modalTitle');
-        const loadingIndicator = document.getElementById('loadingIndicator');
+        document.addEventListener('DOMContentLoaded', function() {
 
-        function openPdfModal(pdfUrl, title) {
-            // Show loading
-            loadingIndicator.classList.remove('hidden');
+            // --- MODAL LOGIC ---
+            const modal = document.getElementById('pdfModal');
+            const backdrop = document.getElementById('modalBackdrop');
+            const wrapper = document.getElementById('modalWrapper');
+            const panel = document.getElementById('modalPanel');
+            const viewer = document.getElementById('pdfViewer');
+            const modalTitle = document.getElementById('modalTitle');
+            const loadingIndicator = document.getElementById('loadingIndicator');
 
-            viewer.src = pdfUrl;
-
-            // Hide loading when iframe loads (not perfect for PDF but helps)
-            viewer.onload = function() {
-                loadingIndicator.classList.add('hidden');
+            window.openPdfModal = function(pdfUrl, title) {
+                if (!modal) return;
+                loadingIndicator.classList.remove('hidden');
+                viewer.src = pdfUrl;
+                viewer.onload = function() {
+                    loadingIndicator.classList.add('hidden');
+                };
+                if (modalTitle) modalTitle.innerText = title || 'Pratinjau Dokumen';
+                modal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+                setTimeout(() => {
+                    backdrop.classList.remove('opacity-0');
+                    panel.classList.remove('opacity-0', 'scale-95');
+                    panel.classList.add('opacity-100', 'scale-100');
+                }, 10);
             };
 
-            modalTitle.innerText = title || 'Pratinjau Dokumen';
+            window.closePdfModal = function() {
+                if (!modal) return;
+                backdrop.classList.add('opacity-0');
+                panel.classList.remove('opacity-100', 'scale-100');
+                panel.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden');
+                    viewer.src = "";
+                }, 300);
+            };
 
-            modal.classList.remove('hidden');
-            // Animation In
-            setTimeout(() => {
-                backdrop.classList.remove('opacity-0');
-                panel.classList.remove('opacity-0', 'scale-95');
-                panel.classList.add('opacity-100', 'scale-100');
-            }, 10);
-        }
-
-        function closePdfModal() {
-            // Animation Out
-            backdrop.classList.add('opacity-0');
-            panel.classList.remove('opacity-100', 'scale-100');
-            panel.classList.add('opacity-0', 'scale-95');
-
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                viewer.src = "";
-            }, 300);
-        }
-
-        // Close when clicking outside (on wrapper)
-        wrapper.addEventListener('click', function(e) {
-            if (e.target === wrapper) {
-                closePdfModal();
+            if (wrapper) {
+                wrapper.addEventListener('click', function(e) {
+                    if (e.target === wrapper) closePdfModal();
+                });
             }
-        });
 
-        // Close on Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-                closePdfModal();
-            }
-        });
-
-        // FILTER LOGIC
-        const searchInput = document.getElementById('searchInput');
-        const filterTahun = document.getElementById('filterTahun');
-        const filterKategori = document.getElementById('filterKategori');
-        const tableBody = document.querySelector('#produkTable tbody');
-        const noDataRow = document.getElementById('noDataRow');
-
-        function filterTable() {
-            const searchText = searchInput.value.toLowerCase();
-            const tahun = filterTahun.value;
-            const kategori = filterKategori.value;
-            let visibleCount = 0;
-
-            const rows = Array.from(tableBody.querySelectorAll('tr:not(#noDataRow)'));
-
-            rows.forEach(row => {
-                const judul = row.cells[1].innerText.toLowerCase();
-                const jenisTahunText = row.cells[2].innerText;
-
-                let show = true;
-
-                if (searchText && !judul.includes(searchText)) show = false;
-                if (tahun && !jenisTahunText.includes(tahun)) show = false;
-                if (kategori && !jenisTahunText.includes(kategori)) show = false;
-
-                if (show) {
-                    row.style.display = "";
-                    visibleCount++;
-                } else {
-                    row.style.display = "none";
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+                    closePdfModal();
                 }
             });
 
-            if (visibleCount === 0) {
-                noDataRow.classList.remove('hidden');
-            } else {
-                noDataRow.classList.add('hidden');
+
+            // --- FILTER & PAGINATION LOGIC ---
+            const searchInput = document.getElementById('searchInput');
+            const filterTahun = document.getElementById('filterTahun');
+            const filterKategori = document.getElementById('filterKategori');
+            const tableBody = document.querySelector('#produkTable tbody');
+            const noDataRow = document.getElementById('noDataRow');
+            const paginationWrapper = document.getElementById('paginationWrapper');
+
+            // Pagination Elements
+            const startInfo = document.getElementById('startInfo');
+            const endInfo = document.getElementById('endInfo');
+            const totalInfo = document.getElementById('totalInfo');
+            const paginationControls = document.getElementById('paginationControls');
+
+            // Pagination Settings
+            const rowsPerPage = 5; // Ganti angka ini jika ingin 10/20 data per halaman
+            let currentPage = 1;
+            let currentFilteredRows = []; // Menyimpan baris yang lolos filter
+
+            if (searchInput && filterTahun && filterKategori && tableBody) {
+
+                // Ambil semua baris data awal (kecuali baris "tidak ditemukan")
+                const allRows = Array.from(tableBody.querySelectorAll('tr.data-row'));
+
+                function filterTable() {
+                    const searchText = searchInput.value.toLowerCase();
+                    const tahun = filterTahun.value;
+                    const kategori = filterKategori.value;
+
+                    // 1. Filter Data
+                    currentFilteredRows = allRows.filter(row => {
+                        const judul = row.querySelector('.title-cell').innerText.toLowerCase();
+                        const jenisTahunText = row.querySelector('.category-cell').innerText;
+
+                        let matchSearch = !searchText || judul.includes(searchText);
+                        let matchTahun = !tahun || jenisTahunText.includes(tahun);
+                        let matchKategori = !kategori || jenisTahunText.includes(kategori);
+
+                        return matchSearch && matchTahun && matchKategori;
+                    });
+
+                    // 2. Reset ke halaman 1 setiap kali filter berubah
+                    currentPage = 1;
+
+                    // 3. Render Ulang Tampilan
+                    updateTableDisplay();
+                }
+
+                function updateTableDisplay() {
+                    const totalRows = currentFilteredRows.length;
+                    const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+                    // Validasi current page
+                    if (currentPage < 1) currentPage = 1;
+                    if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
+
+                    // Hitung Index Start & End
+                    const startIndex = (currentPage - 1) * rowsPerPage;
+                    const endIndex = Math.min(startIndex + rowsPerPage, totalRows);
+
+                    // Sembunyikan SEMUA baris dulu
+                    allRows.forEach(row => row.style.display = 'none');
+                    noDataRow.classList.add('hidden');
+
+                    if (totalRows === 0) {
+                        // Jika tidak ada data
+                        noDataRow.classList.remove('hidden');
+                        paginationWrapper.classList.add('hidden'); // Sembunyikan pagination bar jika kosong
+                    } else {
+                        paginationWrapper.classList.remove('hidden');
+
+                        // Tampilkan hanya baris yang sesuai halaman saat ini
+                        for (let i = startIndex; i < endIndex; i++) {
+                            currentFilteredRows[i].style.display = '';
+                        }
+
+                        // Update Info Text
+                        startInfo.innerText = startIndex + 1;
+                        endInfo.innerText = endIndex;
+                        totalInfo.innerText = totalRows;
+
+                        // Render Tombol Pagination
+                        renderPaginationControls(totalPages);
+                    }
+                }
+
+                function renderPaginationControls(totalPages) {
+                    paginationControls.innerHTML = '';
+
+                    // Helper create button
+                    const createBtn = (text, page, isActive = false, isDisabled = false, isIcon = false) => {
+                        const btn = document.createElement('button');
+                        // PERBAIKAN: Tambahkan 'min-w-[2rem] h-8' agar tombol kotak dan 'flex items-center justify-center' agar konten di tengah
+                        btn.className = `min-w-[2rem] h-8 px-3 text-sm font-medium rounded-md transition-all duration-200 border flex items-center justify-center gap-1 ${
+                            isActive 
+                            ? 'bg-green-600 text-white border-green-600 shadow-sm' 
+                            : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50 hover:text-green-600'
+                        } ${isDisabled ? 'opacity-50 cursor-not-allowed hover:bg-white hover:text-gray-600' : ''}`;
+
+                        if (isIcon) {
+                            btn.innerHTML = text;
+                        } else {
+                            btn.innerText = text;
+                        }
+
+                        if (!isDisabled && !isActive) {
+                            btn.onclick = () => {
+                                currentPage = page;
+                                updateTableDisplay();
+                            };
+                        }
+                        return btn;
+                    };
+
+                    // Tombol Prev (Ganti ke bi-chevron-left agar pasti muncul)
+                    const prevBtn = createBtn('<i class="bi bi-chevron-left text-xs"></i>', currentPage - 1, false,
+                        currentPage === 1, true);
+                    paginationControls.appendChild(prevBtn);
+
+                    // Logic untuk "Smart" Pagination
+                    const maxVisibleButtons = 5;
+                    let startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
+                    let endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
+
+                    if (endPage - startPage + 1 < maxVisibleButtons) {
+                        startPage = Math.max(1, endPage - maxVisibleButtons + 1);
+                    }
+
+                    // First Page button if gap exists
+                    if (startPage > 1) {
+                        paginationControls.appendChild(createBtn('1', 1, currentPage === 1));
+                        if (startPage > 2) {
+                            const dots = document.createElement('span');
+                            dots.className = "px-2 text-gray-400";
+                            dots.innerText = "...";
+                            paginationControls.appendChild(dots);
+                        }
+                    }
+
+                    // Numbered Buttons
+                    for (let i = startPage; i <= endPage; i++) {
+                        paginationControls.appendChild(createBtn(i, i, currentPage === i));
+                    }
+
+                    // Last Page button if gap exists
+                    if (endPage < totalPages) {
+                        if (endPage < totalPages - 1) {
+                            const dots = document.createElement('span');
+                            dots.className = "px-2 text-gray-400";
+                            dots.innerText = "...";
+                            paginationControls.appendChild(dots);
+                        }
+                        paginationControls.appendChild(createBtn(totalPages, totalPages, currentPage ===
+                            totalPages));
+                    }
+
+                    // Tombol Next (Ganti ke bi-chevron-right agar pasti muncul)
+                    const nextBtn = createBtn('<i class="bi bi-chevron-right text-xs"></i>', currentPage + 1, false,
+                        currentPage === totalPages, true);
+                    paginationControls.appendChild(nextBtn);
+                }
+
+                searchInput.addEventListener('keyup', filterTable);
+                filterTahun.addEventListener('change', filterTable);
+                filterKategori.addEventListener('change', filterTable);
+
+                // Initialize pertama kali
+                filterTable();
             }
-        }
 
-        searchInput.addEventListener('keyup', filterTable);
-        filterTahun.addEventListener('change', filterTable);
-        filterKategori.addEventListener('change', filterTable);
 
-        (function() {
+            // --- PARTICLE LOGIC (TETAP SAMA) ---
             const canvas = document.getElementById('particleCanvas');
-            const ctx = canvas.getContext('2d');
-            let width, height;
-            let particles = [];
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                let width, height;
+                let particles = [];
+                const particleDensityDivider = 25000;
+                const connectionDistance = 150;
 
-            // Konfigurasi Kepadatan dan Jarak
-            // Semakin besar angka divider, semakin sedikit partikel (semakin renggang)
-            const particleDensityDivider = 25000;
-            // Jarak maksimal untuk menarik garis antar titik
-            const connectionDistance = 150;
-
-            function resize() {
-                width = canvas.width = window.innerWidth;
-                height = canvas.height = window.innerHeight;
-            }
-
-            class Particle {
-                constructor() {
-                    this.x = Math.random() * width;
-                    this.y = Math.random() * height;
-                    // Kecepatan sangat lambat agar santai
-                    this.vx = (Math.random() - 0.5) * 0.3;
-                    this.vy = (Math.random() - 0.5) * 0.3;
-                    this.size = Math.random() * 2 + 1; // Ukuran titik variatif
+                function resize() {
+                    width = canvas.width = window.innerWidth;
+                    height = canvas.height = window.innerHeight;
                 }
 
-                update() {
-                    this.x += this.vx;
-                    this.y += this.vy;
-
-                    // Bounce off edges
-                    if (this.x < 0 || this.x > width) this.vx *= -1;
-                    if (this.y < 0 || this.y > height) this.vy *= -1;
+                class Particle {
+                    constructor() {
+                        this.x = Math.random() * width;
+                        this.y = Math.random() * height;
+                        this.vx = (Math.random() - 0.5) * 0.3;
+                        this.vy = (Math.random() - 0.5) * 0.3;
+                        this.size = Math.random() * 2 + 1;
+                    }
+                    update() {
+                        this.x += this.vx;
+                        this.y += this.vy;
+                        if (this.x < 0 || this.x > width) this.vx *= -1;
+                        if (this.y < 0 || this.y > height) this.vy *= -1;
+                    }
+                    draw() {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(16, 185, 129, 0.6)';
+                        ctx.fill();
+                    }
                 }
 
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    // Warna titik hijau pudar
-                    ctx.fillStyle = 'rgba(16, 185, 129, 0.6)';
-                    ctx.fill();
-                }
-            }
-
-            function initParticles() {
-                particles = [];
-                const numberOfParticles = (width * height) / particleDensityDivider;
-                for (let i = 0; i < numberOfParticles; i++) {
-                    particles.push(new Particle());
-                }
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, width, height);
-
-                for (let i = 0; i < particles.length; i++) {
-                    particles[i].update();
-                    particles[i].draw();
-
-                    // Cek jarak dengan partikel lain untuk menggambar garis
-                    for (let j = i; j < particles.length; j++) {
-                        const dx = particles[i].x - particles[j].x;
-                        const dy = particles[i].y - particles[j].y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-
-                        if (distance < connectionDistance) {
-                            ctx.beginPath();
-                            // Semakin jauh, garis semakin transparan
-                            const opacity = 1 - (distance / connectionDistance);
-                            ctx.strokeStyle = 'rgba(16, 185, 129, ' + (opacity * 0.5) + ')'; // Line color sangat tipis
-                            ctx.lineWidth = 1.5;
-                            ctx.moveTo(particles[i].x, particles[i].y);
-                            ctx.lineTo(particles[j].x, particles[j].y);
-                            ctx.stroke();
+                function initParticles() {
+                    particles = [];
+                    if (width && height) {
+                        const numberOfParticles = (width * height) / particleDensityDivider;
+                        for (let i = 0; i < numberOfParticles; i++) {
+                            particles.push(new Particle());
                         }
                     }
                 }
-                requestAnimationFrame(animate);
-            }
 
-            window.addEventListener('resize', () => {
+                function animate() {
+                    ctx.clearRect(0, 0, width, height);
+                    for (let i = 0; i < particles.length; i++) {
+                        particles[i].update();
+                        particles[i].draw();
+                        for (let j = i; j < particles.length; j++) {
+                            const dx = particles[i].x - particles[j].x;
+                            const dy = particles[i].y - particles[j].y;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+                            if (distance < connectionDistance) {
+                                ctx.beginPath();
+                                const opacity = 1 - (distance / connectionDistance);
+                                ctx.strokeStyle = 'rgba(16, 185, 129, ' + (opacity * 0.5) + ')';
+                                ctx.lineWidth = 1.5;
+                                ctx.moveTo(particles[i].x, particles[i].y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                    requestAnimationFrame(animate);
+                }
+
+                window.addEventListener('resize', () => {
+                    resize();
+                    initParticles();
+                });
+
                 resize();
                 initParticles();
-            });
-
-            resize();
-            initParticles();
-            animate();
-        })();
+                animate();
+            }
+        });
     </script>
 @endsection

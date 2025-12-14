@@ -34,7 +34,8 @@
         <canvas id="particleCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-60"></canvas>
 
         <!-- HERO SECTION & FILTER -->
-        <div class="bg-gradient-to-r from-emerald-900 to-emerald-700 pb-28 pt-12 relative overflow-hidden">
+        <div data-aos="fade-down"
+            class="bg-gradient-to-r from-emerald-900 to-emerald-700 pb-28 pt-12 relative overflow-hidden">
             <!-- Pattern Dekoratif -->
             <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 rounded-full bg-white opacity-5 blur-3xl"></div>
             <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-white opacity-5 blur-3xl"></div>
@@ -111,7 +112,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-20">
 
             <!-- RINGKASAN CARDS -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6 mb-8">
+            <div data-aos="fade-up" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6 mb-8">
                 @php
                     $cardStyles = [
                         'pendapatan' => [
@@ -178,7 +179,8 @@
             </div>
 
             <!-- GRAFIK UTAMA -->
-            <div class="bg-white rounded-2xl shadow-xl shadow-gray-200/50 p-6 md:p-8 mb-8 border border-gray-100">
+            <div data-aos="flip-down"
+                class="bg-white rounded-2xl shadow-xl shadow-gray-200/50 p-6 md:p-8 mb-8 border border-gray-100">
                 <div class="flex flex-col md:flex-row justify-between items-center mb-6">
                     <div>
                         <h2 class="text-xl md:text-2xl font-bold text-gray-800 flex items-center gap-2">
@@ -214,7 +216,8 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
                 <!-- DETAIL PENDAPATAN -->
-                <div class="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border-t-4 border-emerald-500 p-6 relative">
+                <div data-aos="fade-right"
+                    class="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border-t-4 border-emerald-500 p-6 relative">
                     <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
                         <div class="flex items-center gap-3">
                             <div class="p-2 bg-emerald-100 rounded-lg text-emerald-600">
@@ -271,7 +274,8 @@
                 </div>
 
                 <!-- DETAIL BELANJA -->
-                <div class="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border-t-4 border-rose-500 p-6 relative">
+                <div data-aos="fade-left"
+                    class="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border-t-4 border-rose-500 p-6 relative">
                     <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
                         <div class="flex items-center gap-3">
                             <div class="p-2 bg-rose-100 rounded-lg text-rose-600">

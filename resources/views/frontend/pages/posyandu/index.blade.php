@@ -7,7 +7,7 @@
 
     <div class="content-offset">
 
-        <section
+        <section data-aos="fade-down"
             class="relative bg-gradient-to-br from-green-700 to-emerald-600 text-white py-20 rounded-b-[3rem] shadow-lg mb-12 overflow-hidden">
             <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/leaves.png')]">
             </div>
@@ -34,7 +34,7 @@
 
         <div class="max-w-7xl mx-auto px-4 -mt-16 relative z-20 space-y-12">
 
-            <div class="bg-white p-8 shadow-xl rounded-2xl border-t-4 border-green-600">
+            <div data-aos="fade-up" class="bg-white p-8 shadow-xl rounded-2xl border-t-4 border-green-600">
                 <div class="flex flex-col md:flex-row items-start gap-8">
                     <div class="md:flex-1">
                         <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
@@ -53,7 +53,7 @@
             </div>
 
             <div class="grid md:grid-cols-12 gap-8">
-                <div class="md:col-span-5 space-y-8">
+                <div data-aos="slide-right" class="md:col-span-5 space-y-8">
                     <div class="bg-white p-6 shadow-md rounded-2xl border border-green-100">
                         <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                             <span class="text-green-600">🎯</span> Tujuan Utama
@@ -86,7 +86,7 @@
                     </div>
                 </div>
 
-                <div class="md:col-span-7 bg-green-50 p-8 rounded-3xl border-2 border-green-200/70">
+                <div data-aos="slide-left" class="md:col-span-7 bg-green-50 p-8 rounded-3xl border-2 border-green-200/70">
                     <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Layanan Kami</h2>
                     <div class="grid sm:grid-cols-2 gap-4">
                         @foreach ($posyandu['layanan'] as $index => $item)
@@ -121,9 +121,9 @@
 
 
             <div class="mb-12">
-                <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Struktur Organisasi</h2>
+                <h2 data-aos="fade" class="text-3xl font-bold text-center text-gray-800 mb-10">Struktur Organisasi</h2>
 
-                <div class="flex justify-center mb-10">
+                <div data-aos="fade-up" class="flex justify-center mb-10">
                     <div class="p-3 bg-white rounded-2xl shadow-xl border-2 border-green-100 cursor-pointer group relative hover:border-green-400 transition"
                         id="strukturImageBtn">
                         <img src="https://pasipinang.gampong.id/media/2023.08/struktur_posyandu1.jpg"
@@ -141,7 +141,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-8">
+                <div data-aos="flip-down" class="bg-white rounded-3xl shadow-lg border border-gray-100 p-8">
                     <div class="grid md:grid-cols-3 gap-6 mb-8">
                         @php
                             $roles = [
@@ -182,7 +182,8 @@
             </div>
 
             <div class="grid md:grid-cols-2 gap-8 items-start">
-                <div class="bg-white rounded-2xl shadow-md border-t-4 border-green-500 overflow-hidden h-full">
+                <div data-aos="slide-right"
+                    class="bg-white rounded-2xl shadow-md border-t-4 border-green-500 overflow-hidden h-full">
                     <div class="p-6 bg-green-50 border-b border-green-100">
                         <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-3">
                             <span>📌</span> Program Kerja
@@ -202,7 +203,7 @@
                     </div>
                 </div>
 
-                <div
+                <div data-aos="slide-left"
                     class="bg-gradient-to-br from-green-600 to-emerald-700 rounded-2xl shadow-md overflow-hidden text-white h-full">
                     <div class="p-6 border-b border-green-500/30 bg-black/10">
                         <h2 class="text-2xl font-bold flex items-center gap-3">

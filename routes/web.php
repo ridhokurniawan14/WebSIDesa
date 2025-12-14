@@ -22,7 +22,8 @@ use App\Http\Controllers\Frontend\{
     AdministrasiController,
     PkkController,
     BumdesController,
-    KarangtarunaController
+    KarangtarunaController,
+    KdmpController
 };
 // use App\Http\Controllers\LpmdController;
 // use App\Http\Controllers\ProdukHukumController;
@@ -124,6 +125,7 @@ Route::get('/posyandu', [PosyanduController::class, 'index'])->name('posyandu.in
 Route::get('/pkk', [PkkController::class, 'index'])->name('pkk.index');
 Route::get('/bumdes', [BumdesController::class, 'index'])->name('bumdes.index');
 Route::get('/karang-taruna', [KarangtarunaController::class, 'index'])->name('karangtaruna.index');
+Route::get('/koperasi-desa-merah-putih', [KdmpController::class, 'index'])->name('koperasidesamerahputih.index');
 
 // Halaman Pencarian
 Route::get('/search', [SearchController::class, 'index'])->name('search');

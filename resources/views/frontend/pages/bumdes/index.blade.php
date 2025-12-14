@@ -56,8 +56,7 @@
     <div class="font-sans content-offset text-slate-600 antialiased">
 
         {{-- Hero Section: Animated Gradient & Floating Elements --}}
-        {{-- UPDATE: Mengurangi padding-top (pt) agar tidak terlalu turun --}}
-        <header class="relative overflow-hidden animated-hero-bg pt-12 pb-24 sm:pt-20 sm:pb-32">
+        <header data-aos="fade-down" class="relative overflow-hidden animated-hero-bg pt-12 pb-24 sm:pt-20 sm:pb-32">
 
             {{-- Background decorative elements (Living Blobs) --}}
             <div class="absolute inset-0 overflow-hidden pointer-events-none">
@@ -122,7 +121,7 @@
         </header>
 
         {{-- Section 1: Tentang Kami --}}
-        <section id="tentang" class="py-24 bg-white relative">
+        <section data-aos="flip-right" id="tentang" class="py-24 bg-white relative">
             <div class="mx-auto max-w-7xl px-6 lg:px-8">
                 <div class="grid grid-cols-1 gap-y-12 lg:grid-cols-2 lg:gap-x-16 lg:items-center">
 
@@ -167,7 +166,7 @@
         </section>
 
         {{-- Section 2: Visi & Misi --}}
-        <section id="visi-misi" class="bg-slate-50 py-24 relative overflow-hidden">
+        <section data-aos="flip-left" id="visi-misi" class="bg-slate-50 py-24 relative overflow-hidden">
             {{-- Subtle Background Pattern --}}
             <div class="absolute inset-0 opacity-[0.03] pointer-events-none"
                 style="background-image: radial-gradient(#059669 1px, transparent 1px); background-size: 32px 32px;">
@@ -217,13 +216,13 @@
         {{-- Section 3: Unit Usaha --}}
         <section id="unit-usaha" class="py-24 bg-white relative">
             <div class="mx-auto max-w-7xl px-6 lg:px-8">
-                <div class="text-center max-w-2xl mx-auto mb-16">
+                <div data-aos="fade" class="text-center max-w-2xl mx-auto mb-16">
                     <h2 class="text-base font-semibold leading-7 text-emerald-600">Layanan & Produk</h2>
                     <p class="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Unit Bisnis Unggulan</p>
                     <p class="mt-4 text-lg text-slate-600">Diversifikasi usaha untuk memaksimalkan potensi ekonomi desa.</p>
                 </div>
 
-                <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                <div data-aos="flip-up" class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
                     @php
                         $icons_biz = ['🏦', '🛍️', '⚙️', '📈', '🚜', '🥩'];
                     @endphp
@@ -266,7 +265,7 @@
             <div class="mx-auto max-w-7xl px-6 lg:px-8">
 
                 {{-- Section Header --}}
-                <div class="text-center mb-16">
+                <div data-aos="fade-up" class="text-center mb-16">
                     <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Hubungi Tim Kami</h2>
                     <p class="mt-4 text-lg text-slate-600">Kami siap melayani kebutuhan informasi dan kerjasama Anda.</p>
                 </div>
@@ -274,7 +273,7 @@
                 <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
 
                     {{-- Card Manajemen --}}
-                    <div
+                    <div data-aos="slide-right"
                         class="bg-white rounded-3xl p-10 shadow-lg border border-slate-100 hover:shadow-xl transition-shadow duration-300 relative overflow-hidden">
                         <div
                             class="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-full -mr-16 -mt-16 transition-transform hover:scale-110">
@@ -300,7 +299,7 @@
                     </div>
 
                     {{-- Card Kontak --}}
-                    <div
+                    <div data-aos="slide-left"
                         class="bg-white rounded-3xl p-10 shadow-lg border border-slate-100 hover:shadow-xl transition-shadow duration-300 relative overflow-hidden">
                         <div
                             class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -mr-16 -mt-16 transition-transform hover:scale-110">

@@ -34,7 +34,7 @@
         <canvas id="particleCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-60"></canvas>
 
         <!-- HEADER SECTION -->
-        <section class="pt-16 pb-10 bg-white shadow-sm relative overflow-hidden">
+        <section data-aos="fade-down" class="pt-16 pb-10 bg-white shadow-sm relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
             <div class="max-w-7xl mx-auto px-4 text-center">
                 <span class="text-emerald-600 font-semibold tracking-wide uppercase text-sm">Pelayanan Publik</span>
@@ -49,7 +49,7 @@
         </section>
 
         <!-- CONTENT SECTION -->
-        <section class="mt-[-2rem]">
+        <section data-aos="fade-up" class="mt-[-2rem]">
             <div class="max-w-7xl mx-auto px-4">
 
                 <!-- SEARCH + FILTER CARD -->

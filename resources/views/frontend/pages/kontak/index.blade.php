@@ -32,13 +32,13 @@
         <canvas id="particleCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-60"></canvas>
 
         {{-- Header / Judul Halaman --}}
-        <section class="bg-gray-50 pt-10 pb-10 text-center ">
+        <section data-aos="fade" class="bg-gray-50 pt-10 pb-10 text-center ">
             <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800">Kontak & Pengaduan</h1>
             <p class="text-gray-500 mt-2 text-lg">Kami siap melayani dan mendengar masukan Anda.</p>
         </section>
 
         {{-- SECTION 1: Peta Full Width --}}
-        <div class="w-full h-[450px] relative z-0">
+        <div data-aos="fade" class="w-full h-[450px] relative z-0">
             <iframe
                 src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d19428.337358401794!2d114.187995!3d-8.367709!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd15562ff3a6b3f%3A0x3b0181738285d4bc!2sBalai%20desa%20kembiritan!5e1!3m2!1sid!2sid!4v1765549952054!5m2!1sid!2sid"
                 class="w-full h-full border-0 grayscale hover:grayscale-0 transition duration-700" allowfullscreen=""
@@ -52,7 +52,7 @@
         </div>
 
         {{-- SECTION 2: Floating Card (Info & Form) --}}
-        <section class="px-4 -mt-24 relative z-10">
+        <section data-aos="flip-down" class="px-4 -mt-24 relative z-10">
             <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row">
 
                 {{-- Bagian Kiri: Informasi Kontak (Background Hijau Gelap) --}}
@@ -155,7 +155,7 @@
                         </div>
 
                         <button type="submit"
-                            class="w-full py-4 bg-green-700 hover:bg-green-800 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transition transform hover:-translate-y-1">
+                            class="w-full py-4 cursor-pointer bg-green-700 hover:bg-green-800 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transition transform hover:-translate-y-1">
                             Kirim Pesan Sekarang <i class="fa-solid fa-paper-plane ml-2"></i>
                         </button>
                     </form>

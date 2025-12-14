@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class GaleriController extends Controller
 {
@@ -66,12 +67,51 @@ class GaleriController extends Controller
                 'image' => 'https://images.unsplash.com/photo-1533900298318-6b8da08a523e?q=80&w=1000&auto=format&fit=crop',
                 'date'  => '2024-10-12'
             ],
+            // Data Tambahan 3
+            [
+                'title' => 'Penyaluran Bantuan Langsung Tunai',
+                'slug'  => 'penyaluran-blt',
+                'image' => 'https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=1000&auto=format&fit=crop',
+                'date'  => '2024-09-20'
+            ],
+            // Data Tambahan 4
+            [
+                'title' => 'Posyandu Balita & Lansia',
+                'slug'  => 'kegiatan-posyandu',
+                'image' => 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=1000&auto=format&fit=crop',
+                'date'  => '2024-10-05'
+            ],
+            // Data Tambahan 5
+            [
+                'title' => 'Festival Budaya Desa Tahunan',
+                'slug'  => 'festival-budaya',
+                'image' => 'https://images.unsplash.com/photo-1533900298318-6b8da08a523e?q=80&w=1000&auto=format&fit=crop',
+                'date'  => '2024-10-12'
+            ],
         ];
     }
 
     public function index()
     {
-        $galeri = $this->items;
+        // Konfigurasi Paginasi Manual
+        $perPage = 8; // Jumlah item per halaman
+        $page = request()->get('page', 1);
+
+        // Ubah array jadi Collection agar mudah di-slice
+        $collection = collect($this->items);
+
+        // Potong data sesuai halaman
+        $slicedData = $collection->slice(($page - 1) * $perPage, $perPage)->values();
+
+        // Buat object Paginator
+        $galeri = new LengthAwarePaginator(
+            $slicedData,
+            $collection->count(),
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
         return view('frontend.pages.galeri.index', compact('galeri'));
     }
 }

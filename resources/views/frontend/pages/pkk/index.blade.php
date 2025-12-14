@@ -5,7 +5,7 @@
         <canvas id="particleCanvas"
             class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-60 bg-gray-100"></canvas>
         <div class="font-inter min-h-screen relative z-10">
-            <header class="relative overflow-hidden pt-20 pb-32 text-white">
+            <header data-aos="fade-down" class="relative overflow-hidden pt-20 pb-32 text-white">
                 <div class="absolute inset-0 bg-gradient-to-br from-green-800 via-teal-600 to-emerald-500 opacity-95 z-0">
                 </div>
 
@@ -61,7 +61,7 @@
                 <div class="max-w-7xl mx-auto px-4 space-y-24 pt-12">
 
                     <!-- TENTANG PKK (Split Section with Visual) -->
-                    <section class="grid lg:grid-cols-2 gap-12 items-center">
+                    <section data-aos="flip-up" class="grid lg:grid-cols-2 gap-12 items-center">
                         <!-- Text Content -->
                         <div class="lg:order-1">
                             <h2 class="text-4xl font-extrabold mb-4 text-green-800">Misi Kami: Memberdayakan Keluarga</h2>
@@ -91,13 +91,13 @@
 
                     <!-- 10 PROGRAM POKOK PKK (Dynamic Grid with Highlight) -->
                     <section id="program-pokok">
-                        <div class="text-center mb-12">
+                        <div data-aos="fade" class="text-center mb-12">
                             <span
                                 class="text-sm font-semibold uppercase text-green-600 bg-green-100 py-1 px-3 rounded-full">Fokus
                                 Utama</span>
                             <h2 class="text-4xl font-extrabold mt-3 text-gray-800">Sepuluh Pilar Pemberdayaan</h2>
                         </div>
-                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div data-aos="flip-right" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                             @php
                                 $programs = $program_pokok ?? [
                                     'Penghayatan dan Pengamalan Pancasila',
@@ -142,13 +142,13 @@
 
                     <!-- STRUKTUR PENGURUS (Modern Grid) -->
                     <section class="text-center">
-                        <div class="text-center mb-12">
+                        <div data-aos="fade-down" class="text-center mb-12">
                             <span
                                 class="text-sm font-semibold uppercase text-gray-600 bg-gray-200 py-1 px-3 rounded-full">Tim
                                 Penggerak</span>
                             <h2 class="text-4xl font-extrabold mt-3 text-gray-800">Struktur Pengurus Inti</h2>
                         </div>
-                        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div data-aos="flip-left" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
                             @php
                                 $pengurus = $pengurus ?? [
                                     ['nama' => 'Ibu Siti Aminah', 'jabatan' => 'Ketua', 'photo_url' => null],
@@ -174,13 +174,13 @@
 
                     <!-- KEGIATAN PKK (New Grid Card Design) -->
                     <section>
-                        <div class="text-center mb-12">
+                        <div data-aos="fade" class="text-center mb-12">
                             <span
                                 class="text-sm font-semibold uppercase text-teal-600 bg-teal-100 py-1 px-3 rounded-full">Aksi
                                 Nyata</span>
                             <h2 class="text-4xl font-extrabold mt-3 text-gray-800">Jadwal & Fokus Kegiatan</h2>
                         </div>
-                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                        <div data-aos="flip-up" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
                             @php
                                 $kegiatan = $kegiatan ?? [
                                     'Posyandu Balita & Lansia',
@@ -242,7 +242,7 @@
 
                     <!-- KONTAK (Clear Call-to-Action) -->
                     <section>
-                        <div
+                        <div data-aos="fade"
                             class="bg-green-50 rounded-3xl p-10 sm:p-16 text-center shadow-2xl transition duration-300 transform hover:scale-[1.01] hover:shadow-3xl border border-green-100 relative z-20">
                             <h2 class="text-3xl font-extrabold mb-4 text-green-800">Mari Berpartisipasi!</h2>
                             <p class="text-gray-700 max-w-2xl mx-auto text-lg mb-6">

@@ -33,7 +33,7 @@
 
         <div class="bg-slate-50 min-h-screen">
             {{-- Hero / Header Section --}}
-            <div class="relative bg-emerald-700 py-16 px-4 sm:px-6 lg:px-8 mb-12 overflow-hidden">
+            <div data-aos="fade-down" class="relative bg-emerald-700 py-16 px-4 sm:px-6 lg:px-8 mb-12 overflow-hidden">
                 <div class="absolute inset-0">
                     <svg class="h-full w-full opacity-10" viewBox="0 0 100 100" preserveAspectRatio="none">
                         <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white" />
@@ -56,7 +56,8 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-10">
 
                 {{-- 1. Apa itu LPMD (Highlight Card) --}}
-                <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-10 border border-slate-100">
+                <div data-aos="fade-up"
+                    class="bg-white rounded-2xl shadow-xl overflow-hidden mb-10 border border-slate-100">
                     <div class="p-8 md:p-10">
                         <div class="flex flex-col md:flex-row items-start gap-6">
                             <div class="flex-shrink-0">
@@ -79,7 +80,7 @@
                     </div>
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <div data-aos="flip-up" class="grid md:grid-cols-2 gap-8 mb-12">
                     {{-- 2. Dasar Hukum --}}
                     <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-emerald-500">
                         <div class="flex items-center gap-3 mb-6">
@@ -128,13 +129,13 @@
 
                 {{-- 4. Struktur Organisasi --}}
                 <div class="mb-12">
-                    <div class="text-center mb-8">
+                    <div data-aos="fade" class="text-center mb-8">
                         <h2 class="text-3xl font-bold text-slate-800">Struktur Organisasi</h2>
                         <p class="text-slate-500 mt-2">Susunan Pengurus LPMD Periode Berjalan</p>
                     </div>
 
                     {{-- Gambar Bagan dengan Modal Trigger --}}
-                    <div class="bg-white p-4 rounded-2xl shadow-lg mb-10 border border-slate-100">
+                    <div data-aos="fade-up" class="bg-white p-4 rounded-2xl shadow-lg mb-10 border border-slate-100">
                         <div onclick="openModal('https://psikologi.unj.ac.id/wp-content/uploads/2025/07/Bagan-Struktur-Organisasi-fakultas-psikologi-Universitas-negeri-jakarta-2.png')"
                             class="relative rounded-xl overflow-hidden bg-slate-100 group cursor-pointer">
                             <img src="https://psikologi.unj.ac.id/wp-content/uploads/2025/07/Bagan-Struktur-Organisasi-fakultas-psikologi-Universitas-negeri-jakarta-2.png"
@@ -160,7 +161,7 @@
                     </div>
 
                     {{-- Grid Pengurus Inti --}}
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div data-aos="flip-down" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                         {{-- Helper Component untuk Card Pengurus --}}
                         @php
                             $officers = [
@@ -217,7 +218,7 @@
                     </div>
 
                     {{-- Daftar Bidang --}}
-                    <div class="bg-white rounded-2xl shadow-lg p-8 border border-slate-100">
+                    <div data-aos="flip-up" class="bg-white rounded-2xl shadow-lg p-8 border border-slate-100">
                         <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
                             <span class="w-2 h-8 bg-emerald-500 rounded-full"></span>
                             Bidang & Seksi
@@ -234,7 +235,8 @@
                 </div>
 
                 {{-- 5. Program Kerja --}}
-                <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl shadow-2xl p-8 md:p-12 text-white">
+                <div data-aos="fade"
+                    class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl shadow-2xl p-8 md:p-12 text-white">
                     <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
                         <div>
                             <h2 class="text-3xl font-bold">Program Kerja</h2>
