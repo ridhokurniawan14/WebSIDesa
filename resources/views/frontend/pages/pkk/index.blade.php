@@ -2,19 +2,8 @@
 
 @section('content')
     <div class="content-offset">
-        <!--
-                PERBAIKAN:
-                1. Menambahkan 'bg-gray-100' di sini agar background abu-abu ada di layer paling bawah.
-                2. Canvas tetap z-0 agar berada di belakang konten.
-            -->
         <canvas id="particleCanvas"
             class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-60 bg-gray-100"></canvas>
-
-        <!--
-                PERBAIKAN:
-                Menghapus 'bg-gray-100' dari div ini agar background tidak menutupi animasi canvas.
-                Tetap menggunakan z-10 agar teks dan tombol bisa diklik.
-            -->
         <div class="font-inter min-h-screen relative z-10">
             <header class="relative overflow-hidden pt-20 pb-32 text-white">
                 <div class="absolute inset-0 bg-gradient-to-br from-green-800 via-teal-600 to-emerald-500 opacity-95 z-0">
