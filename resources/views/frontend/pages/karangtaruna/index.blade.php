@@ -140,13 +140,15 @@
         <!-- GALERI -->
         <section class="py-24 bg-white">
             <div class="max-w-7xl mx-auto px-6">
-                <div class="flex justify-between items-end mb-12">
+                {{-- FIX: Layout diubah menjadi flex-col pada mobile agar tombol turun ke bawah --}}
+                <div class="flex flex-col md:flex-row justify-between md:items-end mb-12">
                     <div data-aos="fade-right">
                         <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Dokumentasi</h2>
                         <p class="text-gray-500 mt-2">Momen kebersamaan kami</p>
                     </div>
+                    {{-- FIX: Menghapus class 'hidden' dan menambahkan 'mt-4 md:mt-0' untuk margin mobile --}}
                     <a data-aos="fade-left" href="/galeri"
-                        class="hidden md:inline-flex items-center text-emerald-600 font-semibold hover:text-emerald-800 transition">
+                        class="inline-flex mt-4 md:mt-0 items-center text-emerald-600 font-semibold hover:text-emerald-800 transition">
                         Lihat Semua <span class="ml-2">&rarr;</span>
                     </a>
                 </div>
