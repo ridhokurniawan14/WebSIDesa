@@ -18,8 +18,6 @@
         <nav class="hidden md:flex items-center gap-5 text-white font-semibold">
 
             <!-- HOME / BERANDA -->
-            <!-- LOGIKA: Cek jika URL adalah '/' -->
-            <!-- PERBAIKAN: Hapus 'text-yellow-400' agar hanya garis bawah yang muncul -->
             <a href="/"
                 class="mantine-font-size-lg relative py-1 hover-underline {{ request()->is('/') ? 'menu-active' : '' }}">
                 Beranda

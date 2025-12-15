@@ -1,4 +1,14 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+/* Mundur 2 folder (css -> resources -> root) untuk cari config */
+@config "../../tailwind.config.js"; 
+
+@layer base {
+    *, ::before, ::after {
+        transition-property: background-color, border-color, color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
+    }
+}
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';

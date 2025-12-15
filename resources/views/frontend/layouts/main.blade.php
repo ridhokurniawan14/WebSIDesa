@@ -20,7 +20,7 @@
 
     @include('frontend.layouts.partials.wa')
 
-    @vite('resources/js/app.js')
+    {{-- @vite('resources/js/app.js') --}}
 
     @yield('scripts')
 
