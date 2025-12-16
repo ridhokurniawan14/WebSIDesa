@@ -154,7 +154,7 @@
 
             // 2. Greeting Waktu + Nama
             const t2 = setTimeout(() => {
-                updateText(`${greeting}, <span class="user-highlight">${userName}</span>`);
+                updateText(`${greeting}, <span class="user-highlight">${userName}</span>...`);
             }, 2000);
             animationTimeouts.push(t2);
 

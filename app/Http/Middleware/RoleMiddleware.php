@@ -3,18 +3,26 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
 {
     public function handle($request, Closure $next, ...$roles)
     {
-        if (!Auth::check() || !in_array(Auth::user()->role, $roles)) {
+        // belum login? langsung 403
+        if (!Auth::check()) {
             abort(403);
         }
 
-        return $next($request);
+        $user = Auth::user();
+
+        // cek role user
+        foreach ($roles as $role) {
+            if ($user->hasRole($role)) {
+                return $next($request);
+            }
+        }
+
+        abort(403);
     }
 }

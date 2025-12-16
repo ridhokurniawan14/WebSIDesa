@@ -1,7 +1,11 @@
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('adminLayout', () => ({
-            sidebarOpen: true,
+            // GANTI DISINI:
+            // Jika layar >= 1024px (Laptop) -> True (Buka)
+            // Jika layar < 1024px (HP) -> False (Tutup)
+            sidebarOpen: window.innerWidth >= 1024,
+
             // Default ke 'system' kalau tidak ada di storage
             theme: localStorage.getItem('theme') || 'system',
 
@@ -10,8 +14,6 @@
                 this.applyTheme();
 
                 // LISTENER SAKTI:
-                // Ini bikin web otomatis berubah kalau user ganti settingan laptopnya (misal dari siang ke malam)
-                // Tapi hanya aktif kalau modenya sedang 'system'
                 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
                     if (this.theme === 'system') {
                         if (e.matches) {
@@ -28,9 +30,9 @@
 
                 // Logic Penyimpanan:
                 if (val === 'system') {
-                    localStorage.removeItem('theme'); // Hapus paksaan user, kembali ke default
+                    localStorage.removeItem('theme');
                 } else {
-                    localStorage.setItem('theme', val); // Simpan pilihan user (dark/light)
+                    localStorage.setItem('theme', val);
                 }
 
                 this.applyTheme();

@@ -46,4 +46,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    // RELASI RBAC
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    // HELPER supaya cek role mudah
+    public function hasRole(string $role): bool
+    {
+        return $this->roles()->where('name', $role)->exists();
+    }
 }

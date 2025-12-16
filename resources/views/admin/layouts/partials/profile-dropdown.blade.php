@@ -1,12 +1,23 @@
 {{-- Profile Dropdown --}}
 <div class="relative" x-data="{ dropdownOpen: false }">
     <button @click="dropdownOpen = !dropdownOpen" @click.outside="dropdownOpen = false"
-        class="flex items-center gap-2 focus:outline-none">
-        <img src="https://ui-avatars.com/api/?name=Ridho+Kurniawan&background=10b981&color=fff" alt="User"
-            class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600">
-        <div class="hidden md:block text-left">
-            <p class="text-sm font-semibold text-gray-700 dark:text-gray-200">Ridho K.</p>
+        class="flex items-center gap-2 focus:outline-none text-left">
+
+        {{-- AVATAR DINAMIS --}}
+        <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=10b981&color=fff"
+            alt="{{ auth()->user()->name }}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600">
+
+        <div class="hidden md:block">
+            {{-- NAMA USER DINAMIS (Top Bar) --}}
+            <p class="text-sm font-semibold text-gray-700 dark:text-gray-200">
+                {{ explode(' ', auth()->user()->name)[0] }}
+            </p>
+            {{-- ROLE USER DINAMIS (Top Bar - Opsional, ditampilkan kecil di bawah nama) --}}
+            <p class="text-xs text-gray-500 dark:text-gray-400 capitalize">
+                {{ auth()->user()->roles->pluck('name')->implode(', ') ?? 'User' }}
+            </p>
         </div>
+
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
             stroke="currentColor" class="w-4 h-4 text-gray-500 transition-transform"
             :class="dropdownOpen ? 'rotate-180' : ''">
@@ -14,7 +25,7 @@
         </svg>
     </button>
 
-    {{-- DROPDOWN MENU DENGAN ICON --}}
+    {{-- DROPDOWN MENU --}}
     <div x-show="dropdownOpen" x-transition:enter="transition ease-out duration-100"
         x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100"
         x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100"
@@ -25,7 +36,23 @@
         {{-- User Info Header --}}
         <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
             <p class="text-xs text-gray-500 dark:text-gray-400">Signed in as</p>
-            <p class="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">ridho@desa.id
+
+            {{-- NAMA LENGKAP --}}
+            <p class="text-sm font-bold text-gray-800 dark:text-gray-200 truncate mt-1">
+                {{ auth()->user()->name }}
+            </p>
+
+            {{-- ROLE LABEL (Badge Style) --}}
+            {{-- <div class="mt-1">
+                <span
+                    class="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20 capitalize">
+                    {{ auth()->user()->roles->pluck('name')->implode(', ') ?? 'No Role' }}
+                </span>
+            </div> --}}
+
+            {{-- EMAIL --}}
+            <p class="text-xs text-gray-500 dark:text-gray-400 truncate mt-1">
+                {{ auth()->user()->email }}
             </p>
         </div>
 
