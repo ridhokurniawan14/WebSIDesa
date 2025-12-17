@@ -1,6 +1,6 @@
 @extends('admin.layouts.main')
 
-@section('title', 'Dashboard Admin')
+@section('title', 'Dashboard | Admin Panel')
 
 @section('content')
     <div class="mb-8 flex justify-between items-end">

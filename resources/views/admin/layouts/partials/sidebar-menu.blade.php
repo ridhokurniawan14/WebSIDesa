@@ -14,7 +14,7 @@
         [
             'label' => 'Profil Desa',
             'icon' =>
-                'M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75m-.75 3h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z',
+                'M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75m-.75 3h.75m-.75 3h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z',
             'url' => 'admin/profil',
             'submenu' => [
                 ['label' => 'Visi Misi', 'url' => 'admin/profil/visi-misi'],
@@ -80,32 +80,73 @@
             'submenu' => [
                 ['label' => 'Aplikasi', 'url' => 'admin/setting/aplikasi'],
                 ['label' => 'User', 'url' => 'admin/setting/user'],
+                ['label' => 'Roles', 'url' => 'admin/setting/roles'],
+                ['label' => 'Permission', 'url' => 'admin/setting/permissions'],
             ],
         ],
         [
             'label' => 'Log Activity',
             'icon' => 'M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z',
-            'url' => 'admin/log-activity',
+            'url' => 'admin/logactivity',
             'submenu' => [],
         ],
     ];
 
     $initialActiveAccordion = null;
     foreach ($menus as $menu) {
-        if (!empty($menu['submenu']) && $isActive($menu['url'])) {
-            $initialActiveAccordion = $menu['url'];
-            break;
+        if (!empty($menu['submenu'])) {
+            // Cek Parent
+            if ($isActive($menu['url'])) {
+                $initialActiveAccordion = $menu['url'];
+                break;
+            }
+            // Cek Children (Jaga-jaga jika parent URL tidak cocok secara prefix)
+            foreach ($menu['submenu'] as $sub) {
+                if (
+                    request()->is($sub['url']) ||
+                    request()->is($sub['url'] . '*') ||
+                    request()->is('*/' . $sub['url'] . '*')
+                ) {
+                    $initialActiveAccordion = $menu['url'];
+                    break 2;
+                }
+            }
         }
     }
 @endphp
 
-<div class="space-y-1" x-data="{ activeAccordion: '{{ $initialActiveAccordion }}' }">
+<div class="space-y-1" x-data="{ activeAccordion: '{{ $initialActiveAccordion }}', search: '' }">
+
+    {{-- SEARCH INPUT (Hanya muncul saat sidebar Open) --}}
+    <div class="px-3 mb-4 transition-all duration-300" x-show="sidebarOpen">
+        <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                    <path fill-rule="evenodd"
+                        d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+                        clip-rule="evenodd" />
+                </svg>
+            </span>
+            <input type="text" x-model="search" placeholder="Cari menu..."
+                class="w-full bg-gray-50 dark:bg-gray-700/50 text-gray-900 dark:text-gray-200 text-sm rounded-lg pl-9 pr-3 py-2
+                       focus:ring-2 focus:ring-emerald-500 focus:outline-none focus:bg-white dark:focus:bg-gray-700
+                       border border-gray-200 dark:border-gray-700 placeholder-gray-400 transition-colors">
+        </div>
+    </div>
+
     @foreach ($menus as $menu)
+        @php
+            $childKeywords = !empty($menu['submenu']) ? collect($menu['submenu'])->pluck('label')->implode(' ') : '';
+            $allKeywords = strtolower($menu['label'] . ' ' . $childKeywords);
+        @endphp
+
         @if (empty($menu['submenu']))
-            {{-- SINGLE MENU (Tanpa Dropdown) --}}
+            {{-- SINGLE MENU --}}
             @php $active = $isActive($menu['url']); @endphp
 
-            <div class="relative group" x-data="{ top: 0 }" @mouseenter="top = $el.getBoundingClientRect().top">
+            <div class="relative group" x-data="{ top: 0 }" @mouseenter="top = $el.getBoundingClientRect().top"
+                data-keywords="{{ $allKeywords }}"
+                x-show="search === '' || $el.dataset.keywords.includes(search.toLowerCase())">
 
                 <a href="{{ url($menu['url']) }}"
                     class="flex items-center gap-3 px-3 py-3 rounded-lg transition-colors
@@ -116,20 +157,15 @@
                         stroke="currentColor" class="w-6 h-6 flex-shrink-0">
                         <path stroke-linecap="round" stroke-linejoin="round" d="{{ $menu['icon'] }}" />
                     </svg>
-                    <span class="whitespace-nowrap font-medium transition-opacity duration-300"
-                        x-show="sidebarOpen">{{ $menu['label'] }}</span>
+                    <span class="whitespace-nowrap font-medium transition-opacity duration-300" x-show="sidebarOpen">
+                        {{ $menu['label'] }}
+                    </span>
                 </a>
 
-                {{-- 
-                    FIX HOVER BRIDGE (SINGLE):
-                    - Menggunakan 'pl-2' (padding-left) sebagai jembatan transparan.
-                    - Ikon sidebar berakhir di 80px (w-20). Menu ini mulai di 80px.
-                    - Padding 0.5rem (pl-2) membuat area hover menyatu.
-                    - Konten visual (bg-gray-800) dibungkus div di dalam.
-                --}}
-                <div x-show="!sidebarOpen" class="fixed left-[80px] pl-2 z-[9999] pointer-events-none hidden"
+                {{-- Hover Bridge (Single) --}}
+                {{-- FIX: Gunakan left-60 dan pl-8 untuk overlap dan jembatan hover yang solid --}}
+                <div x-show="!sidebarOpen" class="fixed left-[60px] pl-8 z-[9999] pointer-events-none hidden"
                     :class="!sidebarOpen ? 'group-hover:block' : ''" :style="'top: ' + (top + 10) + 'px'">
-
                     <div class="bg-gray-800 text-white text-xs rounded shadow-lg px-2 py-1 whitespace-nowrap">
                         {{ $menu['label'] }}
                     </div>
@@ -137,9 +173,26 @@
             </div>
         @else
             {{-- DROPDOWN MENU --}}
-            @php $parentActive = $isActive($menu['url']); @endphp
+            @php
+                // Parent Active Logic: Check Parent OR Any Children
+                $parentActive = $isActive($menu['url']);
+                if (!$parentActive) {
+                    foreach ($menu['submenu'] as $sub) {
+                        if (
+                            request()->is($sub['url']) ||
+                            request()->is($sub['url'] . '*') ||
+                            request()->is('*/' . $sub['url'] . '*')
+                        ) {
+                            $parentActive = true;
+                            break;
+                        }
+                    }
+                }
+            @endphp
 
-            <div class="relative group" x-data="{ top: 0 }" @mouseenter="top = $el.getBoundingClientRect().top">
+            <div class="relative group" x-data="{ top: 0 }" @mouseenter="top = $el.getBoundingClientRect().top"
+                data-keywords="{{ $allKeywords }}"
+                x-show="search === '' || $el.dataset.keywords.includes(search.toLowerCase())">
 
                 <button
                     @click="
@@ -163,17 +216,19 @@
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-4 h-4 transition-transform duration-200"
-                        :class="activeAccordion === '{{ $menu['url'] }}' ? 'rotate-180' : ''" x-show="sidebarOpen">
+                        :class="(activeAccordion === '{{ $menu['url'] }}' || (search !== '' && $el.closest(
+                            '[data-keywords]').dataset.keywords.includes(search.toLowerCase()))) ? 'rotate-180' : ''"
+                        x-show="sidebarOpen">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                     </svg>
                 </button>
 
-                {{-- Mode 1: Accordion --}}
-                <div x-show="sidebarOpen && activeAccordion === '{{ $menu['url'] }}'" x-collapse
+                <div x-show="sidebarOpen && (activeAccordion === '{{ $menu['url'] }}' || search !== '')" x-collapse
                     class="space-y-1 mt-1">
                     @foreach ($menu['submenu'] as $sub)
                         @php $subActive = request()->is($sub['url']) || request()->is('*/'.$sub['url']); @endphp
-                        <a href="{{ url($sub['url']) }}"
+                        <a href="{{ url($sub['url']) }}" data-label="{{ strtolower($sub['label']) }}"
+                            x-show="search === '' || $el.dataset.label.includes(search.toLowerCase())"
                             class="flex items-center px-3 py-2 text-sm rounded-lg transition-colors pl-11
                             {{ $subActive
                                 ? 'text-emerald-600 bg-emerald-50/50 font-medium dark:text-emerald-400 dark:bg-emerald-900/20'
@@ -186,23 +241,16 @@
                     @endforeach
                 </div>
 
-                {{-- 
-                    FIX HOVER BRIDGE (DROPDOWN):
-                    1. Container luar: 'fixed left-[80px] pl-2 w-auto'
-                       - 'pl-2' adalah area transparan (jembatan) agar mouse tidak "jatuh" saat pindah.
-                    2. Container dalam: 'bg-white ... w-48'
-                       - Ini area visual menu yang sebenarnya.
-                --}}
-                <div x-show="!sidebarOpen" class="fixed left-[80px] w-auto pl-2 z-[9999] hidden"
+                {{-- Hover Bridge (Dropdown) - Saat Sidebar Tertutup --}}
+                {{-- FIX: Gunakan left-60 dan pl-8 untuk overlap dan jembatan hover yang solid --}}
+                <div x-show="!sidebarOpen" class="fixed left-[60px] w-auto pl-8 z-[9999] hidden"
                     :class="!sidebarOpen ? 'group-hover:block' : ''" :style="'top: ' + top + 'px'">
-
                     <div
                         class="bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-100 dark:border-gray-700 py-1 w-48">
                         <div
                             class="px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-700 mb-1">
                             {{ $menu['label'] }}
                         </div>
-
                         @foreach ($menu['submenu'] as $sub)
                             @php $subActive = request()->is($sub['url']) || request()->is('*/'.$sub['url']); @endphp
                             <a href="{{ url($sub['url']) }}"
@@ -219,4 +267,9 @@
             </div>
         @endif
     @endforeach
+
+    <div x-show="search !== '' && $el.parentElement.querySelectorAll('[data-keywords]:not([style*=\'display: none\'])').length === 0"
+        class="px-4 py-4 text-center text-sm text-gray-400" style="display: none;">
+        Menu tidak ditemukan
+    </div>
 </div>

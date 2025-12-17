@@ -1,21 +1,13 @@
 <?php
 
 use App\Http\Controllers\AdminAuthController;
-use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\Frontend\{
-    AgendaController,
     BeritaController,
-    DataController,
     GaleriController,
     HomeController,
     InformasiController,
     KontakController,
-    LayananController,
-    PemerintahanController,
-    PengumumanController,
-    PotensiController,
     ProfilController,
-    SearchController,
     SitemapController,
     PosyanduController,
     LpmdController,
@@ -25,6 +17,12 @@ use App\Http\Controllers\Frontend\{
     BumdesController,
     KarangtarunaController,
     KdmpController
+};
+use App\Http\Controllers\Admin\{
+    AdminDashboardController,
+    PermissionController,
+    LogActivityController,
+    RoleController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -86,6 +84,15 @@ Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admi
 Route::middleware(['auth', 'role:superadmin,admin'])
     ->prefix('admin')
     ->group(function () {
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])
-            ->name('admin.dashboard');
+        // Dashboard
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+
+        // Permissions Management
+        Route::resource('/setting/permissions', PermissionController::class);
+        // Roles Management
+        Route::resource('/setting/roles', RoleController::class);
+
+        // Log Activity
+        Route::get('/logactivity', [LogActivityController::class, 'index'])->name('admin.logactivity');
+        Route::delete('/logactivity/prune', [LogActivityController::class, 'prune'])->name('admin.logactivity.prune');
     });

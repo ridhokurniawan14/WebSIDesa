@@ -22,6 +22,15 @@ class AdminAuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+
+            activity()
+                ->causedBy(auth()->user())
+                ->withProperties([
+                    'ip' => request()->ip(),
+                    'method' => request()->method(),
+                ])
+                ->log('Admin login');
+
             return redirect()->route('admin.dashboard')->with('just_logged_in', true);
         }
 
@@ -34,6 +43,10 @@ class AdminAuthController extends Controller
 
     public function logout(Request $request)
     {
+        activity()
+            ->causedBy(Auth::user())
+            ->log('Admin logout');
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
