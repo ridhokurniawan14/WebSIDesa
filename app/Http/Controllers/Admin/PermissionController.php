@@ -43,6 +43,13 @@ class PermissionController extends Controller
 
         Permission::create($request->only('name'));
 
+        activity()
+            ->causedBy(auth()->user())
+            ->withProperties([
+                'ip' => request()->ip(),
+                'method' => request()->method(),
+            ])
+            ->log('User menambahkan permission baru: ' . $request->name);
 
         return redirect()->route('permissions.index')
             ->with('success', 'Permission berhasil ditambahkan');
@@ -61,9 +68,15 @@ class PermissionController extends Controller
             'name' => 'required|string|unique:permissions,name,' . $permission->id
         ]);
 
+        activity()
+            ->causedBy(auth()->user())
+            ->withProperties([
+                'ip' => request()->ip(),
+                'method' => request()->method(),
+            ])
+            ->log('User mengubah permission dari ' . $permission->name . ' menjadi ' . $request->name);
 
         $permission->update($request->only('name'));
-
 
         return redirect()->route('permissions.index')
             ->with('success', 'Permission berhasil diperbarui');
@@ -73,7 +86,16 @@ class PermissionController extends Controller
     public function destroy(Permission $permission)
     {
         $permission->delete();
+        $deleted = 1;
 
+        activity()
+            ->causedBy(auth()->user())
+            ->withProperties([
+                'deleted_count' => $deleted,
+                'method' => request()->method(),
+                'ip' => request()->ip(),
+            ])
+            ->log('Menghapus permission: ' . $permission->name);
 
         return back()->with('success', 'Permission berhasil dihapus');
     }

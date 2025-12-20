@@ -22,7 +22,13 @@ use App\Http\Controllers\Admin\{
     AdminDashboardController,
     PermissionController,
     LogActivityController,
-    RoleController
+    RoleController,
+    UserController,
+    AplikasiController,
+    PesanController,
+    GaleriAdminController,
+    ApbdesController,
+    PembangunanController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -81,18 +87,30 @@ Route::post('/admin/login', [AdminAuthController::class, 'authenticate'])->name(
 Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
 // Admin Page
-Route::middleware(['auth', 'role:superadmin,admin'])
+Route::middleware(['auth'])
     ->prefix('admin')
     ->group(function () {
-        // Dashboard
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+        // dashboard
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard')->middleware('permission:dashboard.view');
 
-        // Permissions Management
-        Route::resource('/setting/permissions', PermissionController::class);
-        // Roles Management
-        Route::resource('/setting/roles', RoleController::class);
+        // Transparansi Management
+        Route::resource('/transparansi/apbdes', ApbdesController::class)->middleware('permission:apbdes.view');
+        Route::resource('/transparansi/pembangunan', PembangunanController::class)->middleware('permission:pembangunan.view');
+
+        // Galeri Management
+        Route::resource('admin/galeri', GaleriAdminController::class, ['as' => 'admin'])->middleware('permission:galeri.view');
+
+        // Pesan Management
+        Route::resource('/pesan', PesanController::class)->middleware('permission:pesan.view');
+        Route::delete('/pesan-hapus-semua', [PesanController::class, 'destroyAll'])->middleware('permission:pesan.delete')->name('pesan.destroyAll');
+
+        // Setting Management
+        Route::resource('/setting/aplikasi', AplikasiController::class)->middleware('permission:aplikasi.view');
+        Route::resource('/setting/user', UserController::class)->middleware('permission:user.view');
+        Route::resource('/setting/roles', RoleController::class)->middleware('permission:roles.view');
+        Route::resource('/setting/permissions', PermissionController::class)->middleware('permission:permissions.view');
 
         // Log Activity
-        Route::get('/logactivity', [LogActivityController::class, 'index'])->name('admin.logactivity');
-        Route::delete('/logactivity/prune', [LogActivityController::class, 'prune'])->name('admin.logactivity.prune');
+        Route::get('/logactivity', [LogActivityController::class, 'index'])->name('admin.logactivity')->middleware('permission:logactivity.view');
+        Route::delete('/logactivity/prune', [LogActivityController::class, 'prune'])->name('admin.logactivity.prune')->middleware('permission:logactivity.view');
     });

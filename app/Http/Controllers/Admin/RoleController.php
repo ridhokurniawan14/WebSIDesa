@@ -55,6 +55,14 @@ class RoleController extends Controller
             $role->permissions()->sync($request->permissions);
         }
 
+        activity()
+            ->causedBy(auth()->user())
+            ->withProperties([
+                'ip' => request()->ip(),
+                'method' => request()->method(),
+            ])
+            ->log('User menambahkan role baru: ' . $request->name);
+
         return redirect()->route('roles.index')->with('success', 'Role berhasil ditambahkan');
     }
 
@@ -64,6 +72,14 @@ class RoleController extends Controller
             'name' => 'required|string|unique:roles,name,' . $role->id,
             'permissions' => 'array'
         ]);
+
+        activity()
+            ->causedBy(auth()->user())
+            ->withProperties([
+                'ip' => request()->ip(),
+                'method' => request()->method(),
+            ])
+            ->log('User mengubah role dari ' . $role->name . ' menjadi ' . $request->name);
 
         $role->update(['name' => $request->name]);
         $role->permissions()->sync($request->permissions ?? []);
@@ -75,6 +91,17 @@ class RoleController extends Controller
     {
         $role->permissions()->detach();
         $role->delete();
+        $deleted = 1;
+
+        activity()
+            ->causedBy(auth()->user())
+            ->withProperties([
+                'deleted_count' => $deleted,
+                'method' => request()->method(),
+                'ip' => request()->ip(),
+            ])
+            ->log('Menghapus role: ' . $role->name);
+
         return back()->with('success', 'Role berhasil dihapus');
     }
 }

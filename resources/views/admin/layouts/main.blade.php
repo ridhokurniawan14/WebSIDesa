@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 @include('admin.layouts.partials.head')
 
 {{-- GLOBAL TOAST NOTIFICATION --}}
@@ -52,7 +53,8 @@
     </div>
 </div>
 
-<body class="antialiased transition-colors duration-300" x-data="adminLayout" x-init="initTheme()">
+<body class="antialiased" x-data="adminLayout">
+    <!-- Hilangkan initTheme() dari x-init body karena sudah ditangani script di head -->
 
     <div
         class="flex h-screen bg-white text-gray-800 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">

@@ -12,16 +12,23 @@ class LogActivityController extends Controller
     public function index(Request $request)
     {
         $logs = Activity::with('causer')
+            // Filter Search
             ->when($request->q, function ($query) use ($request) {
-                $query->where('description', 'like', "%{$request->q}%")
-                    ->orWhere('subject_type', 'like', "%{$request->q}%");
+                $query->where(function ($q) use ($request) {
+                    $q->where('description', 'like', "%{$request->q}%")
+                        ->orWhere('subject_type', 'like', "%{$request->q}%")
+                        ->orWhereHas('causer', function ($subQ) use ($request) {
+                            $subQ->where('name', 'like', "%{$request->q}%");
+                        });
+                });
             })
+            // Filter Method (FIX: Pakai arrow syntax untuk JSON path)
             ->when($request->method, function ($query) use ($request) {
-                $query->whereJsonContains('properties->method', strtoupper($request->method));
+                $query->where('properties->method', strtoupper($request->method));
             })
             ->latest()
             ->paginate(10)
-            ->withQueryString() // ⬅️ PENTING
+            ->withQueryString()
             ->onEachSide(0);
 
         return view('admin.pages.logactivity.index', compact('logs'));
