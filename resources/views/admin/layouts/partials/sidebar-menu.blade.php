@@ -1,6 +1,7 @@
 @php
+    // FIX: Logic Active menggunakan Wildcard (*) agar submenu (create/edit) tetap dianggap aktif
     $isActive = function ($path) {
-        return request()->is($path . '*') || request()->is('*/' . $path . '*');
+        return request()->is($path) || request()->is($path . '/*');
     };
 
     $menus = [
@@ -32,11 +33,7 @@
             'url' => 'admin/informasi',
             'permission' => 'informasi.view',
             'submenu' => [
-                [
-                    'label' => 'Syarat Administrasi',
-                    'url' => 'admin/informasi/syarat',
-                    'permission' => 'syarat.view',
-                ],
+                ['label' => 'Syarat Administrasi', 'url' => 'admin/informasi/syarat', 'permission' => 'syarat.view'],
                 ['label' => 'Berita', 'url' => 'admin/informasi/berita', 'permission' => 'berita.view'],
                 ['label' => 'Produk Hukum', 'url' => 'admin/informasi/hukum', 'permission' => 'produk-hukum.view'],
             ],
@@ -113,18 +110,27 @@
         ],
     ];
 
+    // FIX: Update logic initial active agar parent terbuka jika salah satu child aktif
     $initialActiveAccordion = null;
     foreach ($menus as $menu) {
-        if (!empty($menu['submenu']) && $isActive($menu['url'])) {
-            $initialActiveAccordion = $menu['url'];
-            break;
+        if (!empty($menu['submenu'])) {
+            foreach ($menu['submenu'] as $sub) {
+                // Cek apakah URL child aktif (termasuk sub-path seperti /create, /edit)
+                if ($isActive($sub['url'])) {
+                    $initialActiveAccordion = $menu['url']; // Set parent ini sebagai aktif
+                    break 2; // Keluar dari kedua loop
+                }
+            }
+        } elseif ($isActive($menu['url'])) {
+            // Untuk menu tanpa submenu
+            // (opsional, biasanya accordion hanya untuk menu yg punya submenu)
         }
     }
 @endphp
 
 <div class="space-y-1" x-data="{ activeAccordion: '{{ $initialActiveAccordion }}', search: '' }">
 
-    {{-- SEARCH INPUT (Hanya muncul saat sidebar Open) --}}
+    {{-- SEARCH INPUT --}}
     <div class="px-3 mb-4 transition-all duration-300" x-show="sidebarOpen">
         <div class="relative">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
@@ -171,7 +177,6 @@
                     </a>
 
                     {{-- Hover Bridge (Single) --}}
-                    {{-- FIX: Gunakan left-60 dan pl-8 untuk overlap dan jembatan hover yang solid --}}
                     <div x-show="!sidebarOpen" class="fixed left-[60px] pl-8 z-[9999] pointer-events-none hidden"
                         :class="!sidebarOpen ? 'group-hover:block' : ''" :style="'top: ' + (top + 10) + 'px'">
                         <div class="bg-gray-800 text-white text-xs rounded shadow-lg px-2 py-1 whitespace-nowrap">
@@ -183,7 +188,17 @@
         @else
             {{-- DROPDOWN MENU --}}
             @can($menu['permission'])
-                @php $parentActive = $isActive($menu['url']); @endphp
+                {{-- FIX: Cek apakah Parent aktif berdasarkan Child-nya --}}
+                @php
+                    $parentActive = false;
+                    foreach ($menu['submenu'] as $sub) {
+                        if ($isActive($sub['url'])) {
+                            $parentActive = true;
+                            break;
+                        }
+                    }
+                @endphp
+
                 <div class="relative group" x-data="{ top: 0 }" @mouseenter="top = $el.getBoundingClientRect().top"
                     data-keywords="{{ $allKeywords }}"
                     x-show="search === '' || $el.dataset.keywords.includes(search.toLowerCase())">
@@ -221,7 +236,8 @@
                         class="space-y-1 mt-1">
                         @foreach ($menu['submenu'] as $sub)
                             @can($sub['permission'])
-                                @php $subActive = request()->is($sub['url']) || request()->is('*/'.$sub['url']); @endphp
+                                {{-- FIX: Active State untuk Submenu --}}
+                                @php $subActive = $isActive($sub['url']); @endphp
                                 <a href="{{ url($sub['url']) }}" data-label="{{ strtolower($sub['label']) }}"
                                     x-show="search === '' || $el.dataset.label.includes(search.toLowerCase())"
                                     class="flex items-center px-3 py-2 text-sm rounded-lg transition-colors pl-11
@@ -237,8 +253,7 @@
                         @endforeach
                     </div>
 
-                    {{-- Hover Bridge (Dropdown) - Saat Sidebar Tertutup --}}
-                    {{-- FIX: Gunakan left-60 dan pl-8 untuk overlap dan jembatan hover yang solid --}}
+                    {{-- Hover Bridge (Dropdown) --}}
                     <div x-show="!sidebarOpen" class="fixed left-[60px] w-auto pl-8 z-[9999] hidden"
                         :class="!sidebarOpen ? 'group-hover:block' : ''" :style="'top: ' + top + 'px'">
                         <div
@@ -249,7 +264,7 @@
                             </div>
                             @foreach ($menu['submenu'] as $sub)
                                 @can($sub['permission'])
-                                    @php $subActive = request()->is($sub['url']) || request()->is('*/'.$sub['url']); @endphp
+                                    @php $subActive = $isActive($sub['url']); @endphp
                                     <a href="{{ url($sub['url']) }}"
                                         class="block px-4 py-2 text-sm transition-colors
                                 {{ $subActive

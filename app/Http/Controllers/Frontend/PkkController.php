@@ -40,6 +40,9 @@ class PkkController extends Controller
             'Perencanaan Sehat'
         ];
 
+        // tambah upload gambar ilustrasi kegiatan PKK
+        // tambah nama ketua dan nomor hp WA kontak
+
         return view('frontend.pages.pkk.index', compact('pengurus', 'kegiatan', 'program_pokok'));
     }
 }

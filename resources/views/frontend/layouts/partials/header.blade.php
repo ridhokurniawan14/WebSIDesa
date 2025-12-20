@@ -112,8 +112,8 @@
                                         class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-50 relative hover-underline-dark {{ request()->is('karang-taruna') ? 'text-yellow-600 font-bold' : '' }}">Karang
                                         Taruna</a>
                                     <a href="/koperasi-desa-merah-putih"
-                                        class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-50 relative hover-underline-dark {{ request()->is('koperasi-desa-merah-putih') ? 'text-yellow-600 font-bold' : '' }}">Koperasi
-                                        Desa</a>
+                                        class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-50 relative hover-underline-dark {{ request()->is('koperasi-desa-merah-putih') ? 'text-yellow-600 font-bold' : '' }}">KDMP
+                                        Kembiritan</a>
                                 </div>
                             </div>
                         </div>
@@ -350,7 +350,7 @@
                             </a>
                             <a href="/koperasi-desa-merah-putih"
                                 class="flex items-center gap-2 py-1 opacity-90 hover:opacity-100 {{ request()->is('koperasi-desa-merah-putih') ? 'text-yellow-400 font-bold' : '' }}">
-                                <span class="w-1.5 h-1.5 bg-green-300 rounded-full"></span> Koperasi Desa
+                                <span class="w-1.5 h-1.5 bg-green-300 rounded-full"></span> KDMP Kembiritan
                             </a>
                         </div>
                     </div>

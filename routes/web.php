@@ -28,7 +28,10 @@ use App\Http\Controllers\Admin\{
     PesanController,
     GaleriAdminController,
     ApbdesController,
-    PembangunanController
+    PembangunanController,
+    LpmdAdminController,
+    PosyanduAdminController,
+    PkkAdminController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -92,6 +95,14 @@ Route::middleware(['auth'])
     ->group(function () {
         // dashboard
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard')->middleware('permission:dashboard.view');
+
+        // Lembaga Mitra Desa Management
+        Route::resource('/lembaga/lpmd', LpmdAdminController::class)->names('admin.lpmd')->middleware('permission:lpmd.view');
+        Route::resource('/lembaga/posyandu', PosyanduAdminController::class)->names('admin.posyandu')->middleware('permission:posyandu.view');
+        Route::resource('/lembaga/pkk', PkkAdminController::class)->names('admin.pkk')->middleware('permission:pkk.view');
+        // Route::resource('/lembaga/bumdes', BumdesAdminController::class)->middleware('permission:bumdes.view');
+        // Route::resource('/lembaga/karang-taruna', KarangTarunaAdminController::class)->middleware('permission:karang-taruna.view');
+        // Route::resource('/lembaga/koperasi', KoperasiAdminController::class)->middleware('permission:koperasi.view');
 
         // Transparansi Management
         Route::resource('/transparansi/apbdes', ApbdesController::class)->middleware('permission:apbdes.view');

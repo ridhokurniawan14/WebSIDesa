@@ -29,19 +29,21 @@ class LpmdController extends Controller
                 'Menampung dan menyalurkan aspirasi masyarakat',
                 'Mendorong partisipasi masyarakat dalam pembangunan',
                 'Melaksanakan kegiatan pemberdayaan masyarakat',
+                'Melaksanakan kegiatan pemberdayaan masyarakat',
+                'Melaksanakan kegiatan pemberdayaan masyarakat',
                 'Melakukan pengawasan terhadap pelaksanaan pembangunan desa',
             ],
 
             'struktur' => [
                 'gambar' => '/frontend/images/lpmd/struktur-lpmd.png',
                 'ketua' => 'Nama Ketua',
-                'wakil' => 'Nama Wakil Ketua',
                 'sekretaris' => 'Nama Sekretaris',
                 'bendahara' => 'Nama Bendahara',
                 'bidang' => [
-                    'Bidang Pembangunan' => 'Nama Penanggung Jawab',
-                    'Bidang Pemberdayaan' => 'Nama Penanggung Jawab',
-                    'Bidang Sosial Kemasyarakatan' => 'Nama Penanggung Jawab',
+                    'Bidang Keagamaan' => 'Nama Penanggung Jawab',
+                    'Bidang Pembangunan dan Lingkungan Hidup' => 'Nama Penanggung Jawab',
+                    'Bidang Ekonomi, Sosial, dan Budaya' => 'Nama Penanggung Jawab',
+                    'Bidang Pendidikan, Pemuda dan Olahraga' => 'Nama Penanggung Jawab',
                 ]
             ],
 
