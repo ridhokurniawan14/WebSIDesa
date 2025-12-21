@@ -14,6 +14,14 @@
             'submenu' => [],
         ],
         [
+            'label' => 'Beranda',
+            'icon' =>
+                'M2.25 12l8.25-8.25 8.25 8.25v7.5a1.5 1.5 0 01-1.5 1.5h-4.5v-6h-4.5v6H3.75a1.5 1.5 0 01-1.5-1.5v-7.5z',
+            'url' => 'admin/beranda',
+            'permission' => 'beranda.view',
+            'submenu' => [],
+        ],
+        [
             'label' => 'Profil Desa',
             'icon' =>
                 'M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75m-.75 3h.75m-.75 3h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z',
@@ -33,8 +41,8 @@
             'url' => 'admin/informasi',
             'permission' => 'informasi.view',
             'submenu' => [
-                ['label' => 'Syarat Administrasi', 'url' => 'admin/informasi/syarat', 'permission' => 'syarat.view'],
-                ['label' => 'Berita', 'url' => 'admin/informasi/berita', 'permission' => 'berita.view'],
+                ['label' => 'Syarat Administrasi', 'url' => 'admin/administrasi', 'permission' => 'syarat.view'],
+                ['label' => 'Berita', 'url' => 'admin/berita', 'permission' => 'berita.view'],
                 ['label' => 'Produk Hukum', 'url' => 'admin/informasi/hukum', 'permission' => 'produk-hukum.view'],
             ],
         ],
