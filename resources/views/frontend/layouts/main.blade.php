@@ -44,7 +44,7 @@
         });
 
         // === CONFIG SCRIPT WA ===
-        const waNumber = "6281234567890"; // GANTI NOMOR DI SINI
+        const waNumber = "{{ $aplikasi->wa_cs }}"; // GANTI NOMOR DI SINI
 
         const body = document.getElementById('body-content');
         const modal = document.getElementById('waModal');

@@ -60,7 +60,7 @@
     <div data-aos="fade-in" data-aos-delay="100" class="absolute inset-0 bg-black/40 flex items-center">
         <div class="max-w-7xl mx-auto px-4 text-white">
             <h1 class="text-4xl md:text-5xl font-bold mb-3 text-shadow-lg">
-                Selamat Datang di Website <span class="subtle-underline">Desa Kembiritan</span>
+                Selamat Datang di Website <span class="subtle-underline">{{ $aplikasi->nama_desa }}</span>
             </h1>
             <p class="text-lg md:text-xl max-w-2xl text-shadow-md">
                 Wujudkan Desa Digital yang Transparan. Akses informasi, anggaran, dan layanan publik secara terbuka,

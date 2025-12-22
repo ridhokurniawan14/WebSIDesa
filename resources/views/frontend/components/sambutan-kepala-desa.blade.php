@@ -35,7 +35,8 @@
                 <!-- Foto -->
                 <div class="flex justify-center mb-8 md:mb-0">
                     <div class="relative w-48 h-48 sm:w-56 sm:h-56">
-                        <img src="https://ridhokurniawan.my.id/img/rk3.webp" alt="Kepala Desa"
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/%D0%92%D0%BB%D0%B0%D0%B4%D0%B8%D0%BC%D0%B8%D1%80_%D0%9F%D1%83%D1%82%D0%B8%D0%BD_%2808-03-2024%29_%28cropped%29_%28higher_res%29.jpg"
+                            alt="Kepala Desa"
                             class="w-full h-full object-cover rounded-full shadow-2xl 
                             ring-4 ring-green-500 ring-offset-4 ring-offset-white">
                     </div>
@@ -52,8 +53,8 @@
                     </p>
 
                     <div class="pt-4 border-t border-gray-200 text-right">
-                        <p class="text-xl font-bold text-green-600">[Nama Kepala Desa]</p>
-                        <p class="text-sm text-gray-500">Kepala Desa [Nama Desa] • Periode 2023–2029</p>
+                        <p class="text-xl font-bold text-green-600">Nama Kepala Desa</p>
+                        <p class="text-sm text-gray-500">Kepala {{ $aplikasi->nama_desa }} • Periode 2023–2029</p>
                     </div>
                 </div>
 

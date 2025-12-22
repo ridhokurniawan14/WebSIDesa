@@ -28,10 +28,10 @@
             'url' => 'admin/profil',
             'permission' => 'profil.view',
             'submenu' => [
-                ['label' => 'Visi Misi', 'url' => 'admin/profil/visi-misi', 'permission' => 'visi-misi.view'],
-                ['label' => 'Sejarah Desa', 'url' => 'admin/profil/sejarah', 'permission' => 'sejarah.view'],
-                ['label' => 'Perangkat Desa', 'url' => 'admin/profil/perangkat', 'permission' => 'perangkat.view'],
-                ['label' => 'Peta Desa', 'url' => 'admin/profil/peta', 'permission' => 'peta.view'],
+                ['label' => 'Visi Misi', 'url' => 'admin/visi-misi', 'permission' => 'visi-misi.view'],
+                ['label' => 'Sejarah Desa', 'url' => 'admin/sejarah', 'permission' => 'sejarah.view'],
+                ['label' => 'Perangkat Desa', 'url' => 'admin/perangkat', 'permission' => 'perangkat.view'],
+                ['label' => 'Peta Desa', 'url' => 'admin/petadesa', 'permission' => 'peta.view'],
             ],
         ],
         [
@@ -43,7 +43,7 @@
             'submenu' => [
                 ['label' => 'Syarat Administrasi', 'url' => 'admin/administrasi', 'permission' => 'syarat.view'],
                 ['label' => 'Berita', 'url' => 'admin/berita', 'permission' => 'berita.view'],
-                ['label' => 'Produk Hukum', 'url' => 'admin/informasi/hukum', 'permission' => 'produk-hukum.view'],
+                ['label' => 'Produk Hukum', 'url' => 'admin/produk', 'permission' => 'produk-hukum.view'],
             ],
         ],
         [

@@ -20,6 +20,7 @@ class Berita extends Model
         'thumbnail',
         'excerpt',
         'content',
+        'views'
     ];
 
     // Mengubah tipe data 'date' menjadi instance Carbon

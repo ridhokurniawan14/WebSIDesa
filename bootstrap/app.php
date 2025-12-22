@@ -3,6 +3,7 @@
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\PermissionMiddleware;
 use App\Http\Middleware\RoleMiddleware;
+use App\Http\Middleware\TrackVisitor;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth' => Authenticate::class,
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,
+            'track.visitor' => TrackVisitor::class,
         ]);
     })
     ->withProviders([

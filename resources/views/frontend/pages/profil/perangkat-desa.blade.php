@@ -141,9 +141,9 @@
                 @php
                     $staff = [
                         [
-                            'nama' => 'Ridho Ganteng',
+                            'nama' => 'Supriyanto',
                             'jabatan' => 'Kepala Desa',
-                            'foto' => 'https://ridhokurniawan.my.id/img/rk3.webp',
+                            'foto' => 'https://upload.wikimedia.org/wikipedia/commons/d/d4/Kim_Jong-Un_Photorealistic-Sketch.jpg',
                         ],
                         [
                             'nama' => 'Nama Pegawai 1',

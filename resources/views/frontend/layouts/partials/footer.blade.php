@@ -25,22 +25,26 @@
             <!-- BRAND -->
             <div>
                 <h3 class="text-2xl font-extrabold text-white mb-4 border-b border-gray-700 pb-2 tracking-wider">
-                    DESA KITA
+                    {{ strtoupper($aplikasi->nama_desa) }}
                 </h3>
 
                 <p class="text-sm leading-relaxed mb-6">
-                    Website resmi informasi pelayanan dan publikasi Desa Cipta Makmur. Melayani dengan integritas.
+                    {{ $aplikasi->footer }}
                 </p>
 
                 <h4 class="text-lg font-semibold text-white mb-3">📲 Sosial Media</h4>
                 <div class="flex space-x-5">
-                    <a href="#" class="text-gray-500 hover:text-green-500 transition duration-300"><i
+                    <a href="{{ $aplikasi->facebook }}" target="_blank"
+                        class="text-gray-500 hover:text-green-500 transition duration-300"><i
                             class="bi bi-facebook text-2xl"></i></a>
-                    <a href="#" class="text-gray-500 hover:text-green-500 transition duration-300"><i
+                    <a href="{{ $aplikasi->instagram }}" target="_blank"
+                        class="text-gray-500 hover:text-green-500 transition duration-300"><i
                             class="bi bi-instagram text-2xl"></i></a>
-                    <a href="#" class="text-gray-500 hover:text-green-500 transition duration-300"><i
+                    <a href="{{ $aplikasi->youtube }}" target="_blank"
+                        class="text-gray-500 hover:text-green-500 transition duration-300"><i
                             class="bi bi-youtube text-2xl"></i></a>
-                    <a href="#" class="text-gray-500 hover:text-green-500 transition duration-300"><i
+                    <a href="http://wa.me/+{{ $aplikasi->wa_cs }}" target="_blank"
+                        class="text-gray-500 hover:text-green-500 transition duration-300"><i
                             class="bi bi-whatsapp text-2xl"></i></a>
                 </div>
             </div>
@@ -50,18 +54,18 @@
                 <h3 class="text-lg font-bold text-white mb-4 border-b border-gray-700 pb-2">📍 Alamat Kantor</h3>
                 <address class="text-sm not-italic space-y-2">
                     <p>
-                        <strong>Kantor Kepala Desa Cipta Makmur</strong><br>
-                        Jl. Swadaya No. 10, RT 01 RW 02<br>
-                        Kecamatan Makmur Jaya, [Nama Kabupaten]<br>
+                        <strong>{{ $aplikasi->nama_kantor }}</strong><br>
+                        {{ $aplikasi->alamat }}<br>
                     </p>
                     <p>
                         <i class="bi bi-telephone-fill mr-2 text-green-500"></i>
-                        Telp: <a href="tel:081234567890" class="hover:text-white">0812-3456-7890</a>
+                        Telp: <a target="_blank" href="tel:{{ $aplikasi->telepon }}"
+                            class="hover:text-white">{{ $aplikasi->telepon }}</a>
                     </p>
                     <p>
                         <i class="bi bi-envelope-fill mr-2 text-green-500"></i>
-                        Email: <a href="mailto:desaciptamakmur@email.go.id"
-                            class="hover:text-white">desaciptamakmur@email.go.id</a>
+                        Email: <a href="mailto:{{ $aplikasi->email }}"
+                            class="hover:text-white">{{ $aplikasi->email }}</a>
                     </p>
                 </address>
             </div>
@@ -69,12 +73,21 @@
             <!-- MAP -->
             <div>
                 <h3 class="text-lg font-bold text-white mb-4 border-b border-gray-700 pb-2">🗺️ Peta Lokasi</h3>
-                <div class="rounded-lg overflow-hidden shadow-2xl">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4857.084405882541!2d114.18541967589385!3d-8.367703684351222!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd15562ff3a6b3f%3A0x3b0181738285d4bc!2sBalai%20desa%20kembiritan!5e1!3m2!1sid!2sid!4v1763930591999!5m2!1sid!2sid"
-                        width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
+                @if (!empty($aplikasi->map))
+                    @php
+                        preg_match('/src="([^"]+)"/', $aplikasi->map, $match);
+                        $mapSrc = $match[1] ?? null;
+                    @endphp
+
+                    @if ($mapSrc)
+                        <div class="rounded-lg overflow-hidden shadow-2xl">
+                            <iframe src="{{ $mapSrc }}" class="w-full h-[250px] border-0" allowfullscreen
+                                loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
+                    @endif
+                @endif
+
                 <p class="mt-2 text-xs text-white">Klik peta untuk menuju Google Maps.</p>
             </div>
 
@@ -84,12 +97,12 @@
         <div data-aos="fade-up" data-aos-delay="100" data-aos-offset="0"
             class="text-center border-t border-gray-800 mt-12 pt-6 text-sm">
             <p class="mb-2">
-                © 2025 Desa Cipta Makmur. Semua Hak Dilindungi.
+                © {{ date('Y') }} {{ $aplikasi->nama_desa }}. Semua Hak Dilindungi.
             </p>
             <p class="text-xs text-gray-500 hover:text-green-500 transition duration-300">
                 Dibuat dengan <i class="bi bi-heart-fill text-red-500 mx-1"></i> oleh
                 <a href="https://ridhokurniawan.my.id" target="_blank" class="font-medium hover:text-white">
-                    Ridho Kurniawan
+                    Tim {{ $aplikasi->nama_desa }}
                 </a>
             </p>
         </div>

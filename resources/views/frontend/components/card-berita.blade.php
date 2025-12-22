@@ -103,7 +103,7 @@
 
     <!-- Tombol Lihat Lebih Banyak diubah ke green-700 -->
     <div data-aos="flip-up" data-aos-delay="100" class="mt-12 text-center">
-        <a href="/semua-berita.html"
+        <a href="/berita"
             class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600 transition duration-150 ease-in-out">
             Lihat Berita Lainnya
             <!-- Icon panah kanan dari Lucide Icons (sebagai pengganti SVG Tailwind) -->

@@ -39,11 +39,20 @@
 
         {{-- SECTION 1: Peta Full Width --}}
         <div data-aos="fade" class="w-full h-[450px] relative z-0">
-            <iframe
-                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d19428.337358401794!2d114.187995!3d-8.367709!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd15562ff3a6b3f%3A0x3b0181738285d4bc!2sBalai%20desa%20kembiritan!5e1!3m2!1sid!2sid!4v1765549952054!5m2!1sid!2sid"
-                class="w-full h-full border-0 grayscale hover:grayscale-0 transition duration-700" allowfullscreen=""
-                loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
+            @if (!empty($aplikasi->map))
+                @php
+                    preg_match('/src="([^"]+)"/', $aplikasi->map, $match);
+                    $mapSrc = $match[1] ?? null;
+                @endphp
+
+                @if ($mapSrc)
+                    <iframe src="{{ $mapSrc }}"
+                        class="w-full h-full border-0 grayscale hover:grayscale-0 transition duration-700"
+                        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                @endif
+            @endif
+
 
             {{-- Overlay gradient tipis di bawah peta agar transisi ke kartu lebih halus --}}
             <div
@@ -56,7 +65,9 @@
             <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row">
 
                 {{-- Bagian Kiri: Informasi Kontak (Background Hijau Gelap) --}}
-                <div class="md:w-5/12 bg-green-800 text-white p-10 flex flex-col justify-between relative overflow-hidden">
+                {{-- KEMBALI KE AWAL: Pakai 'justify-between' biar penuh atas-bawah, tapi kita isi kekosongannya dengan konten yg lebih besar --}}
+                <div
+                    class="md:w-5/12 bg-green-800 text-white p-8 md:p-10 flex flex-col justify-between relative overflow-hidden">
 
                     {{-- Pattern hiasan lingkaran transparan --}}
                     <div class="absolute top-0 right-0 -mr-10 -mt-10 w-40 h-40 rounded-full bg-green-700 opacity-50"></div>
@@ -64,98 +75,130 @@
                     </div>
 
                     <div class="relative z-10">
-                        <h3 class="text-2xl font-bold mb-8 border-b border-green-600 pb-4 inline-block">Info Kontak</h3>
+                        <h3 class="text-3xl font-bold mb-8 border-b border-green-600 pb-4 inline-block">Info Kontak</h3>
 
+                        {{-- UPDATE: Balik ke space-y-8 biar jaraknya lega --}}
                         <div class="space-y-8">
-                            <div class="flex items-start">
-                                <i class="fa-solid fa-location-dot text-2xl text-green-300 mt-1 w-8"></i>
+
+                            {{-- Item 1: Alamat --}}
+                            <div class="flex items-start gap-4">
+                                {{-- Icon diperbesar jadi w-10 --}}
+                                <div class="flex-shrink-0 w-10 flex justify-center mt-1">
+                                    {{-- Text icon jadi text-2xl (lebih besar) --}}
+                                    <i class="fa-solid fa-location-dot text-2xl text-green-300"></i>
+                                </div>
                                 <div>
-                                    <h4 class="font-semibold text-lg text-green-100">Alamat Kantor</h4>
-                                    <p class="text-green-50 mt-1 leading-relaxed">
-                                        Jalan Utama Desa No. 05,<br>
-                                        Kecamatan ABC, Kabupaten XYZ
+                                    {{-- Judul jadi text-xl --}}
+                                    <h4 class="font-semibold text-xl text-green-100">Alamat Kantor</h4>
+                                    {{-- Isi teks jadi text-base (standar) bukan text-sm lagi, biar lebih penuh --}}
+                                    <p class="text-green-50 mt-1 leading-relaxed text-base">
+                                        {{ $aplikasi->alamat ?? 'Jl. Contoh Alamat No.123, Desa Contoh, Kecamatan Contoh, Kabupaten Contoh, Kode Pos 12345' }}
                                     </p>
                                 </div>
                             </div>
 
-                            <div class="flex items-start">
-                                <i class="fa-solid fa-phone text-2xl text-green-300 mt-1 w-8"></i>
+                            {{-- Item 2: Telepon --}}
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0 w-10 flex justify-center mt-1">
+                                    <i class="fa-solid fa-phone text-2xl text-green-300"></i>
+                                </div>
                                 <div>
-                                    <h4 class="font-semibold text-lg text-green-100">Telepon</h4>
-                                    <p class="text-green-50 mt-1">+62 812-3456-7890</p>
+                                    <h4 class="font-semibold text-xl text-green-100">Telepon</h4>
+                                    <p class="text-green-50 mt-1 text-base">{{ $aplikasi->telepon ?? '+62 812-3456-7890' }}
+                                    </p>
                                 </div>
                             </div>
 
-                            <div class="flex items-start">
-                                <i class="fa-solid fa-envelope text-2xl text-green-300 mt-1 w-8"></i>
+                            {{-- Item 3: Email --}}
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0 w-10 flex justify-center mt-1">
+                                    <i class="fa-solid fa-envelope text-2xl text-green-300"></i>
+                                </div>
                                 <div>
-                                    <h4 class="font-semibold text-lg text-green-100">Email</h4>
-                                    <p class="text-green-50 mt-1">kantordesa@example.com</p>
+                                    <h4 class="font-semibold text-xl text-green-100">Email</h4>
+                                    <p class="text-green-50 mt-1 text-base">
+                                        {{ $aplikasi->email ?? 'kantordesa@example.com' }}</p>
                                 </div>
                             </div>
 
-                            <div class="flex items-start">
-                                <i class="fa-solid fa-clock text-2xl text-green-300 mt-1 w-8"></i>
+                            {{-- Item 4: Jam Operasional --}}
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0 w-10 flex justify-center mt-1">
+                                    <i class="fa-solid fa-clock text-2xl text-green-300"></i>
+                                </div>
                                 <div>
-                                    <h4 class="font-semibold text-lg text-green-100">Jam Operasional</h4>
-                                    <p class="text-green-50 mt-1">Senin - Jumat: 08.00 - 15.00 WIB</p>
+                                    <h4 class="font-semibold text-xl text-green-100">Jam Operasional</h4>
+                                    <p class="text-green-50 mt-1 text-base">
+                                        {{ $aplikasi->jam_operasional ?? 'Senin - Jumat: 08.00 - 15.00 WIB' }}
+                                    </p>
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
-                    <div class="mt-10 relative z-10">
-                        <p class="text-sm text-green-200">
+                    {{-- Bagian Peringatan Bawah --}}
+                    <div class="mt-8 relative z-10">
+                        {{-- Text diperbesar jadi text-sm (sebelumnya xs) biar lebih terbaca dan mengisi ruang --}}
+                        <p class="text-sm text-green-200 italic">
                             *Silakan datang langsung untuk keperluan administrasi mendesak.
                         </p>
                     </div>
                 </div>
 
-                {{-- Bagian Kanan: Form Kontak (Background Putih) --}}
-                <div class="md:w-7/12 p-10 bg-white">
+                {{-- Bagian Kanan: Form Kontak (Tetap Rapi) --}}
+                <div class="md:w-7/12 p-8 md:p-10 bg-white">
                     <h3 class="text-2xl font-bold text-gray-800 mb-2">Kirim Pesan</h3>
-                    <p class="text-gray-500 mb-8">Silakan isi formulir di bawah ini untuk mengirim pesan atau pengaduan.</p>
+                    <p class="text-gray-500 mb-6 text-sm">Silakan isi formulir di bawah ini untuk mengirim pesan atau
+                        pengaduan.</p>
 
                     @if (session('success'))
-                        <div class="mb-6 p-4 bg-green-50 text-green-700 rounded-lg border-l-4 border-green-500">
+                        <div class="mb-6 p-4 bg-green-50 text-green-700 rounded-lg border-l-4 border-green-500 text-sm">
                             <strong>Terima kasih!</strong> {{ session('success') }}
                         </div>
                     @endif
 
-                    <form action="{{ route('kontak.kirim') }}" method="POST" class="space-y-6">
+                    <form action="{{ route('kontak.kirim') }}" method="POST" class="space-y-5">
                         @csrf
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>
                                 <input type="text" name="nama"
-                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 transition outline-none"
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 transition outline-none text-sm"
                                     placeholder="Jhon Doe" required>
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
-                                <input type="email" name="email"
-                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 transition outline-none"
-                                    placeholder="email@anda.com" required>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">No. HP / WhatsApp</label>
+                                <input type="text" name="telepon"
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 transition outline-none text-sm"
+                                    placeholder="0812xxxxx" required>
                             </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                            <input type="email" name="email"
+                                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 transition outline-none text-sm"
+                                placeholder="email@anda.com" required>
                         </div>
 
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Subjek / Perihal</label>
                             <input type="text" name="subject"
-                                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 transition outline-none"
+                                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 transition outline-none text-sm"
                                 placeholder="Contoh: Pengaduan Jalan Rusak" required>
                         </div>
 
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Isi Pesan</label>
                             <textarea name="pesan" rows="4"
-                                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 transition outline-none"
+                                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 transition outline-none text-sm"
                                 placeholder="Tuliskan detail pesan Anda..." required></textarea>
                         </div>
 
                         <button type="submit"
-                            class="w-full py-4 cursor-pointer bg-green-700 hover:bg-green-800 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transition transform hover:-translate-y-1">
+                            class="w-full py-3 cursor-pointer bg-green-700 hover:bg-green-800 text-white font-bold rounded-lg shadow-md hover:shadow-lg transition transform hover:-translate-y-1 text-sm">
                             Kirim Pesan Sekarang <i class="fa-solid fa-paper-plane ml-2"></i>
                         </button>
                     </form>

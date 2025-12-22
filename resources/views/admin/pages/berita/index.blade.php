@@ -239,15 +239,34 @@
                                             {{ $item->title }}
                                         </span>
                                         <div class="text-xs text-gray-500 mb-2 line-clamp-1">{{ $item->excerpt }}</div>
-                                        <div class="flex items-center text-xs text-gray-400 dark:text-gray-500">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                                class="w-3.5 h-3.5 mr-1">
-                                                <path fill-rule="evenodd"
-                                                    d="M5.75 2a.75.75 0 01.75.75V4h7V2.75a.75.75 0 011.5 0V4h.25A2.75 2.75 0 0118 6.75v8.5A2.75 2.75 0 0115.25 18H4.75A2.75 2.75 0 012 15.25v-8.5A2.75 2.75 0 014.75 4H5V2.75A.75.75 0 015.75 2zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                            {{ $item->date->isoFormat('D MMMM Y') }}
+
+                                        {{-- INFO TANGGAL & VIEWS --}}
+                                        <div class="flex items-center gap-4 text-xs text-gray-400 dark:text-gray-500">
+                                            {{-- Tanggal --}}
+                                            <div class="flex items-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                                    fill="currentColor" class="w-3.5 h-3.5 mr-1">
+                                                    <path fill-rule="evenodd"
+                                                        d="M5.75 2a.75.75 0 01.75.75V4h7V2.75a.75.75 0 011.5 0V4h.25A2.75 2.75 0 0118 6.75v8.5A2.75 2.75 0 0115.25 18H4.75A2.75 2.75 0 012 15.25v-8.5A2.75 2.75 0 014.75 4H5V2.75A.75.75 0 015.75 2zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                                {{ $item->date->isoFormat('D MMMM Y') }}
+                                            </div>
+
+                                            {{-- Views Counter --}}
+                                            <div class="flex items-center text-gray-500 dark:text-gray-400"
+                                                title="Total dilihat">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                                    fill="currentColor" class="w-3.5 h-3.5 mr-1">
+                                                    <path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
+                                                    <path fill-rule="evenodd"
+                                                        d="M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                                <span>Dilihat {{ $item->views ?? 0 }} kali</span>
+                                            </div>
                                         </div>
+
                                     </div>
                                 </td>
                                 @canany(['berita.update', 'berita.delete'])
@@ -300,8 +319,8 @@
                 class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-50 dark:bg-gray-800">
                 <div class="text-sm text-gray-600 dark:text-gray-400">
                     Menampilkan <span
-                        class="font-semibold text-gray-900 dark:text-white">{{ $beritas->firstItem() ?? 0 }}</span> - <span
-                        class="font-semibold text-gray-900 dark:text-white">{{ $beritas->lastItem() ?? 0 }}</span> dari
+                        class="font-semibold text-gray-900 dark:text-white">{{ $beritas->firstItem() ?? 0 }}</span> -
+                    <span class="font-semibold text-gray-900 dark:text-white">{{ $beritas->lastItem() ?? 0 }}</span> dari
                     <span class="font-semibold text-gray-900 dark:text-white">{{ $beritas->total() }}</span>
                 </div>
                 <div class="pagination-clean">{{ $beritas->links() }}</div>
@@ -391,8 +410,11 @@
                                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Thumbnail</label>
                                 <div @dragover.prevent="isDragging = true" @dragleave.prevent="isDragging = false"
                                     @drop.prevent="handleDrop($event, 'gambarCreate')"
-                                    :class="{ 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20': isDragging, 'border-gray-400 dark:border-gray-600':
-                                            !isDragging }"
+                                    :class="{
+                                        'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20': isDragging,
+                                        'border-gray-400 dark:border-gray-600':
+                                            !isDragging
+                                    }"
                                     class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors relative cursor-pointer">
 
                                     <input id="gambarCreate" name="thumbnail" type="file"

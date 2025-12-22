@@ -225,11 +225,11 @@
                             <div class="space-y-3 text-emerald-100">
                                 <div class="flex items-center justify-center md:justify-start gap-3">
                                     <span>📍</span>
-                                    <span>Sekretariat: Balai Desa Cipta Makmur, Lt. 1 (Ruang Karang Taruna)</span>
+                                    <span>Sekretariat: <br>{{ $aplikasi->alamat }}</span>
                                 </div>
                                 <div class="flex items-center justify-center md:justify-start gap-3">
                                     <span>🕒</span>
-                                    <span>Jam Operasional: Senin - Jumat (15.00 - 17.00 WIB)</span>
+                                    <span>Jam Operasional: {{ $aplikasi->jam_operasional }}</span>
                                 </div>
                             </div>
                         </div>

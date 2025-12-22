@@ -42,14 +42,6 @@
                 {{ auth()->user()->name }}
             </p>
 
-            {{-- ROLE LABEL (Badge Style) --}}
-            {{-- <div class="mt-1">
-                <span
-                    class="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20 capitalize">
-                    {{ auth()->user()->roles->pluck('name')->implode(', ') ?? 'No Role' }}
-                </span>
-            </div> --}}
-
             {{-- EMAIL --}}
             <p class="text-xs text-gray-500 dark:text-gray-400 truncate mt-1">
                 {{ auth()->user()->email }}
@@ -58,7 +50,7 @@
 
         <div class="py-1">
             {{-- Menu Profile --}}
-            <a href="#"
+            <a href="{{ route('admin.profile') }}"
                 class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 group">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-5 h-5 text-gray-400 group-hover:text-emerald-500 transition-colors">
@@ -68,16 +60,18 @@
                 Profile Saya
             </a>
 
-            {{-- Menu Settings --}}
-            <a href="#"
-                class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-5 h-5 text-gray-400 group-hover:text-emerald-500 transition-colors">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.42 24.42 0 010 3.46" />
-                </svg>
-                Pengaturan
-            </a>
+            @can('pengaturan.view')
+                {{-- Menu Settings --}}
+                <a href="{{ route('admin.system') }}"
+                    class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-5 h-5 text-gray-400 group-hover:text-emerald-500 transition-colors">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.42 24.42 0 010 3.46" />
+                    </svg>
+                    Pengaturan
+                </a>
+            @endcan
         </div>
 
         <form action="/admin/logout" method="POST" class="border-t border-gray-100 dark:border-gray-700 pt-1">
