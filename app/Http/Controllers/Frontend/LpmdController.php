@@ -2,59 +2,53 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use Illuminate\Http\Request;
+use App\Helpers\SeoHelper; // <--- Import Helper
 use App\Http\Controllers\Controller;
+use App\Models\Aplikasi;   // <--- Import Aplikasi (Nama Desa & Logo)
+use App\Models\Lpmd;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str; // <--- Import Str buat potong deskripsi
 
 class LpmdController extends Controller
 {
     public function index()
     {
-        // Data statis
-        $lpmd = [
-            'deskripsi' => '
-                LPMD (Lembaga Pemberdayaan Masyarakat Desa) adalah lembaga
-                yang dibentuk oleh masyarakat desa sebagai mitra pemerintah desa
-                untuk membantu dalam proses perencanaan, pelaksanaan, dan
-                pengendalian pembangunan desa.
-            ',
+        // 1. Ambil data LPMD
+        $lpmd = Lpmd::first();
 
-            'dasar_hukum' => [
-                'Undang-Undang Nomor 6 Tahun 2014 tentang Desa',
-                'Permendagri Nomor 18 Tahun 2018 tentang LPMD dan LPMK',
-                'Peraturan Desa terkait LPMD (jika ada)',
-            ],
+        // Cek jika data kosong (Sesuai kode asli kamu)
+        if (!$lpmd) {
+            abort(404, 'Data LPMD belum diisi oleh Admin.');
+        }
 
-            'tugas_fungsi' => [
-                'Membantu pemerintah desa dalam perencanaan pembangunan',
-                'Menampung dan menyalurkan aspirasi masyarakat',
-                'Mendorong partisipasi masyarakat dalam pembangunan',
-                'Melaksanakan kegiatan pemberdayaan masyarakat',
-                'Melaksanakan kegiatan pemberdayaan masyarakat',
-                'Melaksanakan kegiatan pemberdayaan masyarakat',
-                'Melakukan pengawasan terhadap pelaksanaan pembangunan desa',
-            ],
+        // 2. Ambil Data Aplikasi (Nama Desa & Logo)
+        $aplikasi = Aplikasi::first();
+        $namaDesa = $aplikasi->nama_desa ?? 'Desa';
 
-            'struktur' => [
-                'gambar' => '/frontend/images/lpmd/struktur-lpmd.png',
-                'ketua' => 'Nama Ketua',
-                'sekretaris' => 'Nama Sekretaris',
-                'bendahara' => 'Nama Bendahara',
-                'bidang' => [
-                    'Bidang Keagamaan' => 'Nama Penanggung Jawab',
-                    'Bidang Pembangunan dan Lingkungan Hidup' => 'Nama Penanggung Jawab',
-                    'Bidang Ekonomi, Sosial, dan Budaya' => 'Nama Penanggung Jawab',
-                    'Bidang Pendidikan, Pemuda dan Olahraga' => 'Nama Penanggung Jawab',
-                ]
-            ],
+        // 3. Logic Image SEO (Smart Thumbnail)
+        // Prioritas: Foto Struktur LPMD -> Fallback: Logo Desa
+        $seoImage = '';
 
-            'program' => [
-                'Penyusunan perencanaan pembangunan desa',
-                'Fasilitasi kegiatan masyarakat',
-                'Pelatihan dan pemberdayaan ekonomi masyarakat',
-                'Pendampingan kegiatan pembangunan',
-                'Monitoring pelaksanaan pembangunan desa',
-            ]
-        ];
+        // Cek apakah tabel lpmd punya kolom 'gambar' atau 'foto' (sesuaikan dengan DB)
+        if (!empty($lpmd->gambar)) {
+            $seoImage = asset('storage/' . $lpmd->gambar);
+        } elseif ($aplikasi && !empty($aplikasi->logo)) {
+            $seoImage = asset('storage/' . $aplikasi->logo);
+        }
+
+        // 4. Logic Deskripsi
+        // Ambil dari profil LPMD, bersihkan HTML tags, potong 150 huruf
+        $deskripsi = 'Profil Lembaga Pemberdayaan Masyarakat Desa (LPMD) ' . $namaDesa;
+        if (!empty($lpmd->profil)) { // Asumsi nama kolomnya 'profil' atau 'deskripsi'
+            $deskripsi = Str::limit(strip_tags($lpmd->profil), 150);
+        }
+
+        // 5. Set SEO Helper
+        SeoHelper::set(
+            title: 'LPMD - Website Resmi ' . $namaDesa,
+            description: $deskripsi,
+            image: $seoImage
+        );
 
         return view('frontend.pages.lpmd.index', compact('lpmd'));
     }

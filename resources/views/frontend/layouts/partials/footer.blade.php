@@ -94,7 +94,7 @@
         </div>
 
         <!-- COPYRIGHT -->
-        <div data-aos="fade-up" data-aos-delay="100" data-aos-offset="0"
+        <div data-aos="fade" data-aos-delay="100" data-aos-offset="0"
             class="text-center border-t border-gray-800 mt-12 pt-6 text-sm">
             <p class="mb-2">
                 © {{ date('Y') }} {{ $aplikasi->nama_desa }}. Semua Hak Dilindungi.

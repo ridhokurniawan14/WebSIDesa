@@ -80,13 +80,13 @@
 
         {{-- Hero Section --}}
         <section data-aos="fade" class="w-full bg-green-700 text-white py-16 bg-cover bg-center relative"
-            style="background-image: url('https://images.unsplash.com/photo-1503264116251-35a269479413?q=80');">
+            style="background-image: url('https://www.pelita-air.com/admin/assets/uploads/images/promotion/2023-08/5-desa-wisata-terindah-di-sumatera-barat-6905.webp');">
             <!-- Overlay Gelap agar teks terbaca -->
             <div class="absolute inset-0 bg-black/40"></div>
 
             <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
                 <h1 class="text-4xl font-bold mb-2">Berita Desa</h1>
-                <p class="text-white/90">Informasi terbaru dari Pemerintah Desa</p>
+                <p class="text-white/90">Informasi terbaru dari Pemerintah {{ $aplikasi->nama_desa }}</p>
             </div>
         </section>
 
@@ -95,7 +95,7 @@
             <div class="max-w-7xl mx-auto px-4">
 
                 {{-- FITUR SEARCH (Pojok Kanan) --}}
-                <div class="flex flex-col md:flex-row justify-end items-center mb-8 gap-4">
+                <div data-aos="fade-left" class="flex flex-col md:flex-row justify-end items-center mb-8 gap-4">
                     <!-- Form Search -->
                     <form action="{{ url()->current() }}" method="GET" class="w-full md:w-auto">
                         <div class="relative">
@@ -116,9 +116,9 @@
 
                 {{-- List Berita Grid --}}
                 @if ($beritas->count() > 0)
-                    <div data-aos="flip-down" class="grid md:grid-cols-3 gap-10">
+                    <div data-aos="fade-right" class="grid md:grid-cols-3 gap-10">
                         @foreach ($beritas as $item)
-                            <a href="{{ url('/berita/' . $item['slug']) }}"
+                            <a href="{{ url('/berita/' . $item->slug) }}"
                                 class="group block bg-white/80 backdrop-blur-md rounded-xl shadow hover:shadow-xl transition transform hover:-translate-y-1 overflow-hidden border border-white/50">
 
                                 {{-- Container Gambar dengan Efek Zoom Hover --}}
@@ -134,7 +134,7 @@
 
                                 <div class="p-5">
                                     <span class="text-xs font-bold px-2 py-1 bg-green-100 text-green-700 rounded-md">
-                                        {{ $item['date'] }}
+                                        {{ $item->date->locale('id')->isoFormat('D MMMM Y') }}
                                     </span>
 
                                     <h2

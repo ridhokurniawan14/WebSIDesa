@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('frontend.*', function ($view) {
+        View::composer(['frontend.*', 'admin.*'], function ($view) {
             $view->with('aplikasi', Aplikasi::first());
         });
     }

@@ -7,6 +7,7 @@
 
     <div class="content-offset">
 
+        {{-- Section Header --}}
         <section data-aos="fade-down"
             class="relative bg-gradient-to-br from-green-700 to-emerald-600 text-white py-20 rounded-b-[3rem] shadow-lg mb-12 overflow-hidden">
             <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/leaves.png')]">
@@ -34,6 +35,7 @@
 
         <div class="max-w-7xl mx-auto px-4 -mt-16 relative z-20 space-y-12">
 
+            {{-- Deskripsi Posyandu --}}
             <div data-aos="fade-up" class="bg-white p-8 shadow-xl rounded-2xl border-t-4 border-green-600">
                 <div class="flex flex-col md:flex-row items-start gap-8">
                     <div class="md:flex-1">
@@ -44,22 +46,25 @@
                             </span>
                             Apa itu Posyandu?
                         </h2>
+                        {{-- Menggunakan Object Syntax (->) --}}
                         <div
                             class="prose prose-green prose-lg text-gray-600 leading-relaxed text-justify max-w-none font-medium">
-                            {!! $posyandu['deskripsi'] !!}
+                            {!! $posyandu->deskripsi !!}
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="grid md:grid-cols-12 gap-8">
+                {{-- Kolom Kiri: Tujuan & Sasaran --}}
                 <div data-aos="slide-right" class="md:col-span-5 space-y-8">
                     <div class="bg-white p-6 shadow-md rounded-2xl border border-green-100">
                         <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                             <span class="text-green-600">🎯</span> Tujuan Utama
                         </h2>
                         <ul class="space-y-3">
-                            @foreach ($posyandu['tujuan'] as $item)
+                            {{-- Karena di-cast array, bisa diloop langsung --}}
+                            @foreach ($posyandu->tujuan ?? [] as $item)
                                 <li class="flex items-start gap-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 flex-shrink-0"
                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -76,7 +81,7 @@
                             <span class="text-green-600">👥</span> Sasaran Layanan
                         </h2>
                         <div class="flex flex-wrap gap-2">
-                            @foreach ($posyandu['sasaran'] as $item)
+                            @foreach ($posyandu->sasaran ?? [] as $item)
                                 <span
                                     class="px-3 py-1.5 bg-green-50 text-green-700 rounded-lg text-sm font-semibold border border-green-200">
                                     {{ $item }}
@@ -86,10 +91,11 @@
                     </div>
                 </div>
 
+                {{-- Kolom Kanan: Layanan & Jadwal --}}
                 <div data-aos="slide-left" class="md:col-span-7 bg-green-50 p-8 rounded-3xl border-2 border-green-200/70">
                     <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Layanan Kami</h2>
                     <div class="grid sm:grid-cols-2 gap-4">
-                        @foreach ($posyandu['layanan'] as $index => $item)
+                        @foreach ($posyandu->layanan ?? [] as $index => $item)
                             <div
                                 class="bg-white p-4 rounded-xl shadow-sm border border-green-100 flex items-center gap-4 hover:shadow-md transition">
                                 <div
@@ -113,21 +119,28 @@
                         </div>
                         <h3 class="font-bold text-lg mb-2 relative z-10">📅 Jadwal Pelayanan Rutin</h3>
                         <p class="text-xl font-extrabold relative z-10 tracking-wide">
-                            {{ $posyandu['jadwal'] }}
+                            {{ $posyandu->jadwal }}
                         </p>
                     </div>
                 </div>
             </div>
 
 
+            {{-- Struktur Organisasi --}}
             <div class="mb-12">
                 <h2 data-aos="fade" class="text-3xl font-bold text-center text-gray-800 mb-10">Struktur Organisasi</h2>
 
                 <div data-aos="fade-up" class="flex justify-center mb-10">
                     <div class="p-3 bg-white rounded-2xl shadow-xl border-2 border-green-100 cursor-pointer group relative hover:border-green-400 transition"
                         id="strukturImageBtn">
-                        <img src="https://pasipinang.gampong.id/media/2023.08/struktur_posyandu1.jpg"
-                            class="rounded-xl max-w-full h-auto md:max-h-[500px] object-contain" alt="Struktur Posyandu">
+                        {{-- Gunakan gambar dari DB jika ada, jika tidak pakai placeholder --}}
+                        @php
+                            $imgSrc = $posyandu->gambar_struktur
+                                ? asset('storage/' . $posyandu->gambar_struktur)
+                                : 'https://pasipinang.gampong.id/media/2023.08/struktur_posyandu1.jpg';
+                        @endphp
+                        <img src="{{ $imgSrc }}" class="rounded-xl max-w-full h-auto md:max-h-[500px] object-contain"
+                            alt="Struktur Posyandu">
                         <div
                             class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-white drop-shadow-lg"
@@ -141,13 +154,15 @@
                     </div>
                 </div>
 
+                {{-- Detail Pengurus --}}
                 <div data-aos="flip-down" class="bg-white rounded-3xl shadow-lg border border-gray-100 p-8">
                     <div class="grid md:grid-cols-3 gap-6 mb-8">
                         @php
+                            // Mapping manual kolom DB ke Array Role
                             $roles = [
-                                ['label' => 'Ketua', 'val' => $posyandu['struktur']['ketua'], 'icon' => '👤'],
-                                ['label' => 'Sekretaris', 'val' => $posyandu['struktur']['sekretaris'], 'icon' => '📝'],
-                                ['label' => 'Bendahara', 'val' => $posyandu['struktur']['bendahara'], 'icon' => '💰'],
+                                ['label' => 'Ketua', 'val' => $posyandu->nama_ketua, 'icon' => '👤'],
+                                ['label' => 'Sekretaris', 'val' => $posyandu->nama_sekretaris, 'icon' => '📝'],
+                                ['label' => 'Bendahara', 'val' => $posyandu->nama_bendahara, 'icon' => '💰'],
                             ];
                         @endphp
 
@@ -159,7 +174,7 @@
                                 <div>
                                     <div class="text-xs font-bold uppercase tracking-wider text-green-700 mb-1">
                                         {{ $role['label'] }}</div>
-                                    <div class="text-lg font-bold text-gray-800">{{ $role['val'] }}</div>
+                                    <div class="text-lg font-bold text-gray-800">{{ $role['val'] ?? '-' }}</div>
                                 </div>
                             </div>
                         @endforeach
@@ -170,7 +185,8 @@
                             ✨ Tim Kader Posyandu ✨
                         </h3>
                         <div class="flex flex-wrap justify-center gap-3">
-                            @foreach ($posyandu['struktur']['kader'] as $item)
+                            {{-- nama_kader langsung diakses karena sudah di-cast array --}}
+                            @foreach ($posyandu->nama_kader ?? [] as $item)
                                 <div
                                     class="px-4 py-2 bg-white rounded-full text-center text-gray-700 text-sm font-medium shadow-sm border border-gray-200">
                                     {{ $item }}
@@ -182,6 +198,7 @@
             </div>
 
             <div class="grid md:grid-cols-2 gap-8 items-start">
+                {{-- Program Kerja --}}
                 <div data-aos="slide-right"
                     class="bg-white rounded-2xl shadow-md border-t-4 border-green-500 overflow-hidden h-full">
                     <div class="p-6 bg-green-50 border-b border-green-100">
@@ -191,7 +208,7 @@
                     </div>
                     <div class="p-6">
                         <ul class="space-y-0 divide-y divide-gray-100">
-                            @foreach ($posyandu['program'] as $item)
+                            @foreach ($posyandu->program ?? [] as $item)
                                 <li class="py-4 flex items-start gap-3 group">
                                     <span
                                         class="flex-shrink-0 w-3 h-3 rounded-full bg-green-400 mt-2 group-hover:bg-green-600 transition"></span>
@@ -203,6 +220,7 @@
                     </div>
                 </div>
 
+                {{-- Kontak Pengurus (JSON Array Object) --}}
                 <div data-aos="slide-left"
                     class="bg-gradient-to-br from-green-600 to-emerald-700 rounded-2xl shadow-md overflow-hidden text-white h-full">
                     <div class="p-6 border-b border-green-500/30 bg-black/10">
@@ -211,8 +229,9 @@
                         </h2>
                     </div>
                     <div class="p-6 space-y-6">
-                        @foreach ($posyandu['kontak'] as $item)
+                        @foreach ($posyandu->kontak ?? [] as $item)
                             @php
+                                // Karena JSON Object, akses pakai array syntax $item['key']
                                 $waNumber = preg_replace('/[^0-9]/', '', $item['telepon']);
                                 if (substr($waNumber, 0, 1) == '0') {
                                     $waNumber = '62' . substr($waNumber, 1);
@@ -242,13 +261,11 @@
         </div>
     </div>
 
-    {{-- Perbaikan: Ditambahkan class 'flex' agar items-center berfungsi --}}
+    {{-- MODAL IMAGE (Script JS tetap sama) --}}
     <div id="imageModal"
         class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-md p-4 transition-all duration-300 opacity-0">
-
         <div class="relative w-auto h-auto max-w-6xl max-h-[90vh] flex justify-center items-center rounded-2xl shadow-2xl scale-95 transition-transform duration-300"
             id="modalContent">
-
             <button id="closeModalBtn"
                 class="absolute -top-12 right-0 md:-right-12 cursor-pointer text-white hover:text-green-400 transition z-50 p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 drop-shadow-lg" fill="none"
@@ -257,8 +274,7 @@
                         d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
             </button>
-
-            <img src="https://pasipinang.gampong.id/media/2023.08/struktur_posyandu1.jpg"
+            <img src="{{ $imgSrc }}"
                 class="w-auto h-auto max-h-[90vh] max-w-full object-contain rounded-xl shadow-2xl border-4 border-white/10"
                 alt="Struktur Posyandu Full">
         </div>
@@ -272,44 +288,36 @@
             const closeBtn = document.getElementById('closeModalBtn');
 
             function openModal() {
-                // Hapus hidden agar display menjadi 'flex' (karena ada class flex di HTML)
                 modal.classList.remove('hidden');
-
-                // Timeout kecil biar animasi CSS transisi jalan
                 setTimeout(() => {
                     modal.classList.remove('opacity-0');
                     modalContent.classList.remove('scale-95');
                     modalContent.classList.add('scale-100');
                 }, 10);
-                document.body.style.overflow = 'hidden'; // Stop scroll body
+                document.body.style.overflow = 'hidden';
             }
 
             function closeModal() {
                 modal.classList.add('opacity-0');
                 modalContent.classList.remove('scale-100');
                 modalContent.classList.add('scale-95');
-
-                // Tunggu durasi transisi (300ms) baru sembunyikan elemen
                 setTimeout(() => {
                     modal.classList.add('hidden');
-                    document.body.style.overflow = 'auto'; // Balikin scroll body
+                    document.body.style.overflow = 'auto';
                 }, 300);
             }
 
             if (triggerBtn) triggerBtn.addEventListener('click', openModal);
             if (closeBtn) closeBtn.addEventListener('click', closeModal);
 
-            // Tutup modal kalo klik di area gelap (backdrop)
             if (modal) {
                 modal.addEventListener('click', function(e) {
-                    // Pastikan yang diklik adalah backdrop (modal), bukan gambarnya
                     if (e.target === modal || e.target.id === 'modalContent') {
                         closeModal();
                     }
                 });
             }
 
-            // Tutup pakai tombol ESC keyboard
             document.addEventListener('keydown', function(e) {
                 if (e.key === "Escape" && !modal.classList.contains('hidden')) {
                     closeModal();

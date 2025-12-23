@@ -1,4 +1,4 @@
-<section class="py-16">
+<section class="py-16 bg-gray-100">
     <div class="max-w-7xl mx-auto px-4">
 
         <!-- Judul -->
@@ -19,7 +19,8 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-700">Total Penduduk</h3>
-                        <p class="text-2xl font-bold text-gray-900">5.430 Jiwa</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ number_format($beranda->total_penduduk) }} Jiwa
+                        </p>
                     </div>
                 </div>
             </div>
@@ -33,7 +34,8 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-700">Laki-laki</h3>
-                        <p class="text-2xl font-bold text-gray-900">2.710 Jiwa</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ number_format($beranda->total_laki_laki) }} Jiwa
+                        </p>
                     </div>
                 </div>
             </div>
@@ -47,7 +49,8 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-700">Perempuan</h3>
-                        <p class="text-2xl font-bold text-gray-900">2.720 Jiwa</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ number_format($beranda->total_perempuan) }} Jiwa
+                        </p>
                     </div>
                 </div>
             </div>
@@ -61,7 +64,7 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-700">Usia Muda (0–17)</h3>
-                        <p class="text-2xl font-bold text-gray-900">1.240 Jiwa</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ number_format($beranda->usia_muda) }} Jiwa</p>
                     </div>
                 </div>
             </div>
@@ -75,7 +78,7 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-700">Usia Dewasa (18–59)</h3>
-                        <p class="text-2xl font-bold text-gray-900">3.020 Jiwa</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ number_format($beranda->usia_dewasa) }} Jiwa</p>
                     </div>
                 </div>
             </div>
@@ -89,7 +92,7 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-700">Lansia (60+)</h3>
-                        <p class="text-2xl font-bold text-gray-900">1.170 Jiwa</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ number_format($beranda->usia_lansia) }} Jiwa</p>
                     </div>
                 </div>
             </div>
@@ -103,7 +106,7 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-700">Jumlah KK</h3>
-                        <p class="text-2xl font-bold text-gray-900">1.650 KK</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ number_format($beranda->jumlah_kk) }} KK</p>
                     </div>
                 </div>
             </div>
@@ -117,7 +120,7 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-700">Jumlah RT</h3>
-                        <p class="text-2xl font-bold text-gray-900">18 RT</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ number_format($beranda->jumlah_rt) }} RT</p>
                     </div>
                 </div>
             </div>
@@ -131,7 +134,7 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-700">Jumlah RW</h3>
-                        <p class="text-2xl font-bold text-gray-900">6 RW</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ number_format($beranda->jumlah_rw) }} RW</p>
                     </div>
                 </div>
             </div>
@@ -145,7 +148,8 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-700">Jumlah Dusun</h3>
-                        <p class="text-2xl font-bold text-gray-900">4 Dusun</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ number_format($beranda->jumlah_dusun) }} Dusun
+                        </p>
                     </div>
                 </div>
             </div>
@@ -159,7 +163,8 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-700">Desa Adat</h3>
-                        <p class="text-2xl font-bold text-gray-900">1 Desa Adat</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ number_format($beranda->desa_adat) }} Desa Adat
+                        </p>
                     </div>
                 </div>
             </div>
@@ -173,7 +178,8 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-700">Keluarga Miskin</h3>
-                        <p class="text-2xl font-bold text-gray-900">210 KK</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ number_format($beranda->keluarga_miskin) }} KK
+                        </p>
                     </div>
                 </div>
             </div>

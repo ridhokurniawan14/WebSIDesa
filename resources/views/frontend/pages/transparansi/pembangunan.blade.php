@@ -2,6 +2,7 @@
 
 @section('content')
     <style>
+        /* Animasi Fade In */
         @keyframes fadeInOut {
             0% {
                 opacity: 0;
@@ -27,162 +28,8 @@
         .animate-fadeIn {
             animation: fadeInOut 2.8s ease-in-out;
         }
-    </style>
 
-    {{-- 
-        =============================================
-        DATA LOGIC (PHP)
-        ============================================= 
-    --}}
-    @php
-        // Data Statis (Saya set path gambar ke local path agar sesuai kebutuhan umum)
-        // Jika file tidak ada, script 'onerror' di bawah akan otomatis menggantinya.
-        $pembangunanData = [
-            [
-                'slug' => 'pembangunan-1',
-                'judul' => 'Pembangunan Jalan RT 2 RW 1',
-                'desa' => 'Krajan Satu',
-                'anggaran' => 51575000,
-                'lokasi' => 'RT 2 / RW 1 - SUSUKAN KIDUL',
-                'volume' => '200 m',
-                'sumber_dana' => 'Dana Desa',
-                'tahun' => '2024',
-                'pelaksana' => 'Hariyanto',
-                'status' => 'Selesai',
-                'status_color' => 'bg-blue-100 text-blue-700',
-                'keterangan' => 'Pekerjaan sudah selesai 100%',
-                'thumbnail' => '/img/pembangunan/1/thumb.jpg',
-                'foto' => ['/img/pembangunan/1/1.jpg', '/img/pembangunan/1/2.jpg', '/img/pembangunan/1/3.jpg'],
-            ],
-            [
-                'slug' => 'pembangunan-2',
-                'judul' => 'TPT Sungai Dusun Pandan',
-                'desa' => 'Pandan',
-                'anggaran' => 87500000,
-                'lokasi' => 'RT 1 / RW 2',
-                'volume' => '150 m',
-                'sumber_dana' => 'Dana Desa',
-                'tahun' => '2024',
-                'pelaksana' => 'Sutarman',
-                'status' => 'Proses',
-                'status_color' => 'bg-yellow-100 text-yellow-700',
-                'keterangan' => 'Progres 90%',
-                'thumbnail' => '/img/pembangunan/2/thumb.jpg',
-                'foto' => ['/img/pembangunan/2/1.jpg', '/img/pembangunan/2/2.jpg'],
-            ],
-            [
-                'slug' => 'pembangunan-1',
-                'judul' => 'Pembangunan Jalan RT 2 RW 1',
-                'desa' => 'Krajan Satu',
-                'anggaran' => 51575000,
-                'lokasi' => 'RT 2 / RW 1 - SUSUKAN KIDUL',
-                'volume' => '200 m',
-                'sumber_dana' => 'Dana Desa',
-                'tahun' => '2024',
-                'pelaksana' => 'Hariyanto',
-                'status' => 'Selesai',
-                'status_color' => 'bg-blue-100 text-blue-700',
-                'keterangan' => 'Pekerjaan sudah selesai 100%',
-                'thumbnail' => '/img/pembangunan/1/thumb.jpg',
-                'foto' => ['/img/pembangunan/1/1.jpg', '/img/pembangunan/1/2.jpg', '/img/pembangunan/1/3.jpg'],
-            ],
-            [
-                'slug' => 'pembangunan-2',
-                'judul' => 'TPT Sungai Dusun Pandan',
-                'desa' => 'Pandan',
-                'anggaran' => 87500000,
-                'lokasi' => 'RT 1 / RW 2',
-                'volume' => '150 m',
-                'sumber_dana' => 'Dana Desa',
-                'tahun' => '2024',
-                'pelaksana' => 'Sutarman',
-                'status' => 'Proses',
-                'status_color' => 'bg-yellow-100 text-yellow-700',
-                'keterangan' => 'Progres 90%',
-                'thumbnail' => '/img/pembangunan/2/thumb.jpg',
-                'foto' => ['/img/pembangunan/2/1.jpg', '/img/pembangunan/2/2.jpg'],
-            ],
-            [
-                'slug' => 'pembangunan-1',
-                'judul' => 'Pembangunan Jalan RT 2 RW 1',
-                'desa' => 'Krajan Satu',
-                'anggaran' => 51575000,
-                'lokasi' => 'RT 2 / RW 1 - SUSUKAN KIDUL',
-                'volume' => '200 m',
-                'sumber_dana' => 'Dana Desa',
-                'tahun' => '2024',
-                'pelaksana' => 'Hariyanto',
-                'status' => 'Selesai',
-                'status_color' => 'bg-blue-100 text-blue-700',
-                'keterangan' => 'Pekerjaan sudah selesai 100%',
-                'thumbnail' => '/img/pembangunan/1/thumb.jpg',
-                'foto' => ['/img/pembangunan/1/1.jpg', '/img/pembangunan/1/2.jpg', '/img/pembangunan/1/3.jpg'],
-            ],
-            [
-                'slug' => 'pembangunan-2',
-                'judul' => 'TPT Sungai Dusun Pandan',
-                'desa' => 'Pandan',
-                'anggaran' => 87500000,
-                'lokasi' => 'RT 1 / RW 2',
-                'volume' => '150 m',
-                'sumber_dana' => 'Dana Desa',
-                'tahun' => '2024',
-                'pelaksana' => 'Sutarman',
-                'status' => 'Proses',
-                'status_color' => 'bg-yellow-100 text-yellow-700',
-                'keterangan' => 'Progres 90%',
-                'thumbnail' => '/img/pembangunan/2/thumb.jpg',
-                'foto' => ['/img/pembangunan/2/1.jpg', '/img/pembangunan/2/2.jpg'],
-            ],
-            [
-                'slug' => 'pembangunan-1',
-                'judul' => 'Pembangunan Jalan RT 2 RW 1',
-                'desa' => 'Krajan Satu',
-                'anggaran' => 51575000,
-                'lokasi' => 'RT 2 / RW 1 - SUSUKAN KIDUL',
-                'volume' => '200 m',
-                'sumber_dana' => 'Dana Desa',
-                'tahun' => '2024',
-                'pelaksana' => 'Hariyanto',
-                'status' => 'Selesai',
-                'status_color' => 'bg-blue-100 text-blue-700',
-                'keterangan' => 'Pekerjaan sudah selesai 100%',
-                'thumbnail' => '/img/pembangunan/1/thumb.jpg',
-                'foto' => ['/img/pembangunan/1/1.jpg', '/img/pembangunan/1/2.jpg', '/img/pembangunan/1/3.jpg'],
-            ],
-            [
-                'slug' => 'pembangunan-2',
-                'judul' => 'TPT Sungai Dusun Pandan',
-                'desa' => 'Pandan',
-                'anggaran' => 87500000,
-                'lokasi' => 'RT 1 / RW 2',
-                'volume' => '150 m',
-                'sumber_dana' => 'Dana Desa',
-                'tahun' => '2024',
-                'pelaksana' => 'Sutarman',
-                'status' => 'Proses',
-                'status_color' => 'bg-yellow-100 text-yellow-700',
-                'keterangan' => 'Progres 90%',
-                'thumbnail' => '/img/pembangunan/2/thumb.jpg',
-                'foto' => ['/img/pembangunan/2/1.jpg', '/img/pembangunan/2/2.jpg'],
-            ],
-        ];
-
-        // Filter Logic
-        $selectedDesa = request('desa');
-        $filtered = collect($pembangunanData)->filter(fn($i) => !$selectedDesa || $i['desa'] == $selectedDesa);
-
-        // Pagination Logic
-        $perPage = 6;
-        $page = request('page', 1);
-        $totalItems = $filtered->count();
-        $totalPages = ceil($totalItems / $perPage);
-        // PENTING: values() digunakan agar index array urut (0,1,2..) untuk JavaScript
-        $items = $filtered->slice(($page - 1) * $perPage, $perPage)->values();
-    @endphp
-
-    <style>
-        /* Custom Scrollbar for Modal */
+        /* Custom Scrollbar Modal */
         .custom-scroll::-webkit-scrollbar {
             width: 6px;
         }
@@ -200,7 +47,7 @@
             background: #9ca3af;
         }
 
-        /* Skeleton Animation */
+        /* Skeleton Shimmer Animation */
         @keyframes shimmer {
             0% {
                 background-position: -1000px 0;
@@ -216,18 +63,18 @@
             background: linear-gradient(to right, #f3f4f6 4%, #e5e7eb 25%, #f3f4f6 36%);
             background-size: 1000px 100%;
         }
+
+        /* Utility class agar body tidak bisa discroll saat modal open */
+        body.modal-open {
+            overflow: hidden;
+        }
     </style>
 
     <div class="bg-gray-50 min-h-screen font-sans text-gray-800 mt-10">
         <canvas id="particleCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-60"></canvas>
 
-        {{-- 
-            =============================================
-            HEADER SECTION
-            ============================================= 
-        --}}
+        {{-- HEADER SECTION --}}
         <div data-aos="fade-down" class="bg-emerald-700 pt-24 pb-32 rounded-b-[3rem] shadow-xl relative overflow-hidden">
-            <!-- Decorative patterns -->
             <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
                 <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
                     <defs>
@@ -238,47 +85,59 @@
                     <rect width="100%" height="100%" fill="url(#grid)" />
                 </svg>
             </div>
-
             <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
                 <span
-                    class="inline-block py-1 px-3 rounded-full bg-emerald-600 text-emerald-100 text-sm font-medium mb-4 border border-emerald-500">Transparansi
-                    Dana Desa</span>
-                <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">
-                    Realisasi Pembangunan
-                </h1>
+                    class="inline-block py-1 px-3 rounded-full bg-emerald-600 text-emerald-100 text-sm font-medium mb-4 border border-emerald-500">
+                    Transparansi Dana Desa
+                </span>
+                <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">Realisasi Pembangunan</h1>
                 <p class="text-emerald-100 max-w-2xl mx-auto text-lg">
                     Memantau perkembangan infrastruktur dan penggunaan anggaran desa secara transparan dan akuntabel.
                 </p>
             </div>
         </div>
 
-        {{-- 
-            =============================================
-            MAIN CONTENT (FILTER & GRID)
-            ============================================= 
-        --}}
+        {{-- MAIN CONTENT --}}
         <div data-aos="fade-up" class="max-w-7xl mx-auto px-6 -mt-20 relative z-20">
 
             {{-- FILTER CARD --}}
             <div class="bg-white rounded-2xl shadow-lg p-6 mb-10 border border-gray-100">
-                <form method="GET" class="flex flex-col md:flex-row gap-4 items-center justify-between">
-                    <div class="flex items-center gap-2 text-gray-600 w-full md:w-auto">
+
+                {{-- 
+                    DATA PREPARATION FOR FILTER 
+                    Menggunakan data dari Controller ($desas & $years) jika ada.
+                    Jika belum diupdate controllernya, pakai fallback manual biar gak error.
+                --}}
+                @php
+                    $filterDesas = isset($desas)
+                        ? $desas
+                        : ['Krajan Satu', 'Krajan Dua', 'Kaliputih', 'Temurejo', 'Pandan', 'Cendono', 'Ringinsari'];
+                    $filterTahun = isset($years) ? $years : range(date('Y'), 2019);
+                @endphp
+
+                {{-- Form Filter --}}
+                <form method="GET" action="{{ url()->current() }}"
+                    class="flex flex-col lg:flex-row gap-4 items-center justify-between">
+                    <div class="flex items-center gap-2 text-gray-600 w-full lg:w-auto mb-2 lg:mb-0">
                         <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z">
                             </path>
                         </svg>
-                        <span class="font-semibold">Filter Data:</span>
+                        <span class="font-semibold whitespace-nowrap">Filter Data:</span>
                     </div>
 
-                    <div class="flex w-full md:w-auto gap-3">
-                        <div class="relative w-full md:w-64">
+                    <div class="flex flex-col sm:flex-row w-full lg:w-auto gap-3">
+
+                        {{-- Filter Desa --}}
+                        <div class="relative w-full sm:w-64">
                             <select name="desa"
                                 class="w-full appearance-none bg-gray-50 border border-gray-300 text-gray-700 py-2.5 px-4 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition cursor-pointer">
                                 <option value="">Semua Wilayah</option>
-                                @foreach (['Krajan Satu', 'Krajan Dua', 'Kaliputih', 'Temurejo', 'Pandan', 'Cendono', 'Ringinsari'] as $desa)
+                                @foreach ($filterDesas as $desa)
                                     <option value="{{ $desa }}" {{ request('desa') == $desa ? 'selected' : '' }}>
-                                        Dusun {{ $desa }}
+                                        {{-- Cek jika $desa itu object atau string (tergantung dari controller pluck atau manual) --}}
+                                        Dusun {{ is_object($desa) ? $desa->desa : $desa }}
                                     </option>
                                 @endforeach
                             </select>
@@ -290,8 +149,27 @@
                             </div>
                         </div>
 
-                        <button
-                            class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-2.5 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg flex items-center gap-2">
+                        {{-- Filter Tahun (DINAMIS DARI DB) --}}
+                        <div class="relative w-full sm:w-40">
+                            <select name="tahun"
+                                class="w-full appearance-none bg-gray-50 border border-gray-300 text-gray-700 py-2.5 px-4 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition cursor-pointer">
+                                <option value="">Semua Tahun</option>
+                                @foreach ($filterTahun as $tahun)
+                                    <option value="{{ $tahun }}" {{ request('tahun') == $tahun ? 'selected' : '' }}>
+                                        {{ $tahun }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <div
+                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-2.5 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer">
                             <span>Terapkan</span>
                         </button>
                     </div>
@@ -301,9 +179,10 @@
             {{-- GRID CONTAINER --}}
             <div id="gridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                {{-- ITEM SKELETON (Hidden by JS later) --}}
+                {{-- SKELETON TEMPLATE --}}
                 <template id="skeletonTemplate">
-                    <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div
+                        class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col skeleton-card">
                         <div class="h-48 animate-shimmer"></div>
                         <div class="p-6 flex-1 flex flex-col">
                             <div class="h-4 w-1/3 animate-shimmer rounded mb-4"></div>
@@ -314,30 +193,46 @@
                     </div>
                 </template>
 
-                {{-- REAL CARDS --}}
+                {{-- REAL DATA LOOP --}}
                 @forelse ($items as $item)
+                    @php
+                        // Logika Warna Status
+                        $statusColor = 'bg-gray-100 text-gray-800';
+                        $status = strtolower($item->status);
+                        if ($status == 'selesai') {
+                            $statusColor = 'bg-blue-100 text-blue-700';
+                        } elseif ($status == 'proses') {
+                            $statusColor = 'bg-yellow-100 text-yellow-700';
+                        } elseif ($status == 'batal') {
+                            $statusColor = 'bg-red-100 text-red-700';
+                        }
+
+                        // Logika Thumbnail
+                        $firstPhoto = !empty($item->foto) && isset($item->foto[0]) ? $item->foto[0] : null;
+
+                        // Inject properties for JS
+                        $item->status_color = $statusColor;
+                    @endphp
+
                     <div
                         class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-gray-100 transition-all duration-300 transform hover:-translate-y-1 real-content hidden flex flex-col h-full">
-
                         {{-- Image Wrapper --}}
                         <div class="relative h-48 overflow-hidden bg-gray-200">
-                            {{-- PERBAIKAN: Menambahkan this.onerror=null untuk mencegah infinite loop dan mengganti ke placeholder --}}
-                            <img src="{{ $item['thumbnail'] }}"
+                            {{-- Asset storage --}}
+                            <img src="{{ asset('storage/' . ($firstPhoto ?? '')) }}"
                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                 onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=No+Image'">
 
-                            {{-- Badge Overlay --}}
                             <div class="absolute top-4 right-4">
                                 <span
-                                    class="{{ $item['status_color'] ?? 'bg-gray-100 text-gray-800' }} text-xs font-bold px-3 py-1.5 rounded-full shadow-sm uppercase tracking-wide">
-                                    {{ $item['status'] ?? 'Proses' }}
+                                    class="{{ $statusColor }} text-xs font-bold px-3 py-1.5 rounded-full shadow-sm uppercase tracking-wide">
+                                    {{ $item->status }}
                                 </span>
                             </div>
 
-                            {{-- Year Badge --}}
                             <div
                                 class="absolute bottom-0 left-0 bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-tr-lg">
-                                TA {{ $item['tahun'] }}
+                                TA {{ $item->tahun }}
                             </div>
                         </div>
 
@@ -352,21 +247,19 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 </svg>
-                                {{ $item['desa'] }}
+                                {{ $item->desa }}
                             </div>
 
                             <h3
                                 class="font-bold text-gray-800 text-lg mb-3 leading-snug line-clamp-2 group-hover:text-emerald-700 transition-colors">
-                                {{ $item['judul'] }}
+                                {{ $item->judul }}
                             </h3>
 
                             <div class="mt-auto pt-4 border-t border-gray-50">
                                 <p class="text-sm text-gray-500 mb-1">Nilai Anggaran:</p>
                                 <p class="text-lg font-bold text-emerald-600 mb-4">
-                                    Rp {{ number_format($item['anggaran'], 0, ',', '.') }}
+                                    Rp {{ number_format($item->anggaran, 0, ',', '.') }}
                                 </p>
-
-                                {{-- PERBAIKAN: Menggunakan $loop->index untuk memanggil modal, bukan object item --}}
                                 <button onclick="openDetailModal({{ $loop->index }})"
                                     class="w-full bg-white border border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white font-semibold py-2.5 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer">
                                     <span>Lihat Rincian</span>
@@ -389,63 +282,55 @@
                         <p class="text-lg">Tidak ada data pembangunan ditemukan.</p>
                     </div>
                 @endforelse
-
             </div>
 
             {{-- PAGINATION --}}
-            @if ($totalPages > 1)
+            @if ($items->hasPages())
                 <div class="mt-12 flex justify-center gap-2">
-                    @if ($page > 1)
-                        <a href="?page={{ $page - 1 }}{{ $selectedDesa ? '&desa=' . $selectedDesa : '' }}"
-                            class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 hover:bg-gray-50 text-gray-600 transition">
-                            &laquo;
-                        </a>
+                    @if (!$items->onFirstPage())
+                        <a href="{{ $items->previousPageUrl() }}"
+                            class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 hover:bg-gray-50 text-gray-600 transition cursor-pointer">&laquo;</a>
                     @endif
-
-                    @for ($i = 1; $i <= $totalPages; $i++)
-                        <a href="?page={{ $i }}{{ $selectedDesa ? '&desa=' . $selectedDesa : '' }}"
-                            class="w-10 h-10 flex items-center justify-center rounded-lg border {{ $i == $page ? 'bg-emerald-600 border-emerald-600 text-white shadow-md' : 'border-gray-300 hover:bg-gray-50 text-gray-600' }} transition font-medium">
-                            {{ $i }}
+                    @foreach ($items->getUrlRange(1, $items->lastPage()) as $page => $url)
+                        <a href="{{ $url }}"
+                            class="w-10 h-10 flex items-center justify-center rounded-lg border {{ $page == $items->currentPage() ? 'bg-emerald-600 border-emerald-600 text-white shadow-md' : 'border-gray-300 hover:bg-gray-50 text-gray-600' }} transition font-medium cursor-pointer">
+                            {{ $page }}
                         </a>
-                    @endfor
-
-                    @if ($page < $totalPages)
-                        <a href="?page={{ $page + 1 }}{{ $selectedDesa ? '&desa=' . $selectedDesa : '' }}"
-                            class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 hover:bg-gray-50 text-gray-600 transition">
-                            &raquo;
-                        </a>
+                    @endforeach
+                    @if ($items->hasMorePages())
+                        <a href="{{ $items->nextPageUrl() }}"
+                            class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 hover:bg-gray-50 text-gray-600 transition cursor-pointer">&raquo;</a>
                     @endif
                 </div>
             @endif
-
         </div>
     </div>
 
-
-    {{-- 
-        =============================================
-        MODAL DETAIL (Glassmorphism Style)
-        ============================================= 
-    --}}
+    {{-- MODAL DETAIL --}}
     <div id="detailModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog"
         aria-modal="true">
-        <!-- Backdrop Blur -->
-        <div class="fixed inset-0 bg-gray-900 bg-opacity-60 backdrop-blur-sm transition-opacity opacity-0"
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-gray-900 bg-opacity-75 backdrop-blur-sm transition-opacity opacity-0"
             id="modalBackdrop"></div>
 
         <div class="fixed inset-0 z-10 overflow-y-auto">
             <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
-
+                <!-- Modal Panel -->
                 <div id="modalPanel"
-                    class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-2xl opacity-0 translate-y-4 scale-95">
+                    class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-3xl opacity-0 translate-y-4 scale-95">
 
                     <!-- Header Modal -->
-                    <div class="bg-emerald-600 px-4 py-4 sm:px-6 flex justify-between items-center">
-                        <h3 class="text-lg font-semibold leading-6 text-white" id="modalTitle">Detail Pembangunan</h3>
+                    <div
+                        class="bg-gradient-to-r from-emerald-600 to-emerald-800 px-6 py-5 flex justify-between items-center border-b border-emerald-500">
+                        <div class="flex flex-col text-left">
+                            <h3 class="text-xl font-bold text-white tracking-wide" id="modalTitle">Detail Pembangunan</h3>
+                            <p class="text-emerald-100 text-sm mt-1" id="modalSubtitle">Informasi Transparansi Dana Desa
+                            </p>
+                        </div>
                         <button type="button" onclick="closeDetailModal()"
-                            class="rounded-md bg-emerald-700 text-emerald-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white p-1">
+                            class="rounded-full bg-white/20 p-2 text-white hover:bg-white/40 focus:outline-none transition cursor-pointer">
                             <span class="sr-only">Close</span>
-                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
@@ -453,54 +338,63 @@
                     </div>
 
                     <!-- Body Modal -->
-                    <div class="px-4 py-5 sm:p-6 max-h-[70vh] overflow-y-auto custom-scroll" id="modalContent">
+                    <div class="px-6 py-6 max-h-[75vh] overflow-y-auto custom-scroll" id="modalContent">
                         <!-- Content Injected via JS -->
                     </div>
 
                     <!-- Footer Modal -->
-                    <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 border-t border-gray-100">
+                    <div class="bg-gray-50 px-6 py-4 flex flex-row-reverse border-t border-gray-200">
                         <button type="button" onclick="closeDetailModal()"
-                            class="mt-3 inline-flex w-full justify-center rounded-lg bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
+                            class="inline-flex w-full justify-center rounded-lg bg-white px-5 py-2.5 text-sm font-bold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-100 sm:w-auto transition cursor-pointer">
                             Tutup
                         </button>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
-    {{-- 
-        =============================================
-        JAVASCRIPT LOGIC
-        ============================================= 
-    --}}
+    {{-- SCRIPTS --}}
     <script>
-        // PERBAIKAN UTAMA: Menyimpan data PHP ke variabel JS global
-        const pageData = @json($items);
+        // Data dari Laravel
+        const pageData = @json($items->items());
+        const storageBaseUrl = "{{ asset('storage') }}/";
 
+        // ============================================
+        // 1. SKELETON LOADING LOGIC
+        // ============================================
         document.addEventListener("DOMContentLoaded", () => {
             const grid = document.getElementById("gridContainer");
             const skeletonTemplate = document.getElementById("skeletonTemplate");
             const realCards = document.querySelectorAll(".real-content");
 
-            // 1. Inject Skeletons
-            realCards.forEach(() => {
-                grid.appendChild(skeletonTemplate.content.cloneNode(true));
-            });
+            // Hanya jalankan jika ada data
+            if (realCards.length > 0) {
+                // Tampilkan Skeleton
+                realCards.forEach(() => {
+                    grid.appendChild(skeletonTemplate.content.cloneNode(true));
+                });
 
-            // 2. Simulate Loading then Switch
-            setTimeout(() => {
-                const skeletons = document.querySelectorAll(".animate-shimmer").forEach(el => {
-                    el.closest('.bg-white').remove();
-                });
-                realCards.forEach(c => {
-                    c.classList.remove("hidden");
-                    void c.offsetWidth;
-                });
-            }, 800);
+                // Simulate Loading
+                setTimeout(() => {
+                    // Hapus Skeleton
+                    document.querySelectorAll(".skeleton-card").forEach(el => el.remove());
+                    // Munculkan Real Content
+                    realCards.forEach(c => {
+                        c.classList.remove("hidden");
+                        void c.offsetWidth; // Trigger reflow animation
+                    });
+                }, 800);
+            } else {
+                // Jika kosong
+                const emptyState = document.querySelector(".real-content");
+                if (emptyState) emptyState.classList.remove("hidden");
+            }
         });
 
+        // ============================================
+        // 2. UTILITIES
+        // ============================================
         const formatRupiah = (number) => {
             return new Intl.NumberFormat('id-ID', {
                 style: 'currency',
@@ -509,11 +403,11 @@
             }).format(number);
         }
 
-        // Fungsi sekarang menerima INDEX array, bukan objek item langsung
+        // ============================================
+        // 3. MODAL LOGIC
+        // ============================================
         function openDetailModal(index) {
-            // Ambil data dari variabel global berdasarkan index
             const item = pageData[index];
-
             if (!item) return;
 
             const modal = document.getElementById('detailModal');
@@ -521,67 +415,113 @@
             const panel = document.getElementById('modalPanel');
             const content = document.getElementById('modalContent');
             const title = document.getElementById('modalTitle');
+            const subtitle = document.getElementById('modalSubtitle');
 
-            // Set Title
-            title.innerText = "Detail: " + item.judul;
+            // Set Header
+            title.innerText = item.judul;
+            subtitle.innerText = `TA ${item.tahun} - ${item.sumber_dana}`;
 
-            // HTML Structure for Modal Content
-            let html = `
-                <div class="space-y-6">
-                    <!-- Info Grid -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6 text-sm">
-                        <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
-                            <span class="block text-gray-500 text-xs uppercase mb-1">Desa / Lokasi</span>
-                            <span class="font-semibold text-gray-900">${item.desa} / ${item.lokasi}</span>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
-                            <span class="block text-gray-500 text-xs uppercase mb-1">Anggaran</span>
-                            <span class="font-semibold text-emerald-600 text-base">${formatRupiah(item.anggaran)}</span>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
-                            <span class="block text-gray-500 text-xs uppercase mb-1">Volume</span>
-                            <span class="font-semibold text-gray-900">${item.volume}</span>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
-                            <span class="block text-gray-500 text-xs uppercase mb-1">Sumber Dana</span>
-                            <span class="font-semibold text-gray-900">${item.sumber_dana} (${item.tahun})</span>
-                        </div>
-                        <div class="col-span-1 sm:col-span-2 bg-gray-50 p-3 rounded-lg border border-gray-100">
-                            <span class="block text-gray-500 text-xs uppercase mb-1">Pelaksana</span>
-                            <span class="font-semibold text-gray-900">${item.pelaksana}</span>
-                        </div>
-                         <div class="col-span-1 sm:col-span-2">
-                            <span class="block text-gray-500 text-xs uppercase mb-1">Keterangan / Progres</span>
-                            <p class="text-gray-700 leading-relaxed bg-blue-50 p-3 rounded-lg border border-blue-100 text-blue-800">
-                                ${item.keterangan}
-                            </p>
-                        </div>
-                    </div>
+            // Lock Scroll Body
+            document.body.classList.add('modal-open');
 
-                    <!-- Gallery -->
-                    <div>
-                        <h4 class="font-bold text-gray-800 mb-3 flex items-center gap-2">
+            // --- Logic Gambar ---
+            let galleryHtml = '';
+            let photos = [];
+
+            // Parsing Data Foto dengan aman
+            if (Array.isArray(item.foto)) {
+                photos = item.foto;
+            } else if (typeof item.foto === 'string') {
+                try {
+                    photos = JSON.parse(item.foto);
+                } catch (e) {
+                    photos = [];
+                }
+            }
+
+            if (photos && photos.length > 0) {
+                const photoElements = photos.map(path => {
+                    // Combine Base URL + Path
+                    const fullSrc = path.startsWith('http') ? path : storageBaseUrl + path;
+
+                    return `
+                        <div class="group relative aspect-video overflow-hidden rounded-xl bg-gray-100 cursor-pointer shadow-sm border border-gray-200 hover:shadow-lg transition ring-0 hover:ring-2 hover:ring-emerald-500" onclick="zoomImage('${fullSrc}')">
+                            <img src="${fullSrc}" 
+                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                                 alt="Dokumentasi"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=Error'">
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <span class="bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition duration-300">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                galleryHtml = `
+                    <div class="mt-8 pt-6 border-t border-gray-100">
+                        <h4 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4 flex items-center gap-2">
                             <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                             Dokumentasi Kegiatan
                         </h4>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                            ${item.foto.map(img => `
-                                                                    <div class="group relative aspect-square overflow-hidden rounded-xl bg-gray-200 cursor-pointer shadow-sm hover:shadow-md transition" onclick="zoomImage('${img}')">
-                                                                        <img src="${img}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.onerror=null; this.src='https://placehold.co/300?text=No+Img'">
-                                                                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
-                                                                            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
-                                                                        </div>
-                                                                    </div>
-                                                                `).join('')}
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            ${photoElements}
+                        </div>
+                    </div>`;
+            } else {
+                galleryHtml =
+                    `<div class="mt-8 pt-6 border-t border-gray-100 text-center"><p class="text-gray-400 text-sm italic py-4">Belum ada dokumentasi foto.</p></div>`;
+            }
+
+            // HTML Builder
+            let html = `
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-5">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Desa & Lokasi</label>
+                                <div class="font-semibold text-gray-800 text-lg border-l-4 border-emerald-500 pl-3">
+                                    ${item.desa} <span class="text-gray-400 font-normal">/</span> ${item.lokasi}
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Volume</label>
+                                <div class="font-medium text-gray-700 bg-gray-50 px-3 py-2 rounded-lg inline-block border border-gray-200">${item.volume}</div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Pelaksana</label>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-xs">${item.pelaksana.charAt(0)}</div>
+                                    <span class="font-semibold text-gray-700">${item.pelaksana}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-5">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Anggaran</label>
+                                <div class="font-bold text-2xl text-emerald-600 tracking-tight">${formatRupiah(item.anggaran)}</div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Sumber Dana</label>
+                                <div class="font-medium text-gray-700">${item.sumber_dana}</div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Status</label>
+                                <div class="${item.status_color} inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide border border-current opacity-90">
+                                    <span class="w-2 h-2 rounded-full bg-current mr-2 animate-pulse"></span>
+                                    ${item.status} (${item.keterangan || '-'})
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    ${galleryHtml}
                 </div>
             `;
 
             content.innerHTML = html;
             modal.classList.remove('hidden');
 
-            // Animation In
             setTimeout(() => {
                 backdrop.classList.remove('opacity-0');
                 panel.classList.remove('opacity-0', 'translate-y-4', 'scale-95');
@@ -594,27 +534,32 @@
             const backdrop = document.getElementById('modalBackdrop');
             const panel = document.getElementById('modalPanel');
 
-            // Animation Out
+            document.body.classList.remove('modal-open'); // Unlock Scroll
+
             backdrop.classList.add('opacity-0');
             panel.classList.remove('opacity-100', 'translate-y-0', 'scale-100');
             panel.classList.add('opacity-0', 'translate-y-4', 'scale-95');
 
             setTimeout(() => {
                 modal.classList.add('hidden');
-            }, 300); // Wait for transition
+            }, 300);
         }
 
         function zoomImage(src) {
+            document.body.classList.add('modal-open');
+
             const overlay = document.createElement('div');
             overlay.className =
-                "fixed inset-0 bg-black bg-opacity-95 flex items-center justify-center z-[100] p-4 opacity-0 transition-opacity duration-300";
+                "fixed inset-0 bg-black/95 backdrop-blur-md flex items-center justify-center z-[60] p-4 opacity-0 transition-opacity duration-300 cursor-zoom-out";
             overlay.innerHTML = `
-                <img src="${src}" class="max-w-full max-h-[90vh] rounded-lg shadow-2xl transform scale-95 transition-transform duration-300" onerror="this.src='https://placehold.co/600x400?text=Image+Error'">
-                <button class="absolute top-4 right-4 text-white hover:text-gray-300">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
+                <div class="relative max-w-5xl w-full flex justify-center">
+                    <img src="${src}" class="max-w-full max-h-[85vh] rounded-lg shadow-2xl transform scale-95 transition-transform duration-300 object-contain">
+                    <button class="absolute -top-12 right-0 text-white hover:text-emerald-400 transition p-2 cursor-pointer">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                    <p class="absolute -bottom-10 text-gray-400 text-sm">Klik di mana saja untuk menutup</p>
+                </div>
             `;
-
             document.body.appendChild(overlay);
 
             requestAnimationFrame(() => {
@@ -630,18 +575,15 @@
             };
         }
     </script>
+
+    {{-- PARTICLE SCRIPT --}}
     <script>
-        // --- PARTICLE ANIMATION LOGIC ---
         (function() {
             const canvas = document.getElementById('particleCanvas');
             const ctx = canvas.getContext('2d');
             let width, height;
             let particles = [];
-
-            // Konfigurasi Kepadatan dan Jarak
-            // Semakin besar angka divider, semakin sedikit partikel (semakin renggang)
             const particleDensityDivider = 25000;
-            // Jarak maksimal untuk menarik garis antar titik
             const connectionDistance = 150;
 
             function resize() {
@@ -653,25 +595,19 @@
                 constructor() {
                     this.x = Math.random() * width;
                     this.y = Math.random() * height;
-                    // Kecepatan sangat lambat agar santai
                     this.vx = (Math.random() - 0.5) * 0.3;
                     this.vy = (Math.random() - 0.5) * 0.3;
-                    this.size = Math.random() * 2 + 1; // Ukuran titik variatif
+                    this.size = Math.random() * 2 + 1;
                 }
-
                 update() {
                     this.x += this.vx;
                     this.y += this.vy;
-
-                    // Bounce off edges
                     if (this.x < 0 || this.x > width) this.vx *= -1;
                     if (this.y < 0 || this.y > height) this.vy *= -1;
                 }
-
                 draw() {
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    // Warna titik hijau pudar
                     ctx.fillStyle = 'rgba(16, 185, 129, 0.6)';
                     ctx.fill();
                 }
@@ -680,29 +616,22 @@
             function initParticles() {
                 particles = [];
                 const numberOfParticles = (width * height) / particleDensityDivider;
-                for (let i = 0; i < numberOfParticles; i++) {
-                    particles.push(new Particle());
-                }
+                for (let i = 0; i < numberOfParticles; i++) particles.push(new Particle());
             }
 
             function animate() {
                 ctx.clearRect(0, 0, width, height);
-
                 for (let i = 0; i < particles.length; i++) {
                     particles[i].update();
                     particles[i].draw();
-
-                    // Cek jarak dengan partikel lain untuk menggambar garis
                     for (let j = i; j < particles.length; j++) {
                         const dx = particles[i].x - particles[j].x;
                         const dy = particles[i].y - particles[j].y;
                         const distance = Math.sqrt(dx * dx + dy * dy);
-
                         if (distance < connectionDistance) {
                             ctx.beginPath();
-                            // Semakin jauh, garis semakin transparan
                             const opacity = 1 - (distance / connectionDistance);
-                            ctx.strokeStyle = 'rgba(16, 185, 129, ' + (opacity * 0.5) + ')'; // Line color sangat tipis
+                            ctx.strokeStyle = 'rgba(16, 185, 129, ' + (opacity * 0.5) + ')';
                             ctx.lineWidth = 1.5;
                             ctx.moveTo(particles[i].x, particles[i].y);
                             ctx.lineTo(particles[j].x, particles[j].y);
@@ -712,12 +641,10 @@
                 }
                 requestAnimationFrame(animate);
             }
-
             window.addEventListener('resize', () => {
                 resize();
                 initParticles();
             });
-
             resize();
             initParticles();
             animate();

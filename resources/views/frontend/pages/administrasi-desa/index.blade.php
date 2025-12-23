@@ -27,7 +27,26 @@
         .animate-fadeIn {
             animation: fadeInOut 2.8s ease-in-out;
         }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
     </style>
+
     <!-- Gunakan bg-gray-50 agar kontras dengan kartu putih -->
     <div class="content-offset bg-gray-100 min-h-screen relative">
         {{-- Canvas ini diposisikan fixed di belakang konten --}}
@@ -91,15 +110,13 @@
                 <!-- Grid Layanan -->
                 <div id="layananContainer" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     @foreach ($layanan as $item)
-                        <!-- Card Item -->
-                        <div class="layananCard group h-full" data-id="{{ $item['id'] }}"
-                            data-nama="{{ strtolower($item['nama']) }}" data-kategori="{{ $item['kategori'] }}"
-                            onclick="openModal('{{ $item['id'] }}')">
+                        <div class="layananCard group h-full" data-id="{{ $item->id }}"
+                            data-nama="{{ strtolower($item->nama) }}" data-kategori="{{ $item->kategori }}"
+                            onclick="openModal('{{ $item->id }}')">
 
                             <div
                                 class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer h-full flex flex-col relative overflow-hidden">
 
-                                <!-- Decorative colored top bar on hover -->
                                 <div
                                     class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300">
                                 </div>
@@ -111,18 +128,17 @@
                                     </div>
                                     <span
                                         class="px-3 py-1 text-xs font-medium text-emerald-700 bg-emerald-100 rounded-full">
-                                        {{-- Jika ada nama kategori di array layanan, tampilkan disini. Jika tidak, pakai ID --}}
-                                        {{ $kategori[$item['kategori']] ?? 'Umum' }}
+                                        {{ $kategori[$item->kategori] ?? 'Umum' }}
                                     </span>
                                 </div>
 
                                 <h3
                                     class="text-lg font-bold text-gray-800 mb-2 group-hover:text-emerald-600 transition-colors line-clamp-2">
-                                    {{ $item['nama'] }}
+                                    {{ $item->nama }}
                                 </h3>
 
                                 <p class="text-gray-500 text-sm leading-relaxed mb-4 flex-grow line-clamp-3">
-                                    {{ $item['deskripsi'] }}
+                                    {{ $item->deskripsi }}
                                 </p>
 
                                 <div
@@ -143,127 +159,135 @@
                     <h3 class="text-lg font-semibold text-gray-600">Layanan tidak ditemukan</h3>
                     <p class="text-gray-400">Coba kata kunci lain atau ganti kategori.</p>
                 </div>
-
             </div>
         </section>
 
-        <!-- MODAL DETAIL -->
+        <!-- MODALS -->
         @foreach ($layanan as $item)
-            <div id="modal-{{ $item['id'] }}" class="fixed inset-0 z-[9999] hidden" aria-labelledby="modal-title"
+            {{-- Penyiapan Teks Copy Data --}}
+            @php
+                $textToCopy = '*' . strtoupper($item->nama) . "*\n\n";
+                $textToCopy .= $item->deskripsi . "\n\n";
+
+                $textToCopy .= "*SYARAT DOKUMEN:*\n";
+                if (is_array($item->syarat) || is_object($item->syarat)) {
+                    foreach ($item->syarat as $s) {
+                        $textToCopy .= '✅ ' . $s . "\n";
+                    }
+                }
+
+                $textToCopy .= "\n*ALUR PROSEDUR:*\n";
+                if (is_array($item->prosedur) || is_object($item->prosedur)) {
+                    foreach ($item->prosedur as $idx => $p) {
+                        $textToCopy .= $idx + 1 . '. ' . $p . "\n";
+                    }
+                }
+
+                $textToCopy .= "\n_Informasi dari Website $aplikasi->nama_desa._";
+            @endphp
+
+            <div id="modal-{{ $item->id }}" class="fixed inset-0 z-[9999] hidden" aria-labelledby="modal-title"
                 role="dialog" aria-modal="true">
 
-                <!-- Backdrop with blur -->
-                <div class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity opacity-0"
-                    id="backdrop-{{ $item['id'] }}" onclick="closeModal('{{ $item['id'] }}')"></div>
+                <!-- Backdrop -->
+                <div class="fixed inset-0 bg-gray-900/70 backdrop-blur-sm transition-opacity opacity-0"
+                    id="backdrop-{{ $item->id }}" onclick="closeModal('{{ $item->id }}')"></div>
 
+                <!-- Modal Panel -->
                 <div class="fixed inset-0 z-10 overflow-y-auto">
                     <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
 
-                        <!-- Modal Content -->
-                        <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-2xl opacity-0 scale-95"
-                            id="content-{{ $item['id'] }}">
+                        <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 w-full max-w-lg md:max-w-2xl opacity-0 scale-95"
+                            id="content-{{ $item->id }}">
 
-                            <!-- Header Modal -->
-                            <div class="bg-gray-50 px-6 py-5 border-b border-gray-100 flex justify-between items-center">
-                                <h2 class="text-xl font-bold text-gray-800 pr-8 leading-snug">{{ $item['nama'] }}</h2>
-                                <button onclick="closeModal('{{ $item['id'] }}')"
-                                    class="text-gray-400 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50">
-                                    <i class="bi bi-x-lg text-lg"></i>
-                                </button>
+                            <!-- 1. Header dengan Aksen Warna -->
+                            <div class="relative bg-white px-6 py-6 border-b border-gray-100">
+                                <div
+                                    class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-emerald-500 to-teal-400">
+                                </div>
+
+                                <div class="flex justify-between items-start mt-2">
+                                    <div>
+                                        <span
+                                            class="inline-block px-3 py-1 mb-2 text-xs font-bold tracking-wide text-emerald-600 uppercase bg-emerald-50 rounded-full">
+                                            Layanan Desa
+                                        </span>
+                                        <h2 class="text-2xl font-bold text-gray-800 leading-tight">{{ $item->nama }}</h2>
+                                    </div>
+                                    <button onclick="closeModal('{{ $item->id }}')"
+                                        class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-full transition-all cursor-pointer">
+                                        <i class="bi bi-x-lg text-xl"></i>
+                                    </button>
+                                </div>
+                                <p class="mt-2 text-gray-500 text-sm leading-relaxed">{{ $item->deskripsi }}</p>
                             </div>
 
-                            <!-- Body Modal -->
-                            <div class="px-6 py-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
+                            <!-- 2. Body Scrollable -->
+                            <div class="px-6 py-6 max-h-[65vh] overflow-y-auto custom-scrollbar space-y-6">
 
-                                <!-- Syarat Section -->
-                                <div class="mb-8">
-                                    <h3 class="flex items-center text-md font-bold text-gray-800 mb-4">
+                                <!-- Section: Syarat -->
+                                <div class="bg-amber-50 rounded-xl p-5 border border-amber-100">
+                                    <h3 class="flex items-center text-lg font-bold text-gray-800 mb-4">
                                         <span
-                                            class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-3 text-sm">
-                                            <i class="bi bi-folder2-open"></i>
+                                            class="w-8 h-8 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mr-3">
+                                            <i class="bi bi-file-earmark-check"></i>
                                         </span>
                                         Syarat Dokumen
                                     </h3>
-                                    <ul class="grid gap-2">
-                                        @foreach ($item['syarat'] as $s)
-                                            <li
-                                                class="flex items-start bg-blue-50/50 p-3 rounded-lg border border-blue-100/50">
-                                                <i
-                                                    class="bi bi-check-circle-fill text-blue-500 mt-1 mr-3 flex-shrink-0"></i>
-                                                <span class="text-gray-700 text-sm">{{ $s }}</span>
-                                            </li>
-                                        @endforeach
+                                    <ul class="space-y-3">
+                                        @if (is_array($item->syarat) || is_object($item->syarat))
+                                            @foreach ($item->syarat as $s)
+                                                <li class="flex items-start">
+                                                    <i
+                                                        class="bi bi-check-circle-fill text-amber-500 mt-0.5 mr-3 flex-shrink-0 text-lg"></i>
+                                                    <span
+                                                        class="text-gray-700 text-sm font-medium">{{ $s }}</span>
+                                                </li>
+                                            @endforeach
+                                        @endif
                                     </ul>
                                 </div>
 
-                                <!-- Prosedur Section -->
-                                <div>
-                                    <h3 class="flex items-center text-md font-bold text-gray-800 mb-4">
+                                <!-- Section: Prosedur -->
+                                <div class="bg-emerald-50 rounded-xl p-5 border border-emerald-100">
+                                    <h3 class="flex items-center text-lg font-bold text-gray-800 mb-4">
                                         <span
-                                            class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mr-3 text-sm">
+                                            class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mr-3">
                                             <i class="bi bi-diagram-3"></i>
                                         </span>
-                                        Alur Prosedur
+                                        Alur & Prosedur
                                     </h3>
-                                    <ol class="relative border-l border-emerald-200 ml-3 space-y-6">
-                                        @foreach ($item['prosedur'] as $index => $p)
-                                            <li class="ml-6">
-                                                <span
-                                                    class="absolute flex items-center justify-center w-6 h-6 bg-emerald-100 rounded-full -left-3 ring-4 ring-white">
+                                    <ol class="relative border-l-2 border-emerald-200 ml-3 space-y-6">
+                                        @if (is_array($item->prosedur) || is_object($item->prosedur))
+                                            @foreach ($item->prosedur as $index => $p)
+                                                <li class="ml-6">
                                                     <span
-                                                        class="text-xs text-emerald-600 font-bold">{{ $index + 1 }}</span>
-                                                </span>
-                                                <p class="text-sm text-gray-600 leading-relaxed bg-white">
-                                                    {{ $p }}</p>
-                                            </li>
-                                        @endforeach
+                                                        class="absolute flex items-center justify-center w-7 h-7 bg-white border-2 border-emerald-500 rounded-full -left-[15px]">
+                                                        <span
+                                                            class="text-xs text-emerald-700 font-bold">{{ $index + 1 }}</span>
+                                                    </span>
+                                                    <p class="text-sm text-gray-700 leading-relaxed font-medium">
+                                                        {{ $p }}
+                                                    </p>
+                                                </li>
+                                            @endforeach
+                                        @endif
                                     </ol>
                                 </div>
-
                             </div>
 
-                            <!-- Footer / Share -->
-                            <div class="bg-gray-50 px-6 py-4 border-t border-gray-100">
-                                <p class="text-center text-xs text-gray-400 mb-3 font-medium uppercase tracking-wider">
-                                    Bagikan Informasi Ini</p>
+                            <!-- 3. Footer: Tombol Copy Data -->
+                            <div class="bg-gray-50 px-6 py-4 border-t border-gray-100 flex justify-end">
+                                <button type="button" onclick="copyData(this)" data-text="{{ $textToCopy }}"
+                                    class="cursor-pointer w-full sm:w-auto flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-md active:scale-95 group">
 
-                                @php
-                                    $url = urlencode(url()->current());
-                                    $text = urlencode('Info Layanan Desa: ' . $item['nama']);
-                                @endphp
+                                    <!-- Icon Clipboard (Hapus group-hover:hidden agar tidak hilang saat disorot) -->
+                                    <i class="bi bi-clipboard text-lg default-icon"></i>
+                                    <!-- Icon Checklis (Hidden by default) -->
+                                    <i class="bi bi-check-lg hidden success-icon text-lg"></i>
 
-                                <div class="flex justify-center gap-2">
-                                    <a href="https://api.whatsapp.com/send?text={{ $text }}%20{{ $url }}"
-                                        target="_blank"
-                                        class="w-10 h-10 flex items-center justify-center rounded-full bg-green-500 text-white hover:bg-green-600 hover:-translate-y-1 transition-all shadow-sm"
-                                        title="WhatsApp">
-                                        <i class="bi bi-whatsapp"></i>
-                                    </a>
-                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ $url }}"
-                                        target="_blank"
-                                        class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 text-white hover:bg-blue-700 hover:-translate-y-1 transition-all shadow-sm"
-                                        title="Facebook">
-                                        <i class="bi bi-facebook"></i>
-                                    </a>
-                                    <div class="flex justify-center gap-2 relative">
-                                        <button onclick="copyLink('{{ url()->current() }}', '{{ $item['id'] }}')"
-                                            class="w-10 cursor-pointer h-10 flex items-center justify-center rounded-full bg-gray-200 text-gray-600 hover:bg-gray-300 hover:-translate-y-1 transition-all shadow-sm"
-                                            title="Copy Link">
-                                            <i class="bi bi-link-45deg text-lg"></i>
-                                        </button>
-
-                                        <div id="copyAlert-{{ $item['id'] }}"
-                                            class="hidden absolute bottom-[-35px] bg-green-600 text-white px-3 py-1 rounded text-sm shadow-md animate-fadeIn">
-                                            Link tersalin!
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div id="copyAlert-{{ $item['id'] }}"
-                                    class="hidden mt-2 text-center text-xs text-emerald-600 font-medium animate-pulse">
-                                    Link berhasil disalin!
-                                </div>
+                                    <span class="btn-text">Salin Info Lengkap</span>
+                                </button>
                             </div>
 
                         </div>
@@ -274,17 +298,12 @@
 
         <!-- SCRIPT -->
         <script>
-            // --- PARTICLE ANIMATION LOGIC ---
+            // --- PARTICLE ANIMATION LOGIC (TETAP SAMA) ---
             (function() {
                 const canvas = document.getElementById('particleCanvas');
                 const ctx = canvas.getContext('2d');
-                let width, height;
-                let particles = [];
-
-                // Konfigurasi Kepadatan dan Jarak
-                // Semakin besar angka divider, semakin sedikit partikel (semakin renggang)
+                let width, height, particles = [];
                 const particleDensityDivider = 25000;
-                // Jarak maksimal untuk menarik garis antar titik
                 const connectionDistance = 150;
 
                 function resize() {
@@ -296,25 +315,19 @@
                     constructor() {
                         this.x = Math.random() * width;
                         this.y = Math.random() * height;
-                        // Kecepatan sangat lambat agar santai
                         this.vx = (Math.random() - 0.5) * 0.3;
                         this.vy = (Math.random() - 0.5) * 0.3;
-                        this.size = Math.random() * 2 + 1; // Ukuran titik variatif
+                        this.size = Math.random() * 2 + 1;
                     }
-
                     update() {
                         this.x += this.vx;
                         this.y += this.vy;
-
-                        // Bounce off edges
                         if (this.x < 0 || this.x > width) this.vx *= -1;
                         if (this.y < 0 || this.y > height) this.vy *= -1;
                     }
-
                     draw() {
                         ctx.beginPath();
                         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                        // Warna titik hijau pudar
                         ctx.fillStyle = 'rgba(16, 185, 129, 0.6)';
                         ctx.fill();
                     }
@@ -323,29 +336,22 @@
                 function initParticles() {
                     particles = [];
                     const numberOfParticles = (width * height) / particleDensityDivider;
-                    for (let i = 0; i < numberOfParticles; i++) {
-                        particles.push(new Particle());
-                    }
+                    for (let i = 0; i < numberOfParticles; i++) particles.push(new Particle());
                 }
 
                 function animate() {
                     ctx.clearRect(0, 0, width, height);
-
                     for (let i = 0; i < particles.length; i++) {
                         particles[i].update();
                         particles[i].draw();
-
-                        // Cek jarak dengan partikel lain untuk menggambar garis
                         for (let j = i; j < particles.length; j++) {
                             const dx = particles[i].x - particles[j].x;
                             const dy = particles[i].y - particles[j].y;
                             const distance = Math.sqrt(dx * dx + dy * dy);
-
                             if (distance < connectionDistance) {
                                 ctx.beginPath();
-                                // Semakin jauh, garis semakin transparan
                                 const opacity = 1 - (distance / connectionDistance);
-                                ctx.strokeStyle = 'rgba(16, 185, 129, ' + (opacity * 0.5) + ')'; // Line color sangat tipis
+                                ctx.strokeStyle = 'rgba(16, 185, 129, ' + (opacity * 0.5) + ')';
                                 ctx.lineWidth = 1.5;
                                 ctx.moveTo(particles[i].x, particles[i].y);
                                 ctx.lineTo(particles[j].x, particles[j].y);
@@ -360,20 +366,21 @@
                     resize();
                     initParticles();
                 });
-
                 resize();
                 initParticles();
                 animate();
             })();
 
+            // --- MODAL FUNCTIONS ---
             function openModal(id) {
                 const modal = document.getElementById('modal-' + id);
                 const backdrop = document.getElementById('backdrop-' + id);
                 const content = document.getElementById('content-' + id);
 
-                modal.classList.remove('hidden');
+                // === PERBAIKAN: Kunci scroll body saat modal terbuka ===
+                document.body.classList.add('overflow-hidden');
 
-                // Animation In
+                modal.classList.remove('hidden');
                 setTimeout(() => {
                     backdrop.classList.remove('opacity-0');
                     content.classList.remove('opacity-0', 'scale-95');
@@ -386,36 +393,91 @@
                 const backdrop = document.getElementById('backdrop-' + id);
                 const content = document.getElementById('content-' + id);
 
-                // Animation Out
+                // === PERBAIKAN: Kembalikan scroll body saat modal tertutup ===
+                document.body.classList.remove('overflow-hidden');
+
                 backdrop.classList.add('opacity-0');
                 content.classList.remove('opacity-100', 'scale-100');
                 content.classList.add('opacity-0', 'scale-95');
-
                 setTimeout(() => {
                     modal.classList.add('hidden');
-                    // Hide copy alert when closed
-                    document.getElementById('copyAlert-' + id).classList.add('hidden');
-                }, 300); // Wait for transition
+                }, 300);
             }
 
-            function copyLink(link, id) {
-                navigator.clipboard.writeText(link);
+            // --- ROBUST COPY FUNCTION (Support HTTP & HTTPS) ---
+            function copyData(button) {
+                const textToCopy = button.getAttribute('data-text');
 
-                const alertBox = document.getElementById('copyAlert-' + id);
+                // Fungsi fallback untuk browser lama atau non-secure context (HTTP)
+                function fallbackCopyTextToClipboard(text) {
+                    var textArea = document.createElement("textarea");
+                    textArea.value = text;
+                    textArea.style.top = "0";
+                    textArea.style.left = "0";
+                    textArea.style.position = "fixed"; // Hindari scrolling
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
 
-                alertBox.classList.remove('hidden');
+                    try {
+                        var successful = document.execCommand('copy');
+                        if (successful) {
+                            showSuccessState(button);
+                        } else {
+                            alert('Gagal menyalin teks.');
+                        }
+                    } catch (err) {
+                        console.error('Fallback: Oops, unable to copy', err);
+                        alert('Gagal menyalin teks.');
+                    }
 
-                // reset animasi biar muncul terus setiap klik
-                alertBox.classList.remove('animate-fadeIn');
-                void alertBox.offsetWidth; // trigger reflow
-                alertBox.classList.add('animate-fadeIn');
+                    document.body.removeChild(textArea);
+                }
 
-                // auto hide
+                // Cek apakah navigator.clipboard tersedia
+                if (!navigator.clipboard) {
+                    fallbackCopyTextToClipboard(textToCopy);
+                    return;
+                }
+
+                navigator.clipboard.writeText(textToCopy).then(function() {
+                    showSuccessState(button);
+                }, function(err) {
+                    // Jika gagal pakai API modern, coba fallback
+                    fallbackCopyTextToClipboard(textToCopy);
+                });
+            }
+
+            function showSuccessState(button) {
+                const originalText = "Salin Info Lengkap"; // Teks asli
+                const iconDefault = button.querySelector('.default-icon');
+                const iconSuccess = button.querySelector('.success-icon');
+                const btnText = button.querySelector('.btn-text');
+
+                // 1. Ubah Style Tombol (Gelap)
+                button.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
+                button.classList.add('bg-gray-800', 'text-white', 'scale-95'); // Tambah efek tekan
+
+                // 2. Toggle Icon
+                if (iconDefault) iconDefault.classList.add('hidden');
+                if (iconSuccess) iconSuccess.classList.remove('hidden');
+
+                // 3. Ubah Teks
+                if (btnText) btnText.innerText = "Tersalin!";
+
+                // 4. Reset setelah 2 detik
                 setTimeout(() => {
-                    alertBox.classList.add('hidden');
-                }, 3000);
+                    button.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+                    button.classList.remove('bg-gray-800', 'text-white', 'scale-95');
+
+                    if (iconDefault) iconDefault.classList.remove('hidden');
+                    if (iconSuccess) iconSuccess.classList.add('hidden');
+
+                    if (btnText) btnText.innerText = originalText;
+                }, 2000);
             }
 
+            // --- FILTER SEARCH ---
             function filterLayanan() {
                 let search = document.getElementById('searchInput').value.toLowerCase();
                 let kategori = document.getElementById('kategoriInput').value;
@@ -436,7 +498,6 @@
                     }
                 });
 
-                // Toggle Empty State
                 const emptyState = document.getElementById('emptyState');
                 if (visibleCount === 0) {
                     emptyState.classList.remove('hidden');
@@ -445,25 +506,5 @@
                 }
             }
         </script>
-
-        <!-- CSS Tambahan untuk Scrollbar Modal yang cantik -->
-        <style>
-            .custom-scrollbar::-webkit-scrollbar {
-                width: 6px;
-            }
-
-            .custom-scrollbar::-webkit-scrollbar-track {
-                background: #f1f1f1;
-            }
-
-            .custom-scrollbar::-webkit-scrollbar-thumb {
-                background: #d1d5db;
-                border-radius: 10px;
-            }
-
-            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                background: #9ca3af;
-            }
-        </style>
     </div>
 @endsection

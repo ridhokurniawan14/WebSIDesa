@@ -2,62 +2,54 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Helpers\SeoHelper; // <--- Import Helper
 use App\Http\Controllers\Controller;
+use App\Models\Aplikasi;   // <--- Import Aplikasi (Nama Desa & Logo)
+use App\Models\KarangTaruna;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str; // <--- Import Str
 
 class KarangtarunaController extends Controller
 {
     public function index()
     {
-        $karangtaruna = [
-            'nama' => 'Karang Taruna Desa Maju Jaya',
-            'deskripsi' => 'Organisasi kepemudaan desa yang berperan aktif dalam kegiatan sosial, pengembangan potensi pemuda, dan pembangunan desa.',
+        // 1. Ambil Data Karang Taruna
+        $karangtaruna = KarangTaruna::first();
 
-            'visi' => 'Mewujudkan pemuda desa yang mandiri, kreatif, dan peduli terhadap lingkungan sosial.',
+        // Cek jika data kosong
+        if (!$karangtaruna) {
+            abort(404, 'Data Karang Taruna belum diisi oleh Admin.');
+        }
 
-            'misi' => [
-                'Meningkatkan peran aktif pemuda dalam pembangunan desa',
-                'Mengembangkan kreativitas dan jiwa kewirausahaan pemuda',
-                'Menumbuhkan kepedulian sosial dan solidaritas masyarakat',
-            ],
+        // 2. Ambil Data Aplikasi (Nama Desa & Logo)
+        $aplikasi = Aplikasi::first();
+        $namaDesa = $aplikasi->nama_desa ?? 'Desa';
 
-            'program' => [
-                [
-                    'judul' => 'Pemuda Peduli Lingkungan',
-                    'deskripsi' => 'Kegiatan kebersihan desa, penanaman pohon, dan pengelolaan lingkungan.',
-                    'icon' => '🌱'
-                ],
-                [
-                    'judul' => 'Pelatihan Kewirausahaan',
-                    'deskripsi' => 'Pelatihan usaha kecil, UMKM, dan ekonomi kreatif bagi pemuda.',
-                    'icon' => '💼'
-                ],
-                [
-                    'judul' => 'Olahraga & Seni',
-                    'deskripsi' => 'Turnamen olahraga, seni budaya, dan kreativitas pemuda.',
-                    'icon' => '⚽'
-                ],
-            ],
+        // 3. Logic Image SEO (Smart Thumbnail)
+        // Prioritas: Foto Kegiatan/Struktur Karang Taruna -> Fallback: Logo Desa
+        $seoImage = '';
 
-            'galeri' => [
-                ['judul' => 'Kerja Bakti Desa', 'gambar' => 'karangtaruna1.jpg'],
-                ['judul' => 'Pelatihan Pemuda', 'gambar' => 'karangtaruna2.jpg'],
-                ['judul' => 'Turnamen Olahraga', 'gambar' => 'karangtaruna3.jpg'],
-                ['judul' => 'Kegiatan Sosial', 'gambar' => 'karangtaruna4.jpg'],
-            ],
+        // Cek kolom gambar di DB (sesuaikan jika namanya 'foto' atau 'struktur')
+        if (!empty($karangtaruna->gambar)) {
+            $seoImage = asset('storage/' . $karangtaruna->gambar);
+        } elseif ($aplikasi && !empty($aplikasi->logo)) {
+            $seoImage = asset('storage/' . $aplikasi->logo);
+        }
 
-            'pengurus' => [
-                ['jabatan' => 'Ketua', 'nama' => 'Ahmad Fauzi'],
-                ['jabatan' => 'Sekretaris', 'nama' => 'Siti Rahma'],
-                ['jabatan' => 'Bendahara', 'nama' => 'Rizki Pratama'],
-            ],
+        // 4. Logic Deskripsi
+        // Ambil dari profil/deskripsi, bersihkan HTML, potong 150 huruf
+        $deskripsi = 'Profil Organisasi Kepemudaan Karang Taruna ' . $namaDesa;
 
-            'kontak' => [
-                'telepon' => '0812-3456-7890',
-                'email' => 'karangtaruna@desa.id',
-                'instagram' => 'karangtaruna.desa'
-            ],
-        ];
+        if (!empty($karangtaruna->deskripsi)) { // Sesuaikan nama kolom: deskripsi/profil
+            $deskripsi = Str::limit(strip_tags($karangtaruna->deskripsi), 150);
+        }
+
+        // 5. Set SEO Helper
+        SeoHelper::set(
+            title: 'Karang Taruna - Website Resmi ' . $namaDesa,
+            description: $deskripsi,
+            image: $seoImage
+        );
 
         return view('frontend.pages.karangtaruna.index', compact('karangtaruna'));
     }

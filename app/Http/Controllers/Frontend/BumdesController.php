@@ -2,60 +2,58 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use Illuminate\Http\Request;
+use App\Helpers\SeoHelper; // <--- Import Helper
 use App\Http\Controllers\Controller;
+use App\Models\Aplikasi;   // <--- Import Aplikasi (Nama Desa & Logo)
+use App\Models\Bumdes;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class BumdesController extends Controller
 {
     public function index()
     {
-        $data = [
-            'nama' => 'BUMDes Maju Sejahtera',
-            'slogan' => 'Menggerakkan Ekonomi Desa',
+        // 1. Ambil data
+        $bumdes = Bumdes::first();
 
-            'tentang' => 'Badan Usaha Milik Desa (BUMDes) merupakan lembaga usaha desa yang dikelola secara profesional untuk meningkatkan perekonomian dan kesejahteraan masyarakat desa.',
+        // 2. Cek jika data kosong
+        if (!$bumdes) {
+            return abort(404, 'Data BUMDes belum diisi di database.');
+        }
 
-            'visi' => 'Menjadi penggerak ekonomi desa yang mandiri dan berkelanjutan.',
+        // 3. Ambil Data Aplikasi (Untuk Logo & Nama Desa)
+        $aplikasi = Aplikasi::first();
+        $namaDesa = $aplikasi->nama_desa ?? 'Desa';
 
-            'misi' => [
-                'Mengembangkan potensi ekonomi lokal desa',
-                'Menciptakan lapangan kerja bagi masyarakat',
-                'Meningkatkan pendapatan asli desa',
-                'Mendukung UMKM desa'
-            ],
+        // 4. Logic Image SEO (Smart Thumbnail)
+        // Prioritas: Gambar BUMDes -> Fallback: Logo Desa
+        $seoImage = '';
 
-            'unit_usaha' => [
-                [
-                    'nama' => 'Simpan Pinjam',
-                    'deskripsi' => 'Melayani kebutuhan permodalan masyarakat desa.'
-                ],
-                [
-                    'nama' => 'Perdagangan',
-                    'deskripsi' => 'Pengelolaan usaha jual beli kebutuhan pokok.'
-                ],
-                [
-                    'nama' => 'Jasa',
-                    'deskripsi' => 'Layanan jasa sesuai kebutuhan masyarakat desa.'
-                ],
-                [
-                    'nama' => 'Pengelolaan UMKM',
-                    'deskripsi' => 'Pendampingan dan pemasaran produk UMKM desa.'
-                ],
-            ],
+        // Cek nama kolom gambar di DB Bumdes (misal: 'gambar' atau 'foto')
+        if (!empty($bumdes->gambar)) {
+            $seoImage = asset('storage/' . $bumdes->gambar);
+        } elseif ($aplikasi && !empty($aplikasi->logo)) {
+            $seoImage = asset('storage/' . $aplikasi->logo);
+        }
 
-            'pengurus' => [
-                'direktur' => 'Budi Santoso',
-                'sekretaris' => 'Siti Aminah',
-                'bendahara' => 'Ahmad Fauzi',
-            ],
+        // 5. Logic Deskripsi SEO
+        // Ambil cuplikan deskripsi BUMDes, bersihkan HTML, potong 150 karakter
+        $deskripsiSEO = 'Profil Badan Usaha Milik Desa (BUMDes) ' . $namaDesa;
 
-            'kontak' => [
-                'alamat' => 'Kantor Desa Contoh, Kecamatan Contoh',
-                'telepon' => '0812-3456-7890',
-                'email' => 'bumdes@desa.id'
-            ]
-        ];
+        // Asumsi nama kolomnya 'deskripsi' (sesuaikan jika namanya 'profil')
+        if (!empty($bumdes->deskripsi)) {
+            $deskripsiSEO = Str::limit(strip_tags($bumdes->deskripsi), 150);
+        }
 
-        return view('frontend.pages.bumdes.index', $data);
+        // 6. Set SEO Helper
+        SeoHelper::set(
+            title: 'BUMDes - Website Resmi ' . $namaDesa,
+            description: $deskripsiSEO,
+            image: $seoImage
+        );
+
+        // 7. Return View
+        // Tetap pakai toArray() sesuai request kamu agar variabel langsung pecah di View
+        return view('frontend.pages.bumdes.index', $bumdes->toArray());
     }
 }

@@ -62,9 +62,12 @@
                                 <select id="filterTahun"
                                     class="w-full pl-11 pr-8 py-3 bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-2 focus:ring-green-500/20 focus:border-green-500 focus:bg-white block cursor-pointer outline-none shadow-sm appearance-none">
                                     <option value="">Semua Tahun</option>
-                                    @for ($t = date('Y'); $t >= 2020; $t--)
-                                        <option value="{{ $t }}">{{ $t }}</option>
-                                    @endfor
+
+                                    {{-- REVISI: Loop berdasarkan data dari Controller --}}
+                                    @foreach ($tahun_tersedia as $th)
+                                        <option value="{{ $th }}">{{ $th }}</option>
+                                    @endforeach
+
                                 </select>
                                 <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
                                     <i class="fa-solid fa-chevron-down text-xs text-gray-400"></i>
@@ -118,56 +121,72 @@
                             <tbody class="divide-y divide-gray-100">
                                 @foreach ($data as $i => $item)
                                     <tr class="hover:bg-green-50/50 transition-colors duration-200 group data-row">
-                                        {{-- Gunakan class 'data-row' untuk selector JS --}}
-                                        <td class="py-4 px-6 text-center text-gray-500 font-medium row-number">
-                                            {{ $i + 1 }}</td>
 
+                                        {{-- Nomor --}}
+                                        <td class="py-4 px-6 text-center text-gray-500 font-medium row-number">
+                                            {{ $i + 1 }}
+                                        </td>
+
+                                        {{-- Judul Dokumen --}}
                                         <td class="py-4 px-6 align-middle">
+                                            {{-- Ganti $item['judul'] jadi $item->judul --}}
                                             <div
                                                 class="text-sm font-bold text-gray-800 group-hover:text-green-700 transition-colors line-clamp-2 title-cell">
-                                                {{ $item['judul'] }}
+                                                {{ $item->judul }}
                                             </div>
                                             <div class="text-xs text-gray-500 mt-1 md:hidden">
-                                                {{ $item['jenis'] }} • {{ $item['tahun'] }}
+                                                {{ $item->jenis }} • {{ $item->tahun }}
                                             </div>
                                         </td>
 
+                                        {{-- Kategori & Tahun --}}
                                         <td class="py-4 px-6 align-middle category-cell">
                                             <div class="flex flex-col items-start gap-2">
                                                 @php
-                                                    $badgeColor = match ($item['jenis']) {
+                                                    // Gunakan object syntax $item->jenis
+                                                    $badgeColor = match ($item->jenis) {
                                                         'Peraturan Desa'
                                                             => 'bg-blue-50 text-blue-700 border-blue-200 ring-blue-500/20',
                                                         'Peraturan Kepala Desa'
                                                             => 'bg-purple-50 text-purple-700 border-purple-200 ring-purple-500/20',
                                                         'Keputusan Kepala Desa'
                                                             => 'bg-orange-50 text-orange-700 border-orange-200 ring-orange-500/20',
+                                                        'Surat Edaran'
+                                                            => 'bg-teal-50 text-teal-700 border-teal-200 ring-teal-500/20',
                                                         default
                                                             => 'bg-gray-50 text-gray-700 border-gray-200 ring-gray-500/20',
                                                     };
                                                 @endphp
                                                 <span
                                                     class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border {{ $badgeColor }}">
-                                                    {{ $item['jenis'] }}
+                                                    {{ $item->jenis }}
                                                 </span>
                                                 <span class="text-xs text-gray-500 font-medium flex items-center">
                                                     <i class="fa-regular fa-calendar mr-1.5 text-gray-400"></i>
-                                                    Tahun {{ $item['tahun'] }}
+                                                    Tahun {{ $item->tahun }}
                                                 </span>
                                             </div>
                                         </td>
 
+                                        {{-- Aksi (Tombol Lihat) --}}
                                         <td class="py-4 px-6 text-center align-middle">
-                                            <button onclick="openPdfModal('{{ $item['file'] }}', '{{ $item['judul'] }}')"
+                                            {{-- 
+                    PENTING: 
+                    1. Pastikan path file benar. Jika upload via storage, gunakan asset('storage/'...)
+                    2. Jika di DB isinya full URL, pakai langsung $item->file
+                    Di bawah ini saya asumsikan file ada di folder 'storage'
+                --}}
+                                            <button
+                                                onclick="openPdfModal('{{ asset('storage/' . $item->file) }}', '{{ $item->judul }}')"
                                                 class="inline-flex cursor-pointer items-center justify-center w-10 h-10 rounded-full bg-green-50 border border-green-200 text-green-600 hover:bg-green-600 hover:text-gray-800 hover:border-green-600 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
                                                 title="Lihat Dokumen">
-                                                <i class="bi bi-eye text-gray-400  hover:text-gray-800"></i>
+                                                <i class="bi bi-eye text-gray-400 hover:text-gray-800"></i>
                                             </button>
                                         </td>
                                     </tr>
                                 @endforeach
 
-                                {{-- Empty State --}}
+                                {{-- Empty State (Tidak perlu diubah, sudah benar logic JS-nya) --}}
                                 <tr id="noDataRow" class="hidden">
                                     <td colspan="4" class="py-16 text-center">
                                         <div class="flex flex-col items-center justify-center text-gray-400">
@@ -208,31 +227,40 @@
     </div>
 
     {{-- MODAL PDF --}}
-    <div id="pdfModal" class="fixed inset-0 z-[100] hidden" aria-labelledby="modal-title" role="dialog"
-        aria-modal="true">
-        <div class="fixed inset-0 bg-gray-900/70 backdrop-blur-sm transition-opacity opacity-0" id="modalBackdrop"></div>
+    <div id="pdfModal" class="fixed inset-0 z-[100] hidden" role="dialog" aria-modal="true">
+        {{-- Backdrop Gelap --}}
+        <div class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm transition-opacity opacity-0" id="modalBackdrop"></div>
+
+        {{-- Wrapper Utama (Area Klik Luar) --}}
         <div class="fixed inset-0 z-10 overflow-y-auto" id="modalWrapper">
             <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+
+                {{-- Panel Modal --}}
                 <div class="relative transform overflow-hidden rounded-xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-5xl opacity-0 scale-95"
-                    id="modalPanel">
-                    <div class="bg-white px-4 py-3 sm:px-6 flex justify-between items-center border-b border-gray-100">
-                        <div class="flex items-center gap-3 overflow-hidden">
-                            <div
-                                class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center text-red-500 flex-shrink-0">
-                                <i class="fa-solid fa-file-pdf"></i>
-                            </div>
-                            <h3 class="text-sm md:text-base font-semibold text-gray-800 truncate" id="modalTitle">
-                                Pratinjau Dokumen</h3>
-                        </div>
+                    id="modalPanel" onclick="event.stopPropagation()">
+                    {{-- stopPropagation agar klik di dalam panel TIDAK menutup modal --}}
+
+                    {{-- Header --}}
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 flex justify-between items-center border-b border-gray-200">
+                        <h3 class="text-base font-bold text-gray-800" id="modalTitle">Pratinjau Dokumen</h3>
+
+                        {{-- TOMBOL CLOSE (Pakai SVG biar pasti muncul) --}}
                         <button type="button" onclick="closePdfModal()"
-                            class="text-gray-400 hover:text-red-500 hover:bg-red-50 p-2 rounded-full transition-all focus:outline-none">
-                            <i class="fa-solid fa-xmark text-lg w-5 h-5 flex items-center justify-center"></i>
+                            class="bg-red-600 cursor-pointer hover:bg-red-700 text-white rounded-md p-2 transition-colors focus:outline-none flex items-center justify-center shadow-md">
+                            {{-- SVG Icon X --}}
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
                         </button>
                     </div>
-                    <div class="bg-gray-100 h-[80vh] relative">
+
+                    {{-- PDF Viewer --}}
+                    <div class="bg-gray-200 h-[80vh] relative">
                         <div id="loadingIndicator"
-                            class="absolute inset-0 flex items-center justify-center bg-gray-100 z-10 hidden">
-                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+                            class="absolute inset-0 flex items-center justify-center bg-white z-10 hidden">
+                            <div class="animate-spin rounded-full h-10 w-10 border-4 border-gray-200 border-t-green-600">
+                            </div>
                         </div>
                         <iframe id="pdfViewer" src="" class="w-full h-full border-0"></iframe>
                     </div>
@@ -246,7 +274,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            // --- MODAL LOGIC ---
+            // --- MODAL LOGIC (REVISI) ---
             const modal = document.getElementById('pdfModal');
             const backdrop = document.getElementById('modalBackdrop');
             const wrapper = document.getElementById('modalWrapper');
@@ -259,12 +287,17 @@
                 if (!modal) return;
                 loadingIndicator.classList.remove('hidden');
                 viewer.src = pdfUrl;
+
                 viewer.onload = function() {
                     loadingIndicator.classList.add('hidden');
                 };
+
                 if (modalTitle) modalTitle.innerText = title || 'Pratinjau Dokumen';
+
                 modal.classList.remove('hidden');
-                document.body.classList.add('overflow-hidden');
+                document.body.classList.add('overflow-hidden'); // Matikan scroll body
+
+                // Animasi Masuk
                 setTimeout(() => {
                     backdrop.classList.remove('opacity-0');
                     panel.classList.remove('opacity-0', 'scale-95');
@@ -274,24 +307,32 @@
 
             window.closePdfModal = function() {
                 if (!modal) return;
+
+                // Animasi Keluar
                 backdrop.classList.add('opacity-0');
                 panel.classList.remove('opacity-100', 'scale-100');
                 panel.classList.add('opacity-0', 'scale-95');
+
                 setTimeout(() => {
                     modal.classList.add('hidden');
                     document.body.classList.remove('overflow-hidden');
-                    viewer.src = "";
+                    viewer.src = ""; // Reset source biar gak berat
                 }, 300);
             };
 
+            // LOGIC KLIK LUAR (CLOSE ON OUTSIDE CLICK)
             if (wrapper) {
                 wrapper.addEventListener('click', function(e) {
-                    if (e.target === wrapper) closePdfModal();
+                    // Kalau yang diklik adalah wrapper (area kosong) atau backdrop
+                    if (e.target === wrapper || e.target === backdrop) {
+                        closePdfModal();
+                    }
                 });
             }
 
+            // Logic tombol ESC
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
                     closePdfModal();
                 }
             });

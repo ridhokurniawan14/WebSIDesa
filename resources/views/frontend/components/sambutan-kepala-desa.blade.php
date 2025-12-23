@@ -35,8 +35,7 @@
                 <!-- Foto -->
                 <div class="flex justify-center mb-8 md:mb-0">
                     <div class="relative w-48 h-48 sm:w-56 sm:h-56">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/%D0%92%D0%BB%D0%B0%D0%B4%D0%B8%D0%BC%D0%B8%D1%80_%D0%9F%D1%83%D1%82%D0%B8%D0%BD_%2808-03-2024%29_%28cropped%29_%28higher_res%29.jpg"
-                            alt="Kepala Desa"
+                        <img src="{{ $beranda->foto_kepala_desa }}" alt="Kepala Desa"
                             class="w-full h-full object-cover rounded-full shadow-2xl 
                             ring-4 ring-green-500 ring-offset-4 ring-offset-white">
                     </div>
@@ -45,16 +44,13 @@
                 <!-- Teks Sambutan -->
                 <div class="md:col-span-2">
                     <p class="text-gray-700 text-lg leading-relaxed mb-6 border-l-4 border-green-500 pl-5 italic">
-                        "Assalamualaikum Warahmatullahi Wabarakatuh.
-                        Selamat datang di Website Resmi Desa [Nama Desa].
-                        Media ini merupakan komitmen kami dalam menyediakan
-                        informasi desa secara terbuka, cepat, dan mudah diakses oleh seluruh masyarakat.
-                        Mari bersama-sama membangun Desa [Nama Desa] menuju masa depan yang lebih baik."
+                        "{{ $beranda->sambutan_kades }}"
                     </p>
 
                     <div class="pt-4 border-t border-gray-200 text-right">
-                        <p class="text-xl font-bold text-green-600">Nama Kepala Desa</p>
-                        <p class="text-sm text-gray-500">Kepala {{ $aplikasi->nama_desa }} • Periode 2023–2029</p>
+                        <p class="text-xl font-bold text-green-600">{{ $beranda->nama_kepala_desa }}</p>
+                        <p class="text-sm text-gray-500">Kepala {{ $aplikasi->nama_desa }} • Periode
+                            {{ $beranda->periode_jabatan }}</p>
                     </div>
                 </div>
 

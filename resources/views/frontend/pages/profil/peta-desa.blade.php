@@ -1,7 +1,35 @@
 @extends('frontend.layouts.main')
 
 @section('content')
+    {{-- Paksa load CSS Leaflet disini biar aman --}}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
+        /* --- FIX LEAFLET VS TAILWIND --- */
+        /* Ini wajib ada biar gambar peta gak berantakan */
+        .leaflet-pane,
+        .leaflet-tile,
+        .leaflet-marker-icon,
+        .leaflet-marker-shadow,
+        .leaflet-tile-container,
+        .leaflet-pane>svg,
+        .leaflet-pane>canvas,
+        .leaflet-zoom-box,
+        .leaflet-image-layer,
+        .leaflet-layer {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        /* Memaksa gambar tiles leaflet tidak kena reset Tailwind */
+        .leaflet-pane img,
+        .leaflet-tile-container img {
+            max-width: none !important;
+            max-height: none !important;
+            width: auto;
+            padding: 0;
+        }
+
         @keyframes fadeInOut {
             0% {
                 opacity: 0;
@@ -43,8 +71,8 @@
                 </div>
 
                 <!-- Leaflet Map -->
-                <div data-aos="fade-right" data-aos-delay="100" class="relative z-0">
-                    <div id="desaMap" class="w-full h-[480px] rounded-xl shadow-lg border"></div>
+                <div data-aos="fade-right" data-aos-delay="100" class="relative z-10">
+                    <div id="desaMap" class="w-full h-[480px] rounded-xl shadow-lg border bg-gray-100"></div>
                 </div>
 
                 <!-- Informasi Batas Desa -->
@@ -68,19 +96,20 @@
                             <ul class="space-y-3 text-gray-700 text-lg">
                                 <li class="flex justify-between border-b border-gray-100 pb-1">
                                     <strong class="font-semibold text-gray-800 w-1/4">Utara:</strong>
-                                    <span class="w-3/4 text-right">DESA NANGA ENGKULUN</span>
+                                    {{-- Ganti Hardcoded --}}
+                                    <span class="w-3/4 text-right uppercase">{{ $peta->batas_utara ?? '-' }}</span>
                                 </li>
                                 <li class="flex justify-between border-b border-gray-100 pb-1">
                                     <strong class="font-semibold text-gray-800 w-1/4">Timur:</strong>
-                                    <span class="w-3/4 text-right">DESA LANDAU KUMPAI</span>
+                                    <span class="w-3/4 text-right uppercase">{{ $peta->batas_timur ?? '-' }}</span>
                                 </li>
                                 <li class="flex justify-between border-b border-gray-100 pb-1">
                                     <strong class="font-semibold text-gray-800 w-1/4">Selatan:</strong>
-                                    <span class="w-3/4 text-right">DESA LANDAU APIN</span>
+                                    <span class="w-3/4 text-right uppercase">{{ $peta->batas_selatan ?? '-' }}</span>
                                 </li>
                                 <li class="flex justify-between">
                                     <strong class="font-semibold text-gray-800 w-1/4">Barat:</strong>
-                                    <span class="w-3/4 text-right">DESA CENAYAN</span>
+                                    <span class="w-3/4 text-right uppercase">{{ $peta->batas_barat ?? '-' }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -98,13 +127,15 @@
                             </div>
                             <div class="text-center mt-8">
                                 <p class="text-5xl font-extrabold text-green-600 tracking-tight mb-2">
-                                    54.482.300
+                                    {{-- Format angka desimal ke format Indonesia (titik sebagai ribuan) --}}
+                                    {{ number_format($peta->luas_wilayah, 0, ',', '.') }}
                                 </p>
                                 <p class="text-xl font-semibold text-gray-600">
                                     <span class="text-2xl font-bold text-gray-800">m²</span>
                                 </p>
                                 <p class="text-base text-gray-500 mt-4 italic">
-                                    (Sekitar 54,48 Hektare)
+                                    {{-- Rumus konversi m2 ke Hektare --}}
+                                    (Sekitar {{ number_format($peta->luas_wilayah / 10000, 2, ',', '.') }} Hektare)
                                 </p>
                             </div>
                         </div>
@@ -136,148 +167,185 @@
     </div>
 @endsection
 
-@push('styles')
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-@endpush
-
 @push('scripts')
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // --- PARTICLE ANIMATION LOGIC ---
-        (function() {
-            const canvas = document.getElementById('particleCanvas');
-            const ctx = canvas.getContext('2d');
-            let width, height;
-            let particles = [];
+        // Tunggu sampai HTML selesai dimuat baru jalankan script
+        document.addEventListener("DOMContentLoaded", function() {
 
-            // Konfigurasi Kepadatan dan Jarak
-            // Semakin besar angka divider, semakin sedikit partikel (semakin renggang)
-            const particleDensityDivider = 25000;
-            // Jarak maksimal untuk menarik garis antar titik
-            const connectionDistance = 150;
+            // --- 1. PARTICLE ANIMATION LOGIC ---
+            (function() {
+                const canvas = document.getElementById('particleCanvas');
+                if (!canvas) return; // Safety check
 
-            function resize() {
-                width = canvas.width = window.innerWidth;
-                height = canvas.height = window.innerHeight;
-            }
+                const ctx = canvas.getContext('2d');
+                let width, height;
+                let particles = [];
+                const particleDensityDivider = 25000;
+                const connectionDistance = 150;
 
-            class Particle {
-                constructor() {
-                    this.x = Math.random() * width;
-                    this.y = Math.random() * height;
-                    // Kecepatan sangat lambat agar santai
-                    this.vx = (Math.random() - 0.5) * 0.3;
-                    this.vy = (Math.random() - 0.5) * 0.3;
-                    this.size = Math.random() * 2 + 1; // Ukuran titik variatif
+                function resize() {
+                    width = canvas.width = window.innerWidth;
+                    height = canvas.height = window.innerHeight;
                 }
 
-                update() {
-                    this.x += this.vx;
-                    this.y += this.vy;
-
-                    // Bounce off edges
-                    if (this.x < 0 || this.x > width) this.vx *= -1;
-                    if (this.y < 0 || this.y > height) this.vy *= -1;
-                }
-
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    // Warna titik hijau pudar
-                    ctx.fillStyle = 'rgba(16, 185, 129, 0.6)';
-                    ctx.fill();
-                }
-            }
-
-            function initParticles() {
-                particles = [];
-                const numberOfParticles = (width * height) / particleDensityDivider;
-                for (let i = 0; i < numberOfParticles; i++) {
-                    particles.push(new Particle());
-                }
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, width, height);
-
-                for (let i = 0; i < particles.length; i++) {
-                    particles[i].update();
-                    particles[i].draw();
-
-                    // Cek jarak dengan partikel lain untuk menggambar garis
-                    for (let j = i; j < particles.length; j++) {
-                        const dx = particles[i].x - particles[j].x;
-                        const dy = particles[i].y - particles[j].y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-
-                        if (distance < connectionDistance) {
-                            ctx.beginPath();
-                            // Semakin jauh, garis semakin transparan
-                            const opacity = 1 - (distance / connectionDistance);
-                            ctx.strokeStyle = 'rgba(16, 185, 129, ' + (opacity * 0.5) + ')'; // Line color sangat tipis
-                            ctx.lineWidth = 1.5;
-                            ctx.moveTo(particles[i].x, particles[i].y);
-                            ctx.lineTo(particles[j].x, particles[j].y);
-                            ctx.stroke();
-                        }
+                class Particle {
+                    constructor() {
+                        this.x = Math.random() * width;
+                        this.y = Math.random() * height;
+                        this.vx = (Math.random() - 0.5) * 0.3;
+                        this.vy = (Math.random() - 0.5) * 0.3;
+                        this.size = Math.random() * 2 + 1;
+                    }
+                    update() {
+                        this.x += this.vx;
+                        this.y += this.vy;
+                        if (this.x < 0 || this.x > width) this.vx *= -1;
+                        if (this.y < 0 || this.y > height) this.vy *= -1;
+                    }
+                    draw() {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(16, 185, 129, 0.6)';
+                        ctx.fill();
                     }
                 }
-                requestAnimationFrame(animate);
-            }
 
-            window.addEventListener('resize', () => {
+                function initParticles() {
+                    particles = [];
+                    const numberOfParticles = (width * height) / particleDensityDivider;
+                    for (let i = 0; i < numberOfParticles; i++) {
+                        particles.push(new Particle());
+                    }
+                }
+
+                function animate() {
+                    ctx.clearRect(0, 0, width, height);
+                    for (let i = 0; i < particles.length; i++) {
+                        particles[i].update();
+                        particles[i].draw();
+                        for (let j = i; j < particles.length; j++) {
+                            const dx = particles[i].x - particles[j].x;
+                            const dy = particles[i].y - particles[j].y;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+                            if (distance < connectionDistance) {
+                                ctx.beginPath();
+                                const opacity = 1 - (distance / connectionDistance);
+                                ctx.strokeStyle = 'rgba(16, 185, 129, ' + (opacity * 0.5) + ')';
+                                ctx.lineWidth = 1.5;
+                                ctx.moveTo(particles[i].x, particles[i].y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                    requestAnimationFrame(animate);
+                }
+
+                window.addEventListener('resize', () => {
+                    resize();
+                    initParticles();
+                });
                 resize();
                 initParticles();
-            });
+                animate();
+            })();
 
-            resize();
-            initParticles();
-            animate();
-        })();
-        // Init Map
-        var map = L.map('desaMap').setView([-8.36770, 114.18542], 15);
+            // --- 2. MAP LOGIC ---
 
-        // Tile Layer Satellite
-        var satelit = L.tileLayer(
-            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                maxZoom: 20
+            // Cek apakah container map ada
+            if (document.getElementById('desaMap')) {
+                console.log("Inisialisasi Peta...");
+
+                // A. Persiapan Data
+                var defaultLat = -8.36770;
+                var defaultLng = 114.18542;
+                var latKantor = defaultLat;
+                var lngKantor = defaultLng;
+
+                // Ambil string koordinat dari Blade
+                var koorString = "{{ optional($peta)->koordinat_kantor ?? '' }}";
+
+                // Ambil Polygon (Tanpa quote karena ini json object/array)
+                var polygonData = {!! json_encode(optional($peta)->polygon_wilayah) !!};
+
+                // Ambil Zoom
+                var zoomLevel = {{ optional($peta)->zoom_level ?? 15 }};
+
+                // Parsing Koordinat
+                if (koorString && koorString.includes(',')) {
+                    var split = koorString.split(',');
+                    // Bersihkan spasi jika ada
+                    latKantor = parseFloat(split[0].trim());
+                    lngKantor = parseFloat(split[1].trim());
+                }
+
+                console.log("Koordinat Kantor:", latKantor, lngKantor);
+                console.log("Data Polygon:", polygonData);
+
+                // B. Init Map
+                var map = L.map('desaMap').setView([latKantor, lngKantor], zoomLevel);
+
+                // C. Layers
+                var satelit = L.tileLayer(
+                    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                        maxZoom: 20,
+                        attribution: 'Tiles &copy; Esri'
+                    });
+
+                var biasa = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                });
+
+                // Set default layer
+                satelit.addTo(map);
+
+                // Layer Control
+                L.control.layers({
+                    "Peta Jalan": biasa,
+                    "Satelit": satelit,
+                }).addTo(map);
+
+                // D. Marker Kantor
+                var iconKantor = L.divIcon({
+                    className: 'custom-div-icon',
+                    html: "<div style='background-color:#ef4444; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 4px rgba(0,0,0,0.5);'></div>",
+                    iconSize: [12, 12],
+                    iconAnchor: [6, 6]
+                });
+
+                // Gunakan marker standar leaflet dulu biar pasti muncul
+                L.marker([latKantor, lngKantor])
+                    .addTo(map)
+                    .bindPopup("<b>Kantor Desa</b><br>Pusat Pemerintahan");
+
+                // E. Polygon Wilayah
+                if (polygonData && Array.isArray(polygonData) && polygonData.length > 0) {
+                    try {
+                        var polygon = L.polygon(polygonData, {
+                            color: "#16a34a",
+                            weight: 3,
+                            fillColor: "#16a34a",
+                            fillOpacity: 0.25
+                        }).addTo(map);
+
+                        polygon.bindPopup("Batas Wilayah Administrasi");
+                        map.fitBounds(polygon.getBounds());
+                        console.log("Polygon berhasil digambar");
+                    } catch (e) {
+                        console.error("Gagal menggambar polygon:", e);
+                    }
+                } else {
+                    console.warn("Data polygon kosong atau format salah");
+                }
+
+                // Fix map render issue (abu-abu) saat load pertama
+                setTimeout(function() {
+                    map.invalidateSize();
+                }, 400);
+            } else {
+                console.error("Element #desaMap tidak ditemukan!");
             }
-        );
-
-        // Tile Layer Biasa
-        var biasa = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-
-        // Default layer: satelit
-        satelit.addTo(map);
-
-        // Layer control
-        L.control.layers({
-            "Map Biasa": biasa,
-            "Satelit": satelit,
-        }).addTo(map);
-
-        // Marker Kantor Desa
-        var kantorDesa = L.marker([-8.367703684351222, 114.18541967589385]).addTo(map);
-        kantorDesa.bindPopup("<b>Kantor Desa Kembiritan</b><br>Lokasi Resmi Desa.");
-
-        // Polygon Wilayah Desa (dummy)
-        var wilayahDesa = [
-            [-8.3669, 114.1830],
-            [-8.3681, 114.1837],
-            [-8.3690, 114.1859],
-            [-8.3683, 114.1873],
-            [-8.3667, 114.1860]
-        ];
-
-        var polygon = L.polygon(wilayahDesa, {
-            color: "#16a34a",
-            weight: 3,
-            fillColor: "#16a34a",
-            fillOpacity: 0.25
-        }).addTo(map);
-
-        polygon.bindPopup("Perkiraan Wilayah Desa");
-
-        map.fitBounds(polygon.getBounds());
+        });
     </script>
 @endpush

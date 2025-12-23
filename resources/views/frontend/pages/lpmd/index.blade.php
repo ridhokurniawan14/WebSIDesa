@@ -28,6 +28,7 @@
             animation: fadeInOut 2.8s ease-in-out;
         }
     </style>
+
     <div class="content-offset">
         <canvas id="particleCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-60"></canvas>
 
@@ -63,7 +64,6 @@
                             <div class="flex-shrink-0">
                                 <div
                                     class="flex items-center justify-center h-16 w-16 rounded-2xl bg-emerald-100 text-emerald-600">
-                                    {{-- Icon Info --}}
                                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -73,7 +73,8 @@
                             <div>
                                 <h2 class="text-2xl font-bold text-slate-800 mb-4">Tentang LPMD</h2>
                                 <div class="prose prose-emerald max-w-none text-slate-600 leading-relaxed">
-                                    {!! $lpmd['deskripsi'] !!}
+                                    {{-- Menggunakan {!! !!} aman untuk HTML dari WYSIWYG, tapi pastikan ini string --}}
+                                    {!! is_array($lpmd->deskripsi) ? json_encode($lpmd->deskripsi) : $lpmd->deskripsi !!}
                                 </div>
                             </div>
                         </div>
@@ -92,13 +93,20 @@
                             <h2 class="text-2xl font-bold text-slate-800">Dasar Hukum</h2>
                         </div>
                         <ul class="space-y-3">
-                            @foreach ($lpmd['dasar_hukum'] as $item)
-                                <li
-                                    class="flex items-start gap-3 text-slate-600 bg-slate-50 p-3 rounded-lg hover:bg-emerald-50 transition-colors">
-                                    <span class="mt-1 flex-shrink-0 h-2 w-2 rounded-full bg-emerald-500"></span>
-                                    <span>{{ $item }}</span>
-                                </li>
-                            @endforeach
+                            @if (!empty($lpmd->dasar_hukum) && is_array($lpmd->dasar_hukum))
+                                @foreach ($lpmd->dasar_hukum as $item)
+                                    <li
+                                        class="flex items-start gap-3 text-slate-600 bg-slate-50 p-3 rounded-lg hover:bg-emerald-50 transition-colors">
+                                        <span class="mt-1 flex-shrink-0 h-2 w-2 rounded-full bg-emerald-500"></span>
+                                        <span>
+                                            {{-- FIX ERROR: Cek apakah item array atau string --}}
+                                            {{ is_array($item) ? implode(', ', $item) : $item }}
+                                        </span>
+                                    </li>
+                                @endforeach
+                            @else
+                                <li class="text-slate-400 italic">Data belum tersedia</li>
+                            @endif
                         </ul>
                     </div>
 
@@ -113,16 +121,23 @@
                             <h2 class="text-2xl font-bold text-slate-800">Tugas & Fungsi</h2>
                         </div>
                         <ul class="space-y-3">
-                            @foreach ($lpmd['tugas_fungsi'] as $item)
-                                <li class="flex items-start gap-3 text-slate-600">
-                                    <svg class="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    <span>{{ $item }}</span>
-                                </li>
-                            @endforeach
+                            @if (!empty($lpmd->tugas_fungsi) && is_array($lpmd->tugas_fungsi))
+                                @foreach ($lpmd->tugas_fungsi as $item)
+                                    <li class="flex items-start gap-3 text-slate-600">
+                                        <svg class="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                        <span>
+                                            {{-- FIX ERROR: Cek apakah item array atau string --}}
+                                            {{ is_array($item) ? implode(', ', $item) : $item }}
+                                        </span>
+                                    </li>
+                                @endforeach
+                            @else
+                                <li class="text-slate-400 italic">Data belum tersedia</li>
+                            @endif
                         </ul>
                     </div>
                 </div>
@@ -134,15 +149,20 @@
                         <p class="text-slate-500 mt-2">Susunan Pengurus LPMD Periode Berjalan</p>
                     </div>
 
-                    {{-- Gambar Bagan dengan Modal Trigger --}}
+                    {{-- Gambar Bagan --}}
                     <div data-aos="fade-up" class="bg-white p-4 rounded-2xl shadow-lg mb-10 border border-slate-100">
-                        <div onclick="openModal('https://psikologi.unj.ac.id/wp-content/uploads/2025/07/Bagan-Struktur-Organisasi-fakultas-psikologi-Universitas-negeri-jakarta-2.png')"
+                        @php
+                            $gambarStruktur = $lpmd->struktur_gambar
+                                ? asset('storage/' . $lpmd->struktur_gambar)
+                                : 'https://psikologi.unj.ac.id/wp-content/uploads/2025/07/Bagan-Struktur-Organisasi-fakultas-psikologi-Universitas-negeri-jakarta-2.png';
+                        @endphp
+
+                        <div onclick="openModal('{{ $gambarStruktur }}')"
                             class="relative rounded-xl overflow-hidden bg-slate-100 group cursor-pointer">
-                            <img src="https://psikologi.unj.ac.id/wp-content/uploads/2025/07/Bagan-Struktur-Organisasi-fakultas-psikologi-Universitas-negeri-jakarta-2.png"
+                            <img src="{{ $gambarStruktur }}"
                                 class="w-full h-auto object-contain mx-auto transition-transform duration-500 group-hover:scale-105"
                                 alt="Struktur Organisasi LPMD">
 
-                            {{-- Overlay Hover Effect dengan Ikon Zoom --}}
                             <div
                                 class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
                                 <div
@@ -161,26 +181,30 @@
                     </div>
 
                     {{-- Grid Pengurus Inti --}}
-                    <div data-aos="flip-down" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                        {{-- Helper Component untuk Card Pengurus --}}
+                    {{-- REVISI: Menggunakan Flexbox dengan justify-center agar item di tengah jika jumlahnya ganjil/sedikit --}}
+                    <div data-aos="flip-down" class="flex flex-wrap justify-center gap-6 mb-8">
                         @php
                             $officers = [
                                 [
                                     'title' => 'Ketua',
-                                    'name' => $lpmd['struktur']['ketua'],
+                                    'name' => is_array($lpmd->ketua) ? implode(', ', $lpmd->ketua) : $lpmd->ketua,
                                     'color' => 'bg-emerald-600',
                                     'icon' => 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z',
                                 ],
                                 [
                                     'title' => 'Sekretaris',
-                                    'name' => $lpmd['struktur']['sekretaris'],
+                                    'name' => is_array($lpmd->sekretaris)
+                                        ? implode(', ', $lpmd->sekretaris)
+                                        : $lpmd->sekretaris,
                                     'color' => 'bg-blue-500',
                                     'icon' =>
                                         'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z',
                                 ],
                                 [
                                     'title' => 'Bendahara',
-                                    'name' => $lpmd['struktur']['bendahara'],
+                                    'name' => is_array($lpmd->bendahara)
+                                        ? implode(', ', $lpmd->bendahara)
+                                        : $lpmd->bendahara,
                                     'color' => 'bg-yellow-500',
                                     'icon' =>
                                         'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
@@ -190,7 +214,7 @@
 
                         @foreach ($officers as $officer)
                             <div
-                                class="bg-white rounded-xl shadow p-6 border-l-4 {{ str_replace('bg-', 'border-', $officer['color']) }} hover:-translate-y-1 transition-transform duration-300">
+                                class="bg-white rounded-xl shadow p-6 border-l-4 {{ str_replace('bg-', 'border-', $officer['color']) }} hover:-translate-y-1 transition-transform duration-300 w-full sm:w-64 md:w-72 lg:w-80">
                                 <div class="flex items-center gap-4">
                                     <div
                                         class="p-3 rounded-full {{ $officer['color'] }} bg-opacity-10 text-{{ str_replace('bg-', '', $officer['color']) }}">
@@ -203,7 +227,7 @@
                                     <div>
                                         <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">
                                             {{ $officer['title'] }}</p>
-                                        <p class="font-bold text-slate-800 text-lg">{{ $officer['name'] }}</p>
+                                        <p class="font-bold text-slate-800 text-lg">{{ $officer['name'] ?? '-' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -217,12 +241,47 @@
                             Bidang & Seksi
                         </h3>
                         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            @foreach ($lpmd['struktur']['bidang'] as $nama => $pj)
-                                <div class="flex flex-col bg-slate-50 p-4 rounded-lg border border-slate-200">
-                                    <span class="font-semibold text-emerald-700 mb-1">{{ $nama }}</span>
-                                    <span class="text-slate-600 text-sm">{{ $pj }}</span>
-                                </div>
-                            @endforeach
+                            @if (!empty($lpmd->bidang) && is_array($lpmd->bidang))
+                                @foreach ($lpmd->bidang as $key => $value)
+                                    <div class="flex flex-col bg-slate-50 p-4 rounded-lg border border-slate-200">
+                                        {{-- 
+                                            FIX ERROR KOMPLEKS & REVISI DB:
+                                            Menghandle format DB: [{"nama_bidang": "...", "penanggung_jawab": "..."}, ...]
+                                        --}}
+                                        @php
+                                            $judulBidang = '-';
+                                            $namaPejabat = '';
+
+                                            // Cek format array of objects (Format Baru DB)
+                                            if (is_array($value)) {
+                                                // Priority 1: Key sesuai DB user ("nama_bidang", "penanggung_jawab")
+                                                $judulBidang =
+                                                    $value['nama_bidang'] ??
+                                                    ($value['nama'] ?? ($value['bidang'] ?? '-'));
+                                                $namaPejabat =
+                                                    $value['penanggung_jawab'] ??
+                                                    ($value['pj'] ?? ($value['pejabat'] ?? '-'));
+                                            }
+                                            // Fallback: Format Associative array ("Bidang X" => "Nama Y")
+                                            elseif (is_string($key)) {
+                                                $judulBidang = $key;
+                                                $namaPejabat = is_array($value) ? implode(', ', $value) : $value;
+                                            }
+                                            // Fallback: String biasa
+                                            else {
+                                                $judulBidang = $value;
+                                            }
+                                        @endphp
+
+                                        <span class="font-semibold text-emerald-700 mb-1">{{ $judulBidang }}</span>
+                                        @if ($namaPejabat && $namaPejabat !== '-')
+                                            <span class="text-slate-600 text-sm">{{ $namaPejabat }}</span>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            @else
+                                <p class="text-slate-500 italic col-span-full">Data bidang belum diinput.</p>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -246,35 +305,38 @@
                     </div>
 
                     <div class="grid md:grid-cols-2 gap-6">
-                        @foreach ($lpmd['program'] as $item)
-                            <div
-                                class="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                        @if (!empty($lpmd->program) && is_array($lpmd->program))
+                            @foreach ($lpmd->program as $item)
                                 <div
-                                    class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center font-bold text-white text-sm">
-                                    {{ $loop->iteration }}
+                                    class="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                                    <div
+                                        class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center font-bold text-white text-sm">
+                                        {{ $loop->iteration }}
+                                    </div>
+                                    <p class="text-slate-200 leading-relaxed">
+                                        {{-- FIX ERROR: Cek array --}}
+                                        {{ is_array($item) ? implode(', ', $item) : $item }}
+                                    </p>
                                 </div>
-                                <p class="text-slate-200 leading-relaxed">{{ $item }}</p>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        @else
+                            <p class="text-slate-400 italic">Program kerja belum diinput.</p>
+                        @endif
                     </div>
                 </div>
 
             </div>
         </div>
 
-        {{-- MODAL COMPONENT (Lightbox) --}}
+        {{-- SCRIPT MODAL & PARTICLE (Tidak Perlu Diubah) --}}
         <div id="imageModal" class="fixed inset-0 z-[9999] hidden" aria-labelledby="modal-title" role="dialog"
             aria-modal="true">
-            {{-- Backdrop Blur --}}
             <div class="fixed inset-0 bg-slate-900/90 backdrop-blur-sm transition-opacity opacity-0" id="modalBackdrop">
             </div>
-
             <div class="fixed inset-0 z-10 overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
                     <div class="relative transform overflow-hidden rounded-lg text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-5xl opacity-0 scale-95"
                         id="modalPanel">
-
-                        {{-- Close Button --}}
                         <button onclick="closeModal()"
                             class="absolute cursor-pointer top-4 right-4 z-50 text-white bg-black/50 hover:bg-black/70 rounded-full p-2 transition-colors">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -282,8 +344,6 @@
                                     d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
                         </button>
-
-                        {{-- Image Container --}}
                         <div class="bg-transparent" onclick="event.stopPropagation()">
                             <img id="modalImage" src="" alt="Full size"
                                 class="w-full h-auto rounded-lg shadow-2xl">
@@ -293,28 +353,19 @@
             </div>
         </div>
 
-        {{-- SCRIPT SEDERHANA UNTUK MODAL --}}
         <script>
             function openModal(imageSrc) {
                 const modal = document.getElementById('imageModal');
                 const backdrop = document.getElementById('modalBackdrop');
                 const panel = document.getElementById('modalPanel');
                 const img = document.getElementById('modalImage');
-
-                // Set image source
                 img.src = imageSrc;
-
-                // Show modal container
                 modal.classList.remove('hidden');
-
-                // Trigger animations (small delay to allow display:block to apply first)
                 setTimeout(() => {
                     backdrop.classList.remove('opacity-0');
                     panel.classList.remove('opacity-0', 'scale-95');
                     panel.classList.add('opacity-100', 'scale-100');
                 }, 10);
-
-                // Prevent scrolling on body
                 document.body.style.overflow = 'hidden';
             }
 
@@ -322,28 +373,21 @@
                 const modal = document.getElementById('imageModal');
                 const backdrop = document.getElementById('modalBackdrop');
                 const panel = document.getElementById('modalPanel');
-
-                // Reverse animations
                 backdrop.classList.add('opacity-0');
                 panel.classList.remove('opacity-100', 'scale-100');
                 panel.classList.add('opacity-0', 'scale-95');
-
-                // Hide modal container after animation finishes
                 setTimeout(() => {
                     modal.classList.add('hidden');
-                    // Restore scrolling
                     document.body.style.overflow = 'auto';
                 }, 300);
             }
 
-            // Close when clicking outside the image (on the backdrop)
             document.getElementById('imageModal').addEventListener('click', function(e) {
                 if (e.target === this || e.target.closest('#modalBackdrop')) {
                     closeModal();
                 }
             });
 
-            // Close on Escape key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && !document.getElementById('imageModal').classList.contains('hidden')) {
                     closeModal();
@@ -351,17 +395,12 @@
             });
         </script>
         <script>
-            // --- PARTICLE ANIMATION LOGIC ---
             (function() {
                 const canvas = document.getElementById('particleCanvas');
                 const ctx = canvas.getContext('2d');
                 let width, height;
                 let particles = [];
-
-                // Konfigurasi Kepadatan dan Jarak
-                // Semakin besar angka divider, semakin sedikit partikel (semakin renggang)
                 const particleDensityDivider = 25000;
-                // Jarak maksimal untuk menarik garis antar titik
                 const connectionDistance = 150;
 
                 function resize() {
@@ -373,25 +412,19 @@
                     constructor() {
                         this.x = Math.random() * width;
                         this.y = Math.random() * height;
-                        // Kecepatan sangat lambat agar santai
                         this.vx = (Math.random() - 0.5) * 0.3;
                         this.vy = (Math.random() - 0.5) * 0.3;
-                        this.size = Math.random() * 2 + 1; // Ukuran titik variatif
+                        this.size = Math.random() * 2 + 1;
                     }
-
                     update() {
                         this.x += this.vx;
                         this.y += this.vy;
-
-                        // Bounce off edges
                         if (this.x < 0 || this.x > width) this.vx *= -1;
                         if (this.y < 0 || this.y > height) this.vy *= -1;
                     }
-
                     draw() {
                         ctx.beginPath();
                         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                        // Warna titik hijau pudar
                         ctx.fillStyle = 'rgba(16, 185, 129, 0.6)';
                         ctx.fill();
                     }
@@ -407,22 +440,17 @@
 
                 function animate() {
                     ctx.clearRect(0, 0, width, height);
-
                     for (let i = 0; i < particles.length; i++) {
                         particles[i].update();
                         particles[i].draw();
-
-                        // Cek jarak dengan partikel lain untuk menggambar garis
                         for (let j = i; j < particles.length; j++) {
                             const dx = particles[i].x - particles[j].x;
                             const dy = particles[i].y - particles[j].y;
                             const distance = Math.sqrt(dx * dx + dy * dy);
-
                             if (distance < connectionDistance) {
                                 ctx.beginPath();
-                                // Semakin jauh, garis semakin transparan
                                 const opacity = 1 - (distance / connectionDistance);
-                                ctx.strokeStyle = 'rgba(16, 185, 129, ' + (opacity * 0.5) + ')'; // Line color sangat tipis
+                                ctx.strokeStyle = 'rgba(16, 185, 129, ' + (opacity * 0.5) + ')';
                                 ctx.lineWidth = 1.5;
                                 ctx.moveTo(particles[i].x, particles[i].y);
                                 ctx.lineTo(particles[j].x, particles[j].y);
@@ -437,7 +465,6 @@
                     resize();
                     initParticles();
                 });
-
                 resize();
                 initParticles();
                 animate();

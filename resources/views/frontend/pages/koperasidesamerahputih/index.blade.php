@@ -20,11 +20,10 @@
                     EKONOMI KUAT, DESA BERDAULAT
                 </span>
                 <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight font-serif">
-                    Koperasi Desa <br /><span class="text-green-300">Merah Putih</span>
+                    {{ $koperasi->nama_koperasi ?? 'Koperasi Desa' }}
                 </h1>
                 <p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-100 font-light leading-relaxed">
-                    Wadah kolaborasi ekonomi kerakyatan untuk mewujudkan kemandirian,
-                    kesejahteraan, dan semangat gotong royong yang berkelanjutan.
+                    {{ $koperasi->deskripsi ?? 'Deskripsi default jika kosong.' }}
                 </p>
                 <div class="mt-8">
                     <a href="#tentang"
@@ -291,49 +290,31 @@
                 </div>
 
                 <div data-aos="flip-up" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Pengurus 1 (Ketua) -->
-                    <div
-                        class="bg-white p-6 rounded-2xl text-center shadow-sm border border-gray-100 hover:shadow-md transition">
-                        <div
-                            class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 overflow-hidden border-4 border-green-50">
-                            <!-- Placeholder Avatar -->
-                            <svg class="w-full h-full text-gray-400" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
-                        </div>
-                        <h3 class="font-bold text-lg text-gray-900">Bapak Susilo</h3>
-                        <div class="text-xs font-semibold tracking-wider text-green-600 uppercase mt-1">Ketua Koperasi
-                        </div>
-                    </div>
 
-                    <!-- Pengurus 2 (Sekretaris) -->
-                    <div
-                        class="bg-white p-6 rounded-2xl text-center shadow-sm border border-gray-100 hover:shadow-md transition">
-                        <div
-                            class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 overflow-hidden border-4 border-green-50">
-                            <svg class="w-full h-full text-gray-400" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
-                        </div>
-                        <h3 class="font-bold text-lg text-gray-900">Ibu Hartini</h3>
-                        <div class="text-xs font-semibold tracking-wider text-green-600 uppercase mt-1">Sekretaris</div>
-                    </div>
+                    {{-- Cek apakah data ada --}}
+                    @if ($koperasi && $koperasi->struktur_pengurus)
+                        @foreach ($koperasi->struktur_pengurus as $pengurus)
+                            <div
+                                class="bg-white p-6 rounded-2xl text-center shadow-sm border border-gray-100 hover:shadow-md transition">
+                                <div
+                                    class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 overflow-hidden border-4 border-green-50">
+                                    {{-- Menampilkan Foto dari Storage --}}
+                                    {{-- Pastikan folder 'storage' sudah di-link --}}
+                                    <img src="{{ asset('storage/' . $pengurus['foto']) }}" alt="{{ $pengurus['nama'] }}"
+                                        class="w-full h-full object-cover">
+                                </div>
+                                {{-- Nama Pengurus --}}
+                                <h3 class="font-bold text-lg text-gray-900">{{ $pengurus['nama'] }}</h3>
+                                {{-- Jabatan --}}
+                                <div class="text-xs font-semibold tracking-wider text-green-600 uppercase mt-1">
+                                    {{ $pengurus['jabatan'] }}
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <p class="text-center col-span-3 text-gray-400">Belum ada data pengurus.</p>
+                    @endif
 
-                    <!-- Pengurus 3 (Bendahara) -->
-                    <div
-                        class="bg-white p-6 rounded-2xl text-center shadow-sm border border-gray-100 hover:shadow-md transition">
-                        <div
-                            class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 overflow-hidden border-4 border-green-50">
-                            <svg class="w-full h-full text-gray-400" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
-                        </div>
-                        <h3 class="font-bold text-lg text-gray-900">Bapak Joko</h3>
-                        <div class="text-xs font-semibold tracking-wider text-green-600 uppercase mt-1">Bendahara</div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -370,7 +351,7 @@
 
                         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
                             <!-- Tombol WhatsApp -->
-                            <a href="https://wa.me/6281234567890?text=Halo%20Admin%20Koperasi,%20saya%20ingin%20bertanya%20tentang%20keanggotaan."
+                            <a href="https://wa.me/{{ $koperasi->contact_person ?? '628123456789' }}?text=Halo%20Admin%20Koperasi,%20saya%20ingin%20bertanya%20tentang%20keanggotaan."
                                 target="_blank"
                                 class="group px-8 py-4 bg-yellow-500 text-green-900 font-bold rounded-full hover:bg-yellow-400 transition shadow-lg shadow-black/20 flex items-center gap-2">
                                 <!-- Icon WA -->
@@ -450,44 +431,33 @@
                             Desa Merah Putih:
                         </p>
                         <ul class="space-y-3 text-gray-700">
-                            <li class="flex items-start gap-3">
-                                <div
-                                    class="mt-1 w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">
-                                    1</div>
-                                <span>Warga Negara Indonesia (WNI) dan berdomisili di wilayah Desa Merah Putih (dibuktikan
-                                    dengan KTP/KK).</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <div
-                                    class="mt-1 w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">
-                                    2</div>
-                                <span>Mengisi formulir pendaftaran keanggotaan.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <div
-                                    class="mt-1 w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">
-                                    3</div>
-                                <span>Membayar <strong>Simpanan Pokok</strong> sebesar Rp 100.000 (sekali bayar).</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <div
-                                    class="mt-1 w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">
-                                    4</div>
-                                <span>Bersedia membayar <strong>Simpanan Wajib</strong> sebesar Rp 20.000 setiap
-                                    bulan.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <div
-                                    class="mt-1 w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">
-                                    5</div>
-                                <span>Menyetujui Anggaran Dasar (AD) dan Anggaran Rumah Tangga (ART) Koperasi.</span>
-                            </li>
+                            @if ($koperasi && $koperasi->syarat_anggota)
+                                @foreach ($koperasi->syarat_anggota as $index => $syarat)
+                                    <li class="flex items-start gap-3">
+                                        <div
+                                            class="mt-1 w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">
+                                            {{ $loop->iteration }} {{-- Otomatis angka 1, 2, 3... --}}
+                                        </div>
+                                        <span>
+                                            {{-- Jika syarat di DB berupa string biasa --}}
+                                            @if (is_string($syarat))
+                                                {{ $syarat }}
+                                            @elseif(is_array($syarat) && isset($syarat['text']))
+                                                {{-- Jika struktur JSON kamu {text: "blabla"} --}}
+                                                {{ $syarat['text'] }}
+                                            @endif
+                                        </span>
+                                    </li>
+                                @endforeach
+                            @else
+                                <li>Data syarat belum diinput.</li>
+                            @endif
                         </ul>
                     </div>
 
                     <!-- Footer Modal -->
                     <div class="bg-gray-50 px-6 py-4 flex flex-col sm:flex-row-reverse sm:gap-2">
-                        <a href="https://wa.me/6281234567890?text=Halo,%20saya%20sudah%20membaca%20syarat%20dan%20ingin%20mendaftar%20anggota."
+                        <a href="https://wa.me/{{ $koperasi->contact_person ?? '628123456789' }}?text=Halo,%20saya%20sudah%20membaca%20syarat%20dan%20ingin%20mendaftar%20anggota."
                             target="_blank"
                             class="inline-flex w-full justify-center rounded-lg bg-green-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:w-auto items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"

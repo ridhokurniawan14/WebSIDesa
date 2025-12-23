@@ -2,160 +2,46 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use Illuminate\Http\Request;
+use App\Helpers\SeoHelper; // <--- Import Helper
 use App\Http\Controllers\Controller;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\Administrasi;
+use App\Models\Aplikasi; // <--- Import Aplikasi buat ambil Logo & Nama Desa
+use Illuminate\Http\Request;
 
 class AdministrasiController extends Controller
 {
     public function index()
     {
+        // 1. Ambil Data Aplikasi (Nama Desa & Logo)
+        $aplikasi = Aplikasi::first();
+        $namaDesa = $aplikasi->nama_desa ?? 'Desa';
+
+        // 2. Logic Image SEO (Default pakai Logo Desa)
+        // Karena ini halaman list layanan, paling cocok pakai Logo Desa sebagai thumbnail WA
+        $seoImage = '';
+        if ($aplikasi && !empty($aplikasi->logo)) {
+            $seoImage = asset('storage/' . $aplikasi->logo);
+        }
+
+        // 3. Set SEO Helper
+        SeoHelper::set(
+            title: 'Layanan Administrasi - Website Resmi ' . $namaDesa,
+            description: 'Informasi lengkap panduan pengurusan surat, administrasi kependudukan, dan layanan publik lainnya di ' . $namaDesa . '.',
+            image: $seoImage
+        );
+
+        // 4. Logic Data Halaman (Tetap sama)
         $kategori = [
             'kependudukan' => 'Administrasi Kependudukan',
             'surat-keterangan' => 'Surat Keterangan',
             'lainnya' => 'Lainnya'
         ];
 
-        // 8 DATA LAYANAN
-        $layanan = collect([
-            [
-                'id' => 'kk',
-                'kategori' => 'kependudukan',
-                'nama' => 'Pembuatan Kartu Keluarga (KK)',
-                'deskripsi' => 'Pengajuan pembuatan KK baru atau perubahan data.',
-                'prosedur' => [
-                    'Datang ke kantor desa dengan membawa persyaratan.',
-                    'Mengisi formulir permohonan KK.',
-                    'Verifikasi data oleh petugas.',
-                    'Menunggu proses penerbitan KK.'
-                ],
-                'syarat' => [
-                    'Fotokopi Buku Nikah',
-                    'Fotokopi KTP suami & istri',
-                    'Surat keterangan kelahiran anak',
-                ]
-            ],
-            [
-                'id' => 'ktp',
-                'kategori' => 'kependudukan',
-                'nama' => 'Pembuatan KTP-el',
-                'deskripsi' => 'KTP elektronik untuk warga usia 17+.',
-                'prosedur' => [
-                    'Membawa dokumen persyaratan.',
-                    'Pengambilan foto & sidik jari.',
-                    'Menunggu pencetakan.'
-                ],
-                'syarat' => [
-                    'Fotokopi KK',
-                ]
-            ],
-            [
-                'id' => 'sktm',
-                'kategori' => 'surat-keterangan',
-                'nama' => 'Surat Keterangan Tidak Mampu (SKTM)',
-                'deskripsi' => 'Surat untuk bantuan sekolah, kesehatan, dan lainnya.',
-                'prosedur' => [
-                    'Mengisi formulir.',
-                    'Verifikasi petugas.',
-                    'Penerbitan surat.'
-                ],
-                'syarat' => [
-                    'Fotokopi KK',
-                    'Fotokopi KTP'
-                ]
-            ],
-            [
-                'id' => 'domisili',
-                'kategori' => 'surat-keterangan',
-                'nama' => 'Surat Keterangan Domisili',
-                'deskripsi' => 'Persyaratan untuk berbagai kebutuhan administrasi.',
-                'prosedur' => [
-                    'Mengisi formulir domisili.',
-                    'Pengecekan alamat oleh RT/RW.',
-                    'Penerbitan surat oleh desa.'
-                ],
-                'syarat' => [
-                    'Fotokopi KK',
-                    'Fotokopi KTP'
-                ]
-            ],
-            [
-                'id' => 'usaha',
-                'kategori' => 'surat-keterangan',
-                'nama' => 'Surat Keterangan Usaha (SKU)',
-                'deskripsi' => 'Untuk pengajuan bantuan UMKM atau legalitas usaha.',
-                'prosedur' => [
-                    'Mengisi formulir SKU.',
-                    'Verifikasi lapangan.',
-                    'Penerbitan SKU.'
-                ],
-                'syarat' => [
-                    'Fotokopi KTP',
-                    'Fotokopi KK'
-                ]
-            ],
-            [
-                'id' => 'kematian',
-                'kategori' => 'lainnya',
-                'nama' => 'Surat Keterangan Kematian',
-                'deskripsi' => 'Untuk kebutuhan data kependudukan dan administrasi lainnya.',
-                'prosedur' => [
-                    'Laporan keluarga.',
-                    'Pengecekan data.',
-                    'Penerbitan surat kematian.'
-                ],
-                'syarat' => [
-                    'Fotokopi KK almarhum',
-                    'Fotokopi KTP pelapor'
-                ]
-            ],
-            [
-                'id' => 'lahir',
-                'kategori' => 'lainnya',
-                'nama' => 'Surat Keterangan Kelahiran',
-                'deskripsi' => 'Untuk kebutuhan pembuatan Akta Kelahiran.',
-                'prosedur' => [
-                    'Laporan kelahiran.',
-                    'Verifikasi data.',
-                    'Penerbitan surat kelahiran.'
-                ],
-                'syarat' => [
-                    'Surat keterangan dari bidan/RS',
-                    'Fotokopi KK',
-                ]
-            ],
-            [
-                'id' => 'pindah',
-                'kategori' => 'kependudukan',
-                'nama' => 'Surat Pindah Penduduk',
-                'deskripsi' => 'Untuk perpindahan penduduk antar desa atau kabupaten.',
-                'prosedur' => [
-                    'Mengisi formulir pindah.',
-                    'Pengecekan data.',
-                    'Penerbitan surat pindah.'
-                ],
-                'syarat' => [
-                    'Fotokopi KK',
-                    'Fotokopi KTP'
-                ]
-            ],
-        ]);
-
-        // PAGINATION MANUAL (6 per page)
-        $perPage = 6;
-        $currentPage = request()->get('page', 1);
-        $pagedData = new LengthAwarePaginator(
-            $layanan->slice(($currentPage - 1) * $perPage, $perPage)->values(),
-            $layanan->count(),
-            $perPage,
-            $currentPage,
-            ['path' => route('administrasi.index')]
-        );
+        $layanan = Administrasi::latest()->get();
 
         return view('frontend.pages.administrasi-desa.index', [
-            'layanan' => $pagedData,
+            'layanan' => $layanan,
             'kategori' => $kategori,
-            'allLayanan' => $layanan // untuk modal
         ]);
     }
 }

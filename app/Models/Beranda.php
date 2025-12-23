@@ -29,6 +29,8 @@ class Beranda extends Model
         'jumlah_dusun',
         'desa_adat',
         'keluarga_miskin',
+        'nama_kepala_desa',
+        'foto_kepala_desa'
     ];
 
     // Casting JSON ke Array otomatis

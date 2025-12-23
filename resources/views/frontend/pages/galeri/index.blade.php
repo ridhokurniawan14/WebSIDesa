@@ -69,13 +69,11 @@
             }
         }
 
-        /* Content Wrapper */
         .content-offset {
             position: relative;
             z-index: 10;
         }
 
-        /* Fallback jika AOS gagal load */
         body[data-aos-easing] [data-aos] {
             opacity: 1;
         }
@@ -89,14 +87,12 @@
         }
     </style>
 
-    <!-- BAGIAN 1: Elemen Background Aurora -->
     <div class="aurora-bg">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
         <div class="blob blob-3"></div>
     </div>
 
-    <!-- Wrapper Konten Utama -->
     <div class="content-offset min-h-screen relative">
 
         <section class="pt-12 pb-6">
@@ -130,12 +126,12 @@
                 <div id="galeriContent" class="hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
                     @foreach ($galeri as $index => $g)
-                        {{-- CARD ITEM --}}
+                        {{-- CARD ITEM (Sudah diperbaiki ke $g->judul dst) --}}
                         <div class="group relative h-72 rounded-2xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                             data-aos="fade-up" data-aos-delay="{{ $index * 50 }}"
-                            onclick="openGalleryModal('{{ asset($g['image']) }}', '{{ $g['title'] }}', '{{ \Carbon\Carbon::parse($g['date'])->format('d M Y') }}')">
+                            onclick="openGalleryModal('{{ asset($g->gambar) }}', '{{ $g->judul }}', '{{ \Carbon\Carbon::parse($g->tanggal)->translatedFormat('d F Y') }}')">
 
-                            <img src="{{ asset($g['image']) }}" alt="{{ $g['title'] }}"
+                            <img src="{{ asset($g->gambar) }}" alt="{{ $g->judul }}"
                                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
 
                             <div
@@ -147,12 +143,12 @@
                                 <div class="flex items-center space-x-2 mb-1">
                                     <span class="inline-block w-2 h-2 bg-green-500 rounded-full"></span>
                                     <span class="text-xs font-medium text-gray-300 uppercase tracking-wider">
-                                        {{ \Carbon\Carbon::parse($g['date'])->format('d M Y') }}
+                                        {{ \Carbon\Carbon::parse($g->tanggal)->translatedFormat('d F Y') }}
                                     </span>
                                 </div>
                                 <h3
                                     class="text-lg font-bold text-white leading-tight group-hover:text-green-300 transition-colors">
-                                    {{ $g['title'] }}
+                                    {{ $g->judul }}
                                 </h3>
                             </div>
                         </div>
@@ -160,13 +156,13 @@
 
                 </div>
 
-                {{-- PAGINATION SECTION MODERN --}}
+                {{-- PAGINATION SECTION MODERN (DESIGN ORIGINAL KAMU) --}}
                 <div id="paginationContainer"
                     class="hidden mt-12 flex flex-col md:flex-row justify-between items-center gap-4 border-t border-green-100 pt-6 w-full custom-pagination">
 
                     @if ($galeri instanceof \Illuminate\Pagination\LengthAwarePaginator)
 
-                        {{-- INFO HALAMAN (Pojok Kiri Bawah) --}}
+                        {{-- INFO HALAMAN --}}
                         <div class="text-gray-600 font-medium text-sm order-2 md:order-1">
                             Menampilkan <span class="font-bold text-green-700">{{ $galeri->firstItem() ?? 0 }}</span>
                             sampai <span class="font-bold text-green-700">{{ $galeri->lastItem() ?? 0 }}</span>
@@ -194,6 +190,7 @@
                                         @endif
 
                                         {{-- Tombol Nomor Halaman --}}
+                                        {{-- Kita batasi link agar tidak terlalu panjang jika halaman banyak --}}
                                         @foreach ($galeri->getUrlRange(1, $galeri->lastPage()) as $page => $url)
                                             <li>
                                                 @if ($page == $galeri->currentPage())

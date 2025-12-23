@@ -185,12 +185,12 @@
                                 <div class="flex relative group">
                                     <span
                                         class="inline-flex items-center px-4 text-sm font-bold text-emerald-600 bg-emerald-50 border border-r-0 border-emerald-100 rounded-l-xl dark:bg-emerald-900/30 dark:text-emerald-400 dark:border-emerald-800">
-                                        +62
+                                        +
                                     </span>
                                     <input type="text" name="contact_person"
                                         value="{{ old('contact_person', $koperasi->contact_person ?? '') }}"
                                         class="rounded-r-xl bg-gray-50 border border-gray-200 text-gray-900 focus:ring-emerald-500 focus:border-emerald-500 block flex-1 min-w-0 w-full text-sm px-4 py-3 dark:bg-gray-900 dark:border-gray-600 dark:text-white font-mono"
-                                        placeholder="812-xxxx-xxxx">
+                                        placeholder="62812-xxxx-xxxx">
                                 </div>
                                 <p class="mt-2 text-[10px] text-gray-400">Nomor ini akan ditampilkan sebagai tombol
                                     WhatsApp.</p>

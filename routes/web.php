@@ -16,7 +16,8 @@ use App\Http\Controllers\Frontend\{
     PkkController,
     BumdesController,
     KarangtarunaController,
-    KdmpController
+    KdmpController,
+    RtrwController
 };
 use App\Http\Controllers\Admin\{
     AdminDashboardController,
@@ -43,7 +44,8 @@ use App\Http\Controllers\Admin\{
     PerangkatController,
     PetaController,
     BerandaController,
-    SystemController
+    SystemController,
+    RtrwAdminController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -85,6 +87,7 @@ Route::middleware(['track.visitor'])->group(function () {
     Route::post('/kontak/kirim', [KontakController::class, 'kirim'])->name('kontak.kirim');
 
     // Lembaga Mitra Desa
+    Route::get('/rt-rw', [RtrwController::class, 'index'])->name('rtrw.index');
     Route::get('/lpmd', [LpmdController::class, 'index'])->name('lpmd.index');
     Route::get('/posyandu', [PosyanduController::class, 'index'])->name('posyandu.index');
     Route::get('/pkk', [PkkController::class, 'index'])->name('pkk.index');
@@ -132,7 +135,11 @@ Route::middleware(['auth'])
         Route::resource('/berita', BeritaAdminController::class)->names('admin.berita')->middleware('permission:informasi.view');
         Route::resource('/produk', ProdukHukumAdminController::class)->names('admin.produk-hukum')->middleware('permission:informasi.view');
 
-        // Lembaga Mitra Desa Management
+        // Lembaga Desa Management
+        Route::resource('/lembaga/rtrw', RtrwAdminController::class)->names('admin.rtrw')->middleware('permission:rtrw.view');
+        // Route Tambahan untuk Handle RT (Simpan & Hapus)
+        Route::post('/lembaga/rt', [RtrwAdminController::class, 'storeRt'])->name('admin.rt.store')->middleware('permission:rtrw.create');
+        Route::delete('/lembaga/rt/{rt}', [RtrwAdminController::class, 'destroyRt'])->name('admin.rt.destroy')->middleware('permission:rtrw.delete');
         Route::resource('/lembaga/lpmd', LpmdAdminController::class)->names('admin.lpmd')->middleware('permission:lpmd.view');
         Route::resource('/lembaga/posyandu', PosyanduAdminController::class)->names('admin.posyandu')->middleware('permission:posyandu.view');
         Route::resource('/lembaga/pkk', PkkAdminController::class)->names('admin.pkk')->middleware('permission:pkk.view');

@@ -82,10 +82,15 @@
                         <!-- Visual Placeholder -->
                         <div
                             class="bg-green-100 rounded-3xl p-8 shadow-xl relative overflow-hidden h-96 flex items-center justify-center">
-                            <img src="https://placehold.co/600x400/34D399/ffffff?text=ILUSTRASI+KEGIATAN+PKK"
-                                alt="Ilustrasi Kegiatan PKK"
-                                class="w-full h-full object-cover rounded-2xl transform hover:scale-105 transition duration-500 ease-in-out"
-                                onerror="this.onerror=null;this.src='https://placehold.co/600x400/34D399/ffffff?text=ILUSTRASI+KEGIATAN+PKK';">
+                            @php
+                                // Ambil gambar dari DB field gambar_ilustrasi
+                                $ilustrasiSrc =
+                                    $pkk && $pkk->gambar_ilustrasi
+                                        ? asset('storage/' . $pkk->gambar_ilustrasi)
+                                        : 'https://placehold.co/600x400/34D399/ffffff?text=ILUSTRASI+KEGIATAN+PKK';
+                            @endphp
+                            <img src="{{ $ilustrasiSrc }}" alt="Ilustrasi Kegiatan PKK"
+                                class="w-full h-full object-cover rounded-2xl transform hover:scale-105 transition duration-500 ease-in-out">
                         </div>
                     </section>
 
@@ -98,28 +103,33 @@
                             <h2 class="text-4xl font-extrabold mt-3 text-gray-800">Sepuluh Pilar Pemberdayaan</h2>
                         </div>
                         <div data-aos="flip-right" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {{-- Cek jika data kosong, tampilkan default atau kosong --}}
                             @php
-                                $programs = $program_pokok ?? [
-                                    'Penghayatan dan Pengamalan Pancasila',
-                                    'Gotong Royong',
-                                    'Pangan',
-                                    'Sandang',
-                                    'Perumahan dan Tata Laksana Rumah Tangga',
-                                    'Pendidikan dan Keterampilan',
-                                    'Kesehatan',
-                                    'Pengembangan Kehidupan Berkoperasi',
-                                    'Kelestarian Lingkungan Hidup',
-                                    'Perencanaan Sehat',
-                                ];
+                                // Jika data DB kosong, gunakan default ini (opsional, bisa dihapus jika yakin DB terisi)
+                                $programs = empty($program_pokok)
+                                    ? [
+                                        'Penghayatan dan Pengamalan Pancasila',
+                                        'Gotong Royong',
+                                        'Pangan',
+                                        'Sandang',
+                                        'Perumahan dan Tata Laksana Rumah Tangga',
+                                        'Pendidikan dan Keterampilan',
+                                        'Kesehatan',
+                                        'Pengembangan Kehidupan Berkoperasi',
+                                        'Kelestarian Lingkungan Hidup',
+                                        'Perencanaan Sehat',
+                                    ]
+                                    : $program_pokok;
                             @endphp
 
                             @foreach ($programs as $index => $program)
                                 @php
                                     $number = $index + 1;
-                                    // Menggunakan Teal dan Lime sebagai warna alternatif
                                     $iconColor = $number % 2 === 0 ? 'bg-teal-500' : 'bg-lime-500';
                                     $borderColor = $number % 2 === 0 ? 'border-teal-200' : 'border-lime-200';
                                 @endphp
+
+                                {{-- Tampilan Card Program Pokok Tetap Sama --}}
                                 <div
                                     class="bg-white rounded-xl p-6 shadow-lg border-2 {{ $borderColor }} transition duration-300 hover:shadow-2xl hover:border-teal-400 relative z-20">
                                     <div class="flex items-start mb-3">
@@ -148,27 +158,32 @@
                                 Penggerak</span>
                             <h2 class="text-4xl font-extrabold mt-3 text-gray-800">Struktur Pengurus Inti</h2>
                         </div>
-                        <div data-aos="flip-left" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                            @php
-                                $pengurus = $pengurus ?? [
-                                    ['nama' => 'Ibu Siti Aminah', 'jabatan' => 'Ketua', 'photo_url' => null],
-                                    ['nama' => 'Ibu Rina Wati', 'jabatan' => 'Sekretaris', 'photo_url' => null],
-                                    ['nama' => 'Ibu Dewi Sartika', 'jabatan' => 'Bendahara', 'photo_url' => null],
-                                    ['nama' => 'Ibu Budiarti', 'jabatan' => 'POKJA I', 'photo_url' => null],
-                                ];
-                            @endphp
-                            @foreach ($pengurus as $item)
+
+                        {{-- REVISI LAYOUT: Pakai Flex Wrap & Justify Center agar item ganjil ada di tengah --}}
+                        <div data-aos="flip-left" class="flex flex-wrap justify-center gap-8">
+                            @forelse ($pengurus as $item)
+                                {{-- Atur lebar card: HP (Full), Tablet (45%), Desktop (22%) --}}
                                 <div
-                                    class="bg-white rounded-2xl p-6 shadow-xl border border-gray-100 transition duration-300 hover:bg-green-50 transform hover:-translate-y-1 relative z-20">
-                                    <!-- Foto Pengurus -->
-                                    <img src="{{ $item['photo_url'] ?? 'https://placehold.co/120x120/E0F2F1/047857?text=FOTO' }}"
-                                        alt="Foto {{ $item['nama'] }}"
-                                        class="w-28 h-28 mx-auto mb-4 rounded-full object-cover border-4 border-green-500"
-                                        onerror="this.onerror=null;this.src='https://placehold.co/120x120/E0F2F1/047857?text=FOTO';">
+                                    class="w-full sm:w-[calc(50%-2rem)] lg:w-[calc(25%-2rem)] bg-white rounded-2xl p-6 shadow-xl border border-gray-100 transition duration-300 hover:bg-green-50 transform hover:-translate-y-1 relative z-20">
+
+                                    @php
+                                        $imgSrc = !empty($item['photo_url'])
+                                            ? asset('storage/' . $item['photo_url'])
+                                            : 'https://placehold.co/120x120/E0F2F1/047857?text=' .
+                                                urlencode($item['nama']);
+                                    @endphp
+
+                                    <img src="{{ $imgSrc }}" alt="Foto {{ $item['nama'] }}"
+                                        class="w-28 h-28 mx-auto mb-4 rounded-full object-cover border-4 border-green-500">
+
                                     <h4 class="text-xl font-extrabold text-gray-900">{{ $item['nama'] }}</h4>
                                     <p class="text-md font-medium text-green-600 mt-1">{{ $item['jabatan'] }}</p>
                                 </div>
-                            @endforeach
+                            @empty
+                                <div class="w-full text-center py-10 text-gray-500">
+                                    Belum ada data pengurus.
+                                </div>
+                            @endforelse
                         </div>
                     </section>
 
@@ -180,27 +195,41 @@
                                 Nyata</span>
                             <h2 class="text-4xl font-extrabold mt-3 text-gray-800">Jadwal & Fokus Kegiatan</h2>
                         </div>
-                        <div data-aos="flip-up" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+
+                        {{-- UBAH DISINI: Ganti Grid jadi Flex + Justify Center --}}
+                        <div data-aos="flip-up" class="flex flex-wrap justify-center gap-8 max-w-6xl mx-auto">
                             @php
-                                $kegiatan = $kegiatan ?? [
-                                    'Posyandu Balita & Lansia',
-                                    'Pelatihan Kerajinan Tangan',
-                                    'Bazar UMKM Desa',
-                                    'Jumat Bersih Lingkungan',
-                                ];
+                                // Ambil dari $pkk jika ada, atau fallback array
+                                $listKegiatan = !empty($pkk->kegiatan)
+                                    ? $pkk->kegiatan
+                                    : $kegiatan ?? [
+                                            'Posyandu Balita & Lansia',
+                                            'Pelatihan Kerajinan Tangan',
+                                            'Bazar UMKM Desa',
+                                            'Jumat Bersih Lingkungan',
+                                            'Senam Sehat Bersama',
+                                        ];
                             @endphp
-                            @foreach ($kegiatan as $index => $k)
+
+                            @foreach ($listKegiatan as $index => $k)
                                 @php
                                     $cardBg = $index % 2 === 0 ? 'bg-white' : 'bg-green-50';
                                     $titleColor = $index % 2 === 0 ? 'text-teal-700' : 'text-green-700';
                                     $iconColor = $index % 2 === 0 ? 'text-teal-500' : 'text-green-500';
+                                    $namaKegiatan = is_array($k) ? $k['nama'] ?? 'Kegiatan' : $k;
                                 @endphp
+
+                                {{-- UBAH ITEM SIZE: 
+                 1. w-full (HP) 
+                 2. md:w-[calc(50%-2rem)] (Tablet: 2 kolom)
+                 3. lg:w-[calc(33.33%-2rem)] (Laptop: 3 kolom) 
+            --}}
                                 <div
-                                    class="{{ $cardBg }} rounded-xl p-6 shadow-lg border border-gray-100 transition duration-300 hover:shadow-2xl relative z-20">
+                                    class="w-full md:w-[calc(50%-2rem)] lg:w-[calc(33.333%-2rem)] {{ $cardBg }} rounded-xl p-6 shadow-lg border border-gray-100 transition duration-300 hover:shadow-2xl relative z-20 flex flex-col">
+
                                     <div class="flex items-center mb-3">
-                                        <!-- Icon Kegiatan -->
                                         <svg class="w-8 h-8 {{ $iconColor }} mr-3 flex-shrink-0" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            stroke="currentColor" viewBox="0 0 24 24">
                                             @if ($index == 0)
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
@@ -218,18 +247,18 @@
                                                     d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                                             @endif
                                         </svg>
-                                        <h3 class="text-xl font-bold {{ $titleColor }}">{{ $k }}</h3>
+                                        <h3 class="text-xl font-bold {{ $titleColor }}">{{ $namaKegiatan }}</h3>
                                     </div>
-                                    <p class="text-base text-gray-600">
+
+                                    <p class="text-base text-gray-600 flex-grow">
                                         @if ($index == 0)
                                             Penyediaan layanan kesehatan rutin dan peningkatan gizi bagi Balita dan dukungan
                                             Lansia.
                                         @elseif ($index == 1)
                                             Mengembangkan potensi ibu rumah tangga menjadi sumber pendapatan keluarga
-                                            melalui pelatihan intensif.
+                                            melalui pelatihan.
                                         @elseif ($index == 2)
-                                            Mendorong pertumbuhan ekonomi lokal melalui pendampingan usaha mikro, kecil, dan
-                                            menengah (UMKM).
+                                            Mendorong pertumbuhan ekonomi lokal melalui pendampingan usaha mikro (UMKM).
                                         @else
                                             Aktivitas rutin yang mendukung lingkungan yang bersih, sehat, dan pelestarian
                                             alam desa.
@@ -251,14 +280,23 @@
                             </p>
                             <div
                                 class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
+
+                                {{-- POINT 2: NAMA KETUA DARI DB --}}
                                 <p class="font-semibold text-2xl text-green-600">
-                                    Ibu Siti Aminah (Ketua)
+                                    Ibu {{ $pkk->nama_ketua ?? 'Ketua PKK' }} (Ketua)
                                 </p>
-                                <a href="https://wa.me/6281234567890?text=Halo%20Ibu%20Siti%20Aminah%2C%20saya%20tertarik%20dengan%20program%20PKK%20Desa."
+
+                                {{-- POINT 1: NOMOR WA DARI DB --}}
+                                @php
+                                    $waNumber = $pkk->nomor_hp_wa ?? '628123456789';
+                                    // Pastikan format bersih angka saja untuk link WA
+                                    $waClean = preg_replace('/[^0-9]/', '', $waNumber);
+                                @endphp
+
+                                <a href="https://wa.me/{{ $waClean }}?text=Halo%20Ibu%20{{ urlencode($pkk->nama_ketua ?? 'Ketua') }}%2C%20saya%20tertarik%20dengan%20program%20PKK%20Desa."
                                     target="_blank"
                                     class="inline-flex items-center px-6 py-3 border-2 border-green-600 text-base font-medium rounded-full shadow-md text-white bg-green-600 hover:bg-green-700 transition duration-150 transform hover:scale-105">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 4v-4z">
                                         </path>

@@ -53,6 +53,7 @@
             'url' => 'admin/lembaga',
             'permission' => 'lembaga.view',
             'submenu' => [
+                ['label' => 'RT / RW', 'url' => 'admin/lembaga/rtrw', 'permission' => 'rtrw.view'],
                 ['label' => 'LPMD', 'url' => 'admin/lembaga/lpmd', 'permission' => 'lpmd.view'],
                 ['label' => 'Posyandu', 'url' => 'admin/lembaga/posyandu', 'permission' => 'posyandu.view'],
                 ['label' => 'PKK', 'url' => 'admin/lembaga/pkk', 'permission' => 'pkk.view'],

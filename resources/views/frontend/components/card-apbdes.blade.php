@@ -1,3 +1,5 @@
+{{-- Pastikan structure halamanmu sudah benar, ini konten utamanya --}}
+
 <style>
     #bg-network-apbdes {
         position: absolute;
@@ -15,102 +17,97 @@
 
 <section class="py-12 w-full relative overflow-hidden" style="background-color: rgba(6, 78, 55, 0.85);">
 
-    <!-- Canvas Animasi di Belakang -->
     <canvas id="bg-network-apbdes"></canvas>
 
     <div class="max-w-7xl mx-auto px-4 apbdes-content">
 
-        <!-- Judul -->
         <div data-aos="fade-in" data-aos-delay="100" class="text-center mb-10 text-white">
-            <h2 class="text-3xl font-bold">APBDes Tahun 2024</h2>
+            <h2 class="text-3xl font-bold">APBDes Tahun {{ date('Y') }}</h2>
             <p class="opacity-90 mt-2">Rangkuman Anggaran Pendapatan dan Belanja Desa</p>
         </div>
 
-        <!-- Chart Section -->
-        <div data-aos="flip-down" data-aos-delay="100" class="bg-white rounded-2xl shadow-lg p-6 mb-10">
-            <h3 class="text-xl font-bold text-gray-800 mb-4">Grafik APBDes 2024</h3>
-
+        <div data-aos="flip-down" data-aos-delay="100" class="bg-white rounded-none shadow-lg p-6 mb-10">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Grafik APBDes {{ date('Y') }}</h3>
             <div id="chartApbdes" class="w-full h-[350px]"></div>
         </div>
 
-        <!-- Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            <!-- Pendapatan -->
             <div data-aos="flip-down" data-aos-delay="100"
-                class="bg-white p-6 rounded-xl shadow flex items-center gap-4
-                    transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
+                class="bg-white p-6 rounded-none shadow flex items-center gap-4 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
                 <div class="p-3 bg-green-100 rounded-full transition-all duration-300 hover:scale-110">
                     <i class="bi bi-coin text-green-700 text-2xl"></i>
                 </div>
                 <div>
                     <p class="text-gray-500 text-sm">Pendapatan Desa</p>
-                    <p class="text-2xl font-bold text-gray-800">Rp 2.150.000.000</p>
+                    {{-- Menggunakan variabel dari Controller --}}
+                    <p class="text-2xl font-bold text-gray-800">
+                        Rp {{ number_format($totalPendapatan, 0, ',', '.') }}
+                    </p>
                 </div>
             </div>
 
-            <!-- Belanja -->
             <div data-aos="flip-down" data-aos-delay="100"
-                class="bg-white p-6 rounded-xl shadow flex items-center gap-4
-                    transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
+                class="bg-white p-6 rounded-none shadow flex items-center gap-4 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
                 <div class="p-3 bg-red-100 rounded-full transition-all duration-300 hover:scale-110">
                     <i class="bi bi-cash-stack text-red-700 text-2xl"></i>
                 </div>
                 <div>
                     <p class="text-gray-500 text-sm">Belanja Desa</p>
-                    <p class="text-2xl font-bold text-gray-800">Rp 1.870.000.000</p>
+                    <p class="text-2xl font-bold text-gray-800">
+                        Rp {{ number_format($totalBelanja, 0, ',', '.') }}
+                    </p>
                 </div>
             </div>
 
-            <!-- Pembiayaan -->
             <div data-aos="flip-down" data-aos-delay="100"
-                class="bg-white p-6 rounded-xl shadow flex items-center gap-4
-                    transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
+                class="bg-white p-6 rounded-none shadow flex items-center gap-4 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
                 <div class="p-3 bg-blue-100 rounded-full transition-all duration-300 hover:scale-110">
                     <i class="bi bi-graph-up text-blue-700 text-2xl"></i>
                 </div>
                 <div>
                     <p class="text-gray-500 text-sm">Pembiayaan Desa</p>
-                    <p class="text-2xl font-bold text-gray-800">Rp 280.000.000</p>
+                    <p class="text-2xl font-bold text-gray-800">
+                        Rp {{ number_format($totalPembiayaan, 0, ',', '.') }}
+                    </p>
                 </div>
             </div>
 
-            <!-- Surplus/Defisit -->
             <div data-aos="flip-down" data-aos-delay="100"
-                class="bg-white p-6 rounded-xl shadow flex items-center gap-4
-        transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
+                class="bg-white p-6 rounded-none shadow flex items-center gap-4 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
                 <div class="p-3 bg-yellow-100 rounded-full transition-all duration-300 hover:scale-110">
                     <i class="bi bi-piggy-bank text-yellow-600 text-2xl"></i>
                 </div>
                 <div>
                     <p class="text-gray-500 text-sm">Surplus / Defisit</p>
-                    <p class="text-2xl font-bold text-gray-800">Rp 80.000.000</p>
+                    {{-- Tambahkan class text-red-600 jika nilainya minus agar lebih jelas --}}
+                    <p class="text-2xl font-bold {{ $surplusDefisit < 0 ? 'text-red-600' : 'text-gray-800' }}">
+                        Rp {{ number_format($surplusDefisit, 0, ',', '.') }}
+                    </p>
                 </div>
             </div>
 
-            <!-- SiLPA -->
             <div data-aos="flip-down" data-aos-delay="100"
-                class="bg-white p-6 rounded-xl shadow flex items-center gap-4
-                    transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
+                class="bg-white p-6 rounded-none shadow flex items-center gap-4 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
                 <div class="p-3 bg-purple-100 rounded-full transition-all duration-300 hover:scale-110">
                     <i class="bi bi-wallet2 text-purple-700 text-2xl"></i>
                 </div>
                 <div>
                     <p class="text-gray-500 text-sm">SiLPA / SiKPA</p>
-                    <p class="text-2xl font-bold text-gray-800">Rp 50.000.000</p>
+                    <p class="text-2xl font-bold text-gray-800">
+                        Rp {{ number_format($silpa, 0, ',', '.') }}
+                    </p>
                 </div>
             </div>
 
-            <!-- Tahun -->
             <div data-aos="flip-down" data-aos-delay="100"
-                class="bg-white p-6 rounded-xl shadow flex items-center gap-4
-                    transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
+                class="bg-white p-6 rounded-none shadow flex items-center gap-4 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
                 <div class="p-3 bg-teal-100 rounded-full transition-all duration-300 hover:scale-110">
                     <i class="bi bi-calendar3 text-teal-700 text-2xl"></i>
                 </div>
                 <div>
                     <p class="text-gray-500 text-sm">Tahun Anggaran</p>
-                    <p class="text-2xl font-bold text-gray-800">2024</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ date('Y') }}</p>
                 </div>
             </div>
 
@@ -118,7 +115,9 @@
     </div>
 </section>
 
+{{-- Bagian Scripts --}}
 @section('scripts')
+    {{-- Script Animasi Background (Tidak diubah) --}}
     <script>
         const canvasApb = document.getElementById("bg-network-apbdes");
         const ctxApb = canvasApb.getContext("2d");
@@ -146,25 +145,18 @@
 
         function animateApb() {
             ctxApb.clearRect(0, 0, canvasApb.width, canvasApb.height);
-
             particlesApb.forEach((p, index) => {
                 p.x += p.vx;
                 p.y += p.vy;
-
                 if (p.x < 0 || p.x > canvasApb.width) p.vx *= -1;
                 if (p.y < 0 || p.y > canvasApb.height) p.vy *= -1;
-
-                // DOT Warna Putih
                 ctxApb.beginPath();
                 ctxApb.fillStyle = "rgba(255,255,255,0.85)";
                 ctxApb.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                 ctxApb.fill();
-
-                // LINE Warna Putih
                 for (let j = index + 1; j < particlesApb.length; j++) {
                     const p2 = particlesApb[j];
                     const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-
                     if (dist < maxDistanceApb) {
                         ctxApb.strokeStyle = `rgba(255,255,255, ${1 - dist/maxDistanceApb})`;
                         ctxApb.lineWidth = 1;
@@ -175,7 +167,6 @@
                     }
                 }
             });
-
             requestAnimationFrame(animateApb);
         }
         animateApb();
@@ -183,6 +174,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+    {{-- Script Chart (DIPERBAIKI DESAINNYA) --}}
     <script>
         document.addEventListener("DOMContentLoaded", function() {
 
@@ -192,23 +184,23 @@
                     height: 350,
                     toolbar: {
                         show: false
-                    }
+                    },
+                    fontFamily: 'inherit' // Agar font mengikuti website
                 },
-
                 series: [{
                     name: 'Nilai (Rp)',
+                    // INJEK DATA DARI CONTROLLER DI SINI
                     data: [
-                        2150000000,
-                        1870000000,
-                        280000000,
-                        80000000,
-                        50000000
+                        {{ $totalPendapatan }},
+                        {{ $totalBelanja }},
+                        {{ $totalPembiayaan }},
+                        {{ $surplusDefisit }},
+                        {{ $silpa }}
                     ]
                 }],
                 dataLabels: {
                     enabled: false
                 },
-
                 xaxis: {
                     categories: [
                         'Pendapatan',
@@ -216,34 +208,47 @@
                         'Pembiayaan',
                         'Surplus/Defisit',
                         'SiLPA'
-                    ]
+                    ],
+                    labels: {
+                        style: {
+                            fontSize: '12px'
+                        }
+                    }
                 },
-
+                // Warna bar
                 colors: ['#16a34a', '#dc2626', '#2563eb', '#ca8a04', '#9333ea'],
 
                 plotOptions: {
                     bar: {
-                        borderRadius: 8,
+                        // ⭐ PERBAIKAN DESAIN DI SINI ⭐
+                        borderRadius: 0, // Ubah jadi 0 agar persegi tajam
                         distributed: true,
-                        columnWidth: '55%',
+                        columnWidth: '50%', // Sedikit dirampingkan barnya
                     }
                 },
 
-                // ⭐ format number di sumbu Y
                 yaxis: {
                     labels: {
+                        style: {
+                            fontSize: '12px'
+                        },
                         formatter: function(val) {
-                            if (val >= 1000000000) return (val / 1e9).toFixed(2) + " M";
-                            if (val >= 1000000) return (val / 1e6).toFixed(2) + " Jt";
+                            // Formatter untuk sumbu Y (Miliar/Juta)
+                            // Kita gunakan Math.abs agar tanda minus tidak hilang saat dibagi
+                            let absVal = Math.abs(val);
+                            let prefix = val < 0 ? "-" : "";
+
+                            if (absVal >= 1000000000) return prefix + (absVal / 1e9).toFixed(2) + " M";
+                            if (absVal >= 1000000) return prefix + (absVal / 1e6).toFixed(2) + " Jt";
                             return val.toLocaleString('id-ID');
                         }
                     }
                 },
 
-                // ⭐ Tooltip rupiah full
                 tooltip: {
                     y: {
                         formatter: function(val) {
+                            // Tooltip Hover
                             return "Rp " + val.toLocaleString("id-ID");
                         }
                     }
@@ -251,14 +256,20 @@
 
                 grid: {
                     borderColor: '#e5e7eb',
-                    strokeDashArray: 4
-                }
+                    strokeDashArray: 4,
+                    xaxis: {
+                        lines: {
+                            show: false
+                        }
+                    }
+                },
+                legend: {
+                    show: false
+                } // Sembunyikan legend di bawah karena sudah ada label di sumbu X
             };
 
             var chart = new ApexCharts(document.querySelector("#chartApbdes"), options);
             chart.render();
-
-
         });
     </script>
 @endsection

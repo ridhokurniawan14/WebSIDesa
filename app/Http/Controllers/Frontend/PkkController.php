@@ -2,47 +2,56 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use Illuminate\Http\Request;
+use App\Helpers\SeoHelper; // <--- Import Helper
 use App\Http\Controllers\Controller;
+use App\Models\Aplikasi;   // <--- Import Aplikasi (Nama & Logo)
+use App\Models\Pkk;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PkkController extends Controller
 {
     public function index()
     {
-        // Data struktur pengurus
-        $pengurus = [
-            ['jabatan' => 'Ketua PKK', 'nama' => 'Ibu Siti Aminah', 'photo_url' => 'https://placehold.co/100x100/34D399/ffffff?text=SA'],
-            ['jabatan' => 'Wakil Ketua', 'nama' => 'Ibu Nurhayati', 'photo_url' => 'https://placehold.co/100x100/059669/ffffff?text=NH'],
-            ['jabatan' => 'Sekretaris', 'nama' => 'Ibu Dewi Lestari', 'photo_url' => 'https://placehold.co/100x100/10B981/ffffff?text=DL'],
-            ['jabatan' => 'Bendahara', 'nama' => 'Ibu Rina Marlina', 'photo_url' => 'https://placehold.co/100x100/065F46/ffffff?text=RM'],
-        ];
+        // 1. Ambil Data
+        $pkk = Pkk::first(); // Ambil object utuh
+        $aplikasi = Aplikasi::first();
+        $namaDesa = $aplikasi->nama_desa ?? 'Desa';
 
-        // Daftar kegiatan
-        $kegiatan = [
-            'Posyandu Balita & Lansia',
-            'Pelatihan Keterampilan Ibu Rumah Tangga',
-            'Pembinaan UMKM Desa',
-            'Penyuluhan Kesehatan Keluarga',
-            'Kerja Bakti Lingkungan',
-        ];
+        // 2. Logic Image SEO
+        // Prioritas: Foto PKK (Struktur/Kegiatan) -> Fallback: Logo Desa
+        $seoImage = '';
 
-        // Daftar 10 Program Pokok PKK
-        $program_pokok = [
-            'Penghayatan dan Pengamalan Pancasila',
-            'Gotong Royong',
-            'Pangan',
-            'Sandang',
-            'Perumahan dan Tata Laksana Rumah Tangga',
-            'Pendidikan dan Keterampilan',
-            'Kesehatan',
-            'Pengembangan Kehidupan Berkoperasi',
-            'Kelestarian Lingkungan Hidup',
-            'Perencanaan Sehat'
-        ];
+        // Cek apakah tabel pkks punya kolom 'gambar'. Sesuaikan jika namanya 'foto' atau 'image'.
+        if ($pkk && !empty($pkk->gambar)) {
+            $seoImage = asset('storage/' . $pkk->gambar);
+        } elseif ($aplikasi && !empty($aplikasi->logo)) {
+            $seoImage = asset('storage/' . $aplikasi->logo);
+        }
 
-        // tambah upload gambar ilustrasi kegiatan PKK
-        // tambah nama ketua dan nomor hp WA kontak
+        // 3. Logic Deskripsi
+        // Ambil dari profil PKK, jika kosong pakai default text
+        $deskripsi = 'Profil, Struktur Pengurus, dan 10 Program Pokok PKK Desa ' . $namaDesa;
 
-        return view('frontend.pages.pkk.index', compact('pengurus', 'kegiatan', 'program_pokok'));
+        // Asumsi kolom deskripsi di tabel pkks namanya 'profil' atau 'deskripsi'
+        if ($pkk && !empty($pkk->profil)) {
+            $deskripsi = Str::limit(strip_tags($pkk->profil), 150);
+        }
+
+        // 4. Set SEO Helper
+        SeoHelper::set(
+            title: 'PKK (Pemberdayaan Kesejahteraan Keluarga) - ' . $namaDesa,
+            description: $deskripsi,
+            image: $seoImage
+        );
+
+        // 5. Logic Parsing Data (Code Bawaan)
+        // Pecah JSON untuk looping, tapi tetap kirim $pkk untuk data single field
+        $pengurus = $pkk ? $pkk->pengurus : [];
+        $kegiatan = $pkk ? $pkk->kegiatan : [];
+        $program_pokok = $pkk ? $pkk->program_pokok : [];
+
+        // Tambahkan 'pkk' ke dalam compact
+        return view('frontend.pages.pkk.index', compact('pkk', 'pengurus', 'kegiatan', 'program_pokok'));
     }
 }

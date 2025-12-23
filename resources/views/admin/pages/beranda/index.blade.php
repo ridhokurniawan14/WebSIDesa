@@ -20,14 +20,12 @@
         }
 
         /* HILANGKAN SPINNER (PANAH) PADA INPUT NUMBER */
-        /* Chrome, Safari, Edge, Opera */
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
 
-        /* Firefox */
         input[type=number] {
             -moz-appearance: textfield;
         }
@@ -35,7 +33,7 @@
 
     {{-- PHP Logic: Prepare Data for AlpineJS --}}
     @php
-        // Prepare Banner Images untuk Alpine
+        // 1. Prepare Banner
         $bannersRaw = $beranda?->banner_images ?? [];
         $banners = [];
         if (is_array($bannersRaw) && count($bannersRaw) > 0) {
@@ -46,24 +44,38 @@
                 ];
             }
         } else {
-            // Default kosong 1
             $banners[] = [
                 'gambar_old' => null,
                 'preview' => 'https://placehold.co/800x400/e2e8f0/475569?text=Upload+Banner',
             ];
         }
+
+        // 2. Prepare Foto Kades (Default Avatar jika kosong)
+        $fotoKades = $beranda?->foto_kepala_desa
+            ? asset('storage/' . $beranda->foto_kepala_desa)
+            : 'https://placehold.co/400x500/e2e8f0/475569?text=Foto+Kades';
     @endphp
 
     <div class="w-full pb-12" x-data="{
         banners: {{ \Illuminate\Support\Js::from($banners) }},
+        kadesPreview: '{{ $fotoKades }}',
     
+        // Preview Banner Slider
         handleFilePreview(event, index) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = (e) => {
-                    this.banners[index].preview = e.target.result;
-                };
+                reader.onload = (e) => { this.banners[index].preview = e.target.result; };
+                reader.readAsDataURL(file);
+            }
+        },
+    
+        // Preview Foto Kades
+        handleKadesPreview(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => { this.kadesPreview = e.target.result; };
                 reader.readAsDataURL(file);
             }
         },
@@ -104,8 +116,8 @@
                     </div>
                     Pengaturan Beranda
                 </h1>
-                <p class="text-gray-500 dark:text-gray-400 mt-2 text-sm ml-1">Kelola banner, sambutan, dan data statistik
-                    desa.</p>
+                <p class="text-gray-500 dark:text-gray-400 mt-2 text-sm ml-1">Kelola banner, profil kepala desa, dan
+                    statistik.</p>
             </div>
 
             <div class="flex items-center gap-3">
@@ -150,15 +162,11 @@
                     <template x-for="(item, index) in banners" :key="index">
                         <div
                             class="relative group bg-gray-50 dark:bg-gray-900 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all">
-
                             {{-- Preview Image --}}
                             <div class="aspect-video w-full relative bg-gray-200">
                                 <img :src="item.preview" class="w-full h-full object-cover">
-
-                                {{-- Overlay Controls --}}
                                 <div
                                     class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                                    {{-- Upload Button --}}
                                     <label
                                         class="cursor-pointer bg-white text-gray-700 p-2 rounded-full hover:bg-gray-100 hover:text-indigo-600 shadow-lg transform hover:scale-110 transition-all"
                                         title="Ganti Foto">
@@ -169,8 +177,6 @@
                                         <input type="file" :name="`banner[${index}][gambar_file]`" class="hidden"
                                             accept="image/*" @change="handleFilePreview($event, index)">
                                     </label>
-
-                                    {{-- Delete Button --}}
                                     <button type="button" @click="removeBanner(index)"
                                         class="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 shadow-lg transform hover:scale-110 transition-all cursor-pointer"
                                         title="Hapus Banner">
@@ -181,10 +187,7 @@
                                     </button>
                                 </div>
                             </div>
-
-                            {{-- Input Hidden buat Gambar Lama --}}
                             <input type="hidden" :name="`banner[${index}][gambar_old]`" :value="item.gambar_old">
-
                             <div class="px-3 py-2 bg-white dark:bg-gray-800 text-center">
                                 <span class="text-[10px] font-mono text-gray-400 uppercase tracking-widest"
                                     x-text="`Banner ` + (index + 1)"></span>
@@ -198,7 +201,6 @@
 
                 {{-- KOLOM KIRI: INFO UMUM (Lebar 2/3) --}}
                 <div class="xl:col-span-2 space-y-8">
-                    {{-- Deskripsi & Sambutan --}}
                     <div
                         class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 space-y-6">
                         <div class="flex items-center gap-3 border-b border-gray-100 dark:border-gray-700 pb-4">
@@ -207,32 +209,72 @@
                                 Umum</h3>
                         </div>
 
-                        <div class="space-y-5">
-                            <div>
-                                <label
-                                    class="block mb-2 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Periode
-                                    Jabatan Kepala Desa</label>
-                                <input type="text" name="periode_jabatan"
-                                    value="{{ old('periode_jabatan', $beranda->periode_jabatan ?? '2024-2029') }}"
-                                    class="block w-full text-sm text-gray-900 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-900 dark:border-gray-600 dark:text-white placeholder-gray-400"
-                                    placeholder="Contoh: 2024-2029">
-                            </div>
-
-                            <div>
-                                <label
-                                    class="block mb-2 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Deskripsi
-                                    Desa (Singkat)</label>
-                                <textarea name="deskripsi" rows="3"
-                                    class="block w-full text-sm text-gray-900 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-900 dark:border-gray-600 dark:text-white placeholder-gray-400">{{ old('deskripsi', $beranda->deskripsi ?? '') }}</textarea>
-                            </div>
-
-                            <div>
-                                <label
-                                    class="block mb-2 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Sambutan
+                        {{-- Layout Split: Kiri (Foto Kades), Kanan (Data Kades) --}}
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {{-- Foto Kepala Desa --}}
+                            <div class="md:col-span-1">
+                                <label class="block mb-2 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Foto
                                     Kepala Desa</label>
-                                <textarea name="sambutan_kades" rows="6"
-                                    class="block w-full text-sm text-gray-900 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-900 dark:border-gray-600 dark:text-white placeholder-gray-400">{{ old('sambutan_kades', $beranda->sambutan_kades ?? '') }}</textarea>
+                                <div
+                                    class="relative group rounded-lg overflow-hidden border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-indigo-500 transition-colors">
+                                    <div class="aspect-[3/4] bg-gray-100 dark:bg-gray-900">
+                                        <img :src="kadesPreview" class="w-full h-full object-cover">
+                                    </div>
+                                    <div
+                                        class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white">
+                                        <svg class="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        <span class="text-xs font-bold">Ubah Foto</span>
+                                        <input type="file" name="foto_kepala_desa"
+                                            class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*"
+                                            @change="handleKadesPreview($event)">
+                                    </div>
+                                </div>
+                                <p class="text-[10px] text-gray-400 mt-1 text-center">Format: JPG/PNG, Max 2MB</p>
                             </div>
+
+                            {{-- Data Text --}}
+                            <div class="md:col-span-2 space-y-5">
+                                <div>
+                                    <label
+                                        class="block mb-2 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Nama
+                                        Kepala Desa</label>
+                                    <input type="text" name="nama_kepala_desa"
+                                        value="{{ old('nama_kepala_desa', $beranda->nama_kepala_desa ?? '') }}"
+                                        class="block w-full text-sm text-gray-900 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-900 dark:border-gray-600 dark:text-white placeholder-gray-400"
+                                        placeholder="Nama Lengkap beserta gelar">
+                                </div>
+
+                                <div>
+                                    <label
+                                        class="block mb-2 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Periode
+                                        Menjabat</label>
+                                    <input type="text" name="periode_jabatan"
+                                        value="{{ old('periode_jabatan', $beranda->periode_jabatan ?? '2024-2029') }}"
+                                        class="block w-full text-sm text-gray-900 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-900 dark:border-gray-600 dark:text-white placeholder-gray-400"
+                                        placeholder="Contoh: 2024-2029">
+                                </div>
+
+                                <div>
+                                    <label
+                                        class="block mb-2 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Deskripsi
+                                        Desa (Singkat)</label>
+                                    <textarea name="deskripsi" rows="3"
+                                        class="block w-full text-sm text-gray-900 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-900 dark:border-gray-600 dark:text-white placeholder-gray-400">{{ old('deskripsi', $beranda->deskripsi ?? '') }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Sambutan Full Width --}}
+                        <div class="border-t border-gray-100 dark:border-gray-700 pt-5">
+                            <label class="block mb-2 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Sambutan
+                                Kepala Desa</label>
+                            <textarea name="sambutan_kades" rows="6"
+                                class="block w-full text-sm text-gray-900 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-900 dark:border-gray-600 dark:text-white placeholder-gray-400">{{ old('sambutan_kades', $beranda->sambutan_kades ?? '') }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -247,7 +289,6 @@
                                 Statistik</h3>
                         </div>
 
-                        {{-- REVISI: Grid 2 kolom & Range Umur di Label --}}
                         <div class="grid grid-cols-2 gap-4">
                             @php
                                 $stats = [
@@ -255,29 +296,23 @@
                                     ['label' => 'Laki-Laki', 'name' => 'total_laki_laki', 'icon' => '👨'],
                                     ['label' => 'Perempuan', 'name' => 'total_perempuan', 'icon' => '👩'],
                                     ['label' => 'Jumlah KK', 'name' => 'jumlah_kk', 'icon' => '🏠'],
-
-                                    // Range umur ditampilkan
                                     ['label' => 'Usia Muda (0-17)', 'name' => 'usia_muda', 'icon' => '👶'],
                                     ['label' => 'Usia Dewasa (18-59)', 'name' => 'usia_dewasa', 'icon' => '🧑'],
                                     ['label' => 'Lansia (60+)', 'name' => 'usia_lansia', 'icon' => '👴'],
-
                                     ['label' => 'Jumlah RT', 'name' => 'jumlah_rt', 'icon' => '📍'],
                                     ['label' => 'Jumlah RW', 'name' => 'jumlah_rw', 'icon' => '🚩'],
                                     ['label' => 'Jumlah Dusun', 'name' => 'jumlah_dusun', 'icon' => '🏘️'],
                                     ['label' => 'Desa Adat', 'name' => 'desa_adat', 'icon' => '🏛️'],
-                                    ['label' => 'Keluarga Miskin', 'name' => 'keluarga_miskin', 'icon' => '📉'],
+                                    ['label' => 'Klg. Miskin', 'name' => 'keluarga_miskin', 'icon' => '📉'],
                                 ];
                             @endphp
 
                             @foreach ($stats as $stat)
                                 <div class="relative group">
-                                    {{-- Label di atas kecil --}}
                                     <label
                                         class="block mb-1 text-[10px] font-bold text-teal-600 dark:text-teal-400 uppercase tracking-wider">
                                         {{ $stat['label'] }}
                                     </label>
-
-                                    {{-- Input dengan Icon di dalam --}}
                                     <div class="relative">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             <span class="text-gray-400 text-sm select-none">{{ $stat['icon'] }}</span>

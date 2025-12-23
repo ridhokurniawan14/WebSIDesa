@@ -213,7 +213,7 @@
                         <tr>
                             <th class="px-6 py-4 w-16 text-center">#</th>
                             <th class="px-6 py-4">Judul Dokumen</th>
-                            <th class="px-6 py-4 w-48">Jenis & Tahun</th>
+                            <th class="px-6 py-4 w-60">Jenis & Tahun</th>
                             <th class="px-6 py-4 w-32 text-center">File</th>
                             @canany(['produk-hukum.update', 'produk-hukum.delete'])
                                 <th class="px-6 py-4 text-right w-32">Aksi</th>

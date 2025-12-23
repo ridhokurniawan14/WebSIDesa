@@ -1,6 +1,6 @@
 <header id="header"
     class="fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out
-    {{ request()->is('/') ? 'header-home' : 'header-normal' }}">
+    {{ request()->is('/') ? 'header-home' : 'header-normal bg-green-700 shadow-md' }}">
 
     <div class="max-w-7xl mx-auto flex items-center justify-between py-3 px-4">
 
@@ -62,7 +62,7 @@
                 <!-- PERBAIKAN: Tambahkan 'text-white' di class utama, hapus ternary warna kuning -->
                 <button
                     class="mantine-font-size-lg flex items-center gap-1 py-1 hover-underline cursor-pointer text-white
-                    {{ request()->is(['administrasi', 'berita*', 'produk-hukum', 'lpmd', 'posyandu', 'pkk', 'bumdes', 'karang-taruna', 'koperasi-desa-merah-putih']) ? 'menu-active' : '' }}">
+                    {{ request()->is(['administrasi', 'berita*', 'produk-hukum', 'rtrw', 'lpmd', 'posyandu', 'pkk', 'bumdes', 'karang-taruna', 'koperasi-desa-merah-putih']) ? 'menu-active' : '' }}">
                     Informasi
                     <svg class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
@@ -87,7 +87,7 @@
                         <div class="relative group/sub">
                             <button
                                 class="mantine-font-size-lg flex justify-between items-center w-full px-4 py-2 hover:bg-gray-50 rounded-b-lg text-left relative hover-underline-dark
-                                {{ request()->is(['lpmd', 'posyandu', 'pkk', 'bumdes', 'karang-taruna', 'koperasi-desa-merah-putih']) ? 'text-yellow-600 font-bold' : '' }}">
+                                {{ request()->is(['rtrw', 'lpmd', 'posyandu', 'pkk', 'bumdes', 'karang-taruna', 'koperasi-desa-merah-putih']) ? 'text-yellow-600 font-bold' : '' }}">
                                 Lembaga Desa
                                 <svg class="w-4 h-4 -rotate-90" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
@@ -100,6 +100,8 @@
                                 class="hidden group-hover/sub:block absolute left-full top-0 pl-2 z-50 w-64 animate-fade-in-left">
                                 <div
                                     class="bg-white text-gray-800 shadow-lg rounded-lg overflow-hidden border border-gray-100">
+                                    <a href="/rt-rw"
+                                        class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-50 relative hover-underline-dark {{ request()->is('rtrw') ? 'text-yellow-600 font-bold' : '' }}">RT/RW</a>
                                     <a href="/lpmd"
                                         class="mantine-font-size-lg block px-4 py-2 hover:bg-gray-50 relative hover-underline-dark {{ request()->is('lpmd') ? 'text-yellow-600 font-bold' : '' }}">LPMD</a>
                                     <a href="/posyandu"
@@ -274,7 +276,7 @@
 
             <div class="border-b border-green-700 py-2">
                 <button
-                    class="w-full flex justify-between items-center mobile-accordion mantine-font-size-lg {{ request()->is(['administrasi', 'berita*', 'produk-hukum', 'lpmd', 'posyandu', 'pkk', 'bumdes', 'karang-taruna', 'koperasi-desa-merah-putih']) ? 'text-yellow-400' : '' }}">
+                    class="w-full flex justify-between items-center mobile-accordion mantine-font-size-lg {{ request()->is(['administrasi', 'berita*', 'produk-hukum', 'rtrw', 'lpmd', 'posyandu', 'pkk', 'bumdes', 'karang-taruna', 'koperasi-desa-merah-putih']) ? 'text-yellow-400' : '' }}">
                     <div class="flex items-center gap-3 font-semibold">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 opacity-80" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -315,7 +317,7 @@
                     </a>
                     <div class="border-l border-green-700 pl-3 mt-2">
                         <button
-                            class="w-full flex justify-between items-center mobile-accordion mantine-font-size-lg {{ request()->is(['lpmd', 'posyandu', 'pkk', 'bumdes', 'karang-taruna', 'koperasi-desa-merah-putih']) ? 'text-yellow-400' : '' }}">
+                            class="w-full flex justify-between items-center mobile-accordion mantine-font-size-lg {{ request()->is(['rtrw', 'lpmd', 'posyandu', 'pkk', 'bumdes', 'karang-taruna', 'koperasi-desa-merah-putih']) ? 'text-yellow-400' : '' }}">
                             <div class="flex items-center gap-3">
                                 <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
@@ -328,6 +330,10 @@
                             <span class="icon">+</span>
                         </button>
                         <div class="hidden ml-4 mt-2 flex flex-col gap-1 mantine-font-size-lg">
+                            <a href="/rt-rw"
+                                class="flex items-center gap-2 py-1 opacity-90 hover:opacity-100 {{ request()->is('rtrw') ? 'text-yellow-400 font-bold' : '' }}">
+                                <span class="w-1.5 h-1.5 bg-green-300 rounded-full"></span> RT/RW
+                            </a>
                             <a href="/lpmd"
                                 class="flex items-center gap-2 py-1 opacity-90 hover:opacity-100 {{ request()->is('lpmd') ? 'text-yellow-400 font-bold' : '' }}">
                                 <span class="w-1.5 h-1.5 bg-green-300 rounded-full"></span> LPMD

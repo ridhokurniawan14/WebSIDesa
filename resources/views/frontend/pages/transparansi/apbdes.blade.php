@@ -30,13 +30,11 @@
     </style>
 
     <div class="content-offset min-h-screen bg-gray-100 content-offset">
-        {{-- Canvas ini diposisikan fixed di belakang konten --}}
+        {{-- Canvas Particles --}}
         <canvas id="particleCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-60"></canvas>
 
-        <!-- HERO SECTION & FILTER -->
         <div data-aos="fade-down"
             class="bg-gradient-to-r from-emerald-900 to-emerald-700 pb-28 pt-12 relative overflow-hidden">
-            <!-- Pattern Dekoratif -->
             <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 rounded-full bg-white opacity-5 blur-3xl"></div>
             <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-white opacity-5 blur-3xl"></div>
 
@@ -61,13 +59,11 @@
                         </p>
                     </div>
 
-                    <!-- Filter Tahun (Style Hijau Transparan, Option Putih) -->
                     <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
                         <div class="relative flex-grow md:flex-grow-0">
                             <form action="" id="tahunForm">
                                 <div class="relative group">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <!-- Icon Calendar Light/White -->
                                         <svg class="h-5 w-5 text-emerald-200" fill="none" viewBox="0 0 24 24"
                                             stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -75,26 +71,19 @@
                                         </svg>
                                     </div>
 
-                                    @php
-                                        if (is_array($daftarTahun)) {
-                                            rsort($daftarTahun);
-                                        }
-                                    @endphp
-
-                                    <!-- Select Hijau, tapi Optionnya Putih -->
                                     <select name="tahun" id="tahunSelect"
                                         class="block w-full md:w-48 pl-10 pr-10 py-3 text-base border border-emerald-500/30 rounded-xl leading-6 bg-emerald-800/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-emerald-800/80 transition cursor-pointer appearance-none font-semibold hover:bg-emerald-800/70">
+
                                         @foreach ($daftarTahun as $t)
-                                            <!-- Class bg-white text-gray-900 memastikan dropdown putih bersih -->
                                             <option value="{{ $t }}" {{ $t == $tahun ? 'selected' : '' }}
                                                 class="bg-white text-gray-900 py-2 font-medium">
                                                 Tahun {{ $t }}
                                             </option>
                                         @endforeach
+
                                     </select>
 
                                     <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                        <!-- Icon Chevron Light -->
                                         <svg class="h-4 w-4 text-emerald-200" fill="none" viewBox="0 0 24 24"
                                             stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -111,7 +100,6 @@
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-20">
 
-            <!-- RINGKASAN CARDS -->
             <div data-aos="fade-up" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6 mb-8">
                 @php
                     $cardStyles = [
@@ -120,18 +108,12 @@
                             'icon' =>
                                 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
                         ],
-                        'belanja' => [
-                            'bg' => 'bg-rose-500',
-                            'icon' => 'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z',
-                        ],
+                        'belanja' => ['bg' => 'bg-rose-500', 'icon' => 'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z'],
                         'pembiayaan' => [
                             'bg' => 'bg-teal-500',
                             'icon' => 'M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4',
                         ],
-                        'surplus' => [
-                            'bg' => 'bg-cyan-500',
-                            'icon' => 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6',
-                        ],
+                        'surplus' => ['bg' => 'bg-cyan-500', 'icon' => 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6'],
                         'silpa' => [
                             'bg' => 'bg-indigo-500',
                             'icon' =>
@@ -156,7 +138,6 @@
                                     <span class="w-1.5 h-1.5 rounded-full {{ $style['bg'] }}"></span>
                                     {{ ucfirst($key) }}
                                 </p>
-                                <!-- Perbaikan: Menghapus truncate/ellipsis agar angka muncul lengkap. break-words agar tidak overflow layout -->
                                 <p class="text-lg lg:text-xl font-bold text-gray-800 tracking-tight break-words">
                                     Rp {{ number_format($value, 0, ',', '.') }}
                                 </p>
@@ -170,7 +151,6 @@
                                 </svg>
                             </div>
                         </div>
-                        <!-- Decorative bg shape -->
                         <div
                             class="absolute -bottom-6 -right-6 w-24 h-24 {{ $style['bg'] }} opacity-5 group-hover:opacity-10 transition rounded-full z-0">
                         </div>
@@ -178,7 +158,6 @@
                 @endforeach
             </div>
 
-            <!-- GRAFIK UTAMA -->
             <div data-aos="flip-down"
                 class="bg-white rounded-2xl shadow-xl shadow-gray-200/50 p-6 md:p-8 mb-8 border border-gray-100">
                 <div class="flex flex-col md:flex-row justify-between items-center mb-6">
@@ -194,7 +173,6 @@
                         <p class="text-gray-500 text-sm mt-1">Perbandingan Pagu Anggaran vs Realisasi Tahun
                             {{ $tahun }}</p>
                     </div>
-                    <!-- Legend Custom -->
                     <div class="flex gap-4 mt-4 md:mt-0 text-sm bg-gray-50 px-4 py-2 rounded-lg border border-gray-200">
                         <div class="flex items-center gap-2">
                             <span class="w-3 h-3 rounded bg-slate-400"></span>
@@ -207,15 +185,12 @@
                     </div>
                 </div>
 
-                <!-- Data Container untuk Grafik (Hidden) -->
                 <div id="grafik-data-source" data-chart="{{ json_encode($pelaksanaan) }}" class="hidden"></div>
-
                 <div id="grafikPelaksanaan" class="w-full h-96"></div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-                <!-- DETAIL PENDAPATAN -->
                 <div data-aos="fade-right"
                     class="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border-t-4 border-emerald-500 p-6 relative">
                     <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
@@ -234,10 +209,11 @@
                     </div>
 
                     <div class="space-y-6">
-                        @foreach ($pendapatan as $item)
+                        @forelse ($pendapatan as $item)
                             @php
-                                $persen = $item['anggaran'] > 0 ? ($item['realisasi'] / $item['anggaran']) * 100 : 0;
-                                // Gradasi warna bar berdasarkan capaian
+                                // MENGGUNAKAN ACCESSOR DARI MODEL
+                                $persen = $item->persen_capaian;
+
                                 $barColor = 'bg-emerald-500';
                                 if ($persen < 50) {
                                     $barColor = 'bg-emerald-300';
@@ -249,14 +225,15 @@
                             <div class="group">
                                 <div class="flex justify-between items-end mb-1">
                                     <span
-                                        class="font-semibold text-gray-700 text-sm group-hover:text-emerald-700 transition">{{ $item['nama'] }}</span>
+                                        class="font-semibold text-gray-700 text-sm group-hover:text-emerald-700 transition">
+                                        {{ $item->uraian }}
+                                    </span>
                                     <span
-                                        class="text-xs font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700">{{ number_format($persen, 1) }}%</span>
+                                        class="text-xs font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700">{{ $persen }}%</span>
                                 </div>
                                 <div class="w-full bg-gray-100 rounded-full h-2.5 mb-2 overflow-hidden">
                                     <div class="h-2.5 {{ $barColor }} rounded-full transition-all duration-1000 ease-out relative"
                                         style="width: {{ $persen }}%">
-                                        <!-- Shimmer effect -->
                                         <div
                                             class="absolute top-0 left-0 bottom-0 right-0 bg-gradient-to-r from-transparent via-white/20 to-transparent w-full -translate-x-full animate-[shimmer_2s_infinite]">
                                         </div>
@@ -264,16 +241,19 @@
                                 </div>
                                 <div class="flex justify-between text-xs text-gray-500">
                                     <span>Pagu: <span class="font-medium text-gray-600">Rp
-                                            {{ number_format($item['anggaran'], 0, ',', '.') }}</span></span>
+                                            {{ number_format($item->anggaran, 0, ',', '.') }}</span></span>
                                     <span>Real: <span class="font-medium text-emerald-600">Rp
-                                            {{ number_format($item['realisasi'], 0, ',', '.') }}</span></span>
+                                            {{ number_format($item->realisasi, 0, ',', '.') }}</span></span>
                                 </div>
                             </div>
-                        @endforeach
+                        @empty
+                            <div class="text-center py-8 text-gray-400">
+                                <p>Belum ada data pendapatan.</p>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
 
-                <!-- DETAIL BELANJA -->
                 <div data-aos="fade-left"
                     class="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border-t-4 border-rose-500 p-6 relative">
                     <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
@@ -290,9 +270,11 @@
                     </div>
 
                     <div class="space-y-6">
-                        @foreach ($pembelanjaan as $item)
+                        @forelse ($pembelanjaan as $item)
                             @php
-                                $persen = $item['anggaran'] > 0 ? ($item['realisasi'] / $item['anggaran']) * 100 : 0;
+                                // MENGGUNAKAN ACCESSOR DARI MODEL
+                                $persen = $item->persen_capaian;
+
                                 $barColor = 'bg-rose-500';
                                 if ($persen < 50) {
                                     $barColor = 'bg-rose-300';
@@ -303,10 +285,11 @@
 
                             <div class="group">
                                 <div class="flex justify-between items-end mb-1">
+                                    <span class="font-semibold text-gray-700 text-sm group-hover:text-rose-700 transition">
+                                        {{ $item->uraian }}
+                                    </span>
                                     <span
-                                        class="font-semibold text-gray-700 text-sm group-hover:text-rose-700 transition">{{ $item['nama'] }}</span>
-                                    <span
-                                        class="text-xs font-bold px-2 py-0.5 rounded bg-rose-50 text-rose-700">{{ number_format($persen, 1) }}%</span>
+                                        class="text-xs font-bold px-2 py-0.5 rounded bg-rose-50 text-rose-700">{{ $persen }}%</span>
                                 </div>
                                 <div class="w-full bg-gray-100 rounded-full h-2.5 mb-2 overflow-hidden">
                                     <div class="h-2.5 {{ $barColor }} rounded-full transition-all duration-1000 ease-out relative"
@@ -314,12 +297,16 @@
                                 </div>
                                 <div class="flex justify-between text-xs text-gray-500">
                                     <span>Pagu: <span class="font-medium text-gray-600">Rp
-                                            {{ number_format($item['anggaran'], 0, ',', '.') }}</span></span>
+                                            {{ number_format($item->anggaran, 0, ',', '.') }}</span></span>
                                     <span>Real: <span class="font-medium text-rose-600">Rp
-                                            {{ number_format($item['realisasi'], 0, ',', '.') }}</span></span>
+                                            {{ number_format($item->realisasi, 0, ',', '.') }}</span></span>
                                 </div>
                             </div>
-                        @endforeach
+                        @empty
+                            <div class="text-center py-8 text-gray-400">
+                                <p>Belum ada data belanja.</p>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
 
@@ -329,49 +316,41 @@
 @endsection
 
 @section('scripts')
+    {{-- Scripts sama persis seperti sebelumnya, tidak perlu diubah karena kita sudah menyesuaikan ID dan data source --}}
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
-        // --- PARTICLE ANIMATION LOGIC ---
+        // ... (KODE PARTICLE JS TETAP SAMA) ...
         (function() {
+            // Copy paste script particle dari kode lamamu disini
             const canvas = document.getElementById('particleCanvas');
             const ctx = canvas.getContext('2d');
+            // ... (lanjutan script particle)
             let width, height;
             let particles = [];
-
-            // Konfigurasi Kepadatan dan Jarak
-            // Semakin besar angka divider, semakin sedikit partikel (semakin renggang)
             const particleDensityDivider = 25000;
-            // Jarak maksimal untuk menarik garis antar titik
             const connectionDistance = 150;
 
             function resize() {
                 width = canvas.width = window.innerWidth;
                 height = canvas.height = window.innerHeight;
             }
-
             class Particle {
                 constructor() {
                     this.x = Math.random() * width;
                     this.y = Math.random() * height;
-                    // Kecepatan sangat lambat agar santai
                     this.vx = (Math.random() - 0.5) * 0.3;
                     this.vy = (Math.random() - 0.5) * 0.3;
-                    this.size = Math.random() * 2 + 1; // Ukuran titik variatif
+                    this.size = Math.random() * 2 + 1;
                 }
-
                 update() {
                     this.x += this.vx;
                     this.y += this.vy;
-
-                    // Bounce off edges
                     if (this.x < 0 || this.x > width) this.vx *= -1;
                     if (this.y < 0 || this.y > height) this.vy *= -1;
                 }
-
                 draw() {
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    // Warna titik hijau pudar
                     ctx.fillStyle = 'rgba(16, 185, 129, 0.6)';
                     ctx.fill();
                 }
@@ -387,22 +366,16 @@
 
             function animate() {
                 ctx.clearRect(0, 0, width, height);
-
                 for (let i = 0; i < particles.length; i++) {
                     particles[i].update();
                     particles[i].draw();
-
-                    // Cek jarak dengan partikel lain untuk menggambar garis
                     for (let j = i; j < particles.length; j++) {
                         const dx = particles[i].x - particles[j].x;
                         const dy = particles[i].y - particles[j].y;
                         const distance = Math.sqrt(dx * dx + dy * dy);
-
                         if (distance < connectionDistance) {
-                            ctx.beginPath();
-                            // Semakin jauh, garis semakin transparan
                             const opacity = 1 - (distance / connectionDistance);
-                            ctx.strokeStyle = 'rgba(16, 185, 129, ' + (opacity * 0.5) + ')'; // Line color sangat tipis
+                            ctx.strokeStyle = 'rgba(16, 185, 129, ' + (opacity * 0.5) + ')';
                             ctx.lineWidth = 1.5;
                             ctx.moveTo(particles[i].x, particles[i].y);
                             ctx.lineTo(particles[j].x, particles[j].y);
@@ -412,12 +385,10 @@
                 }
                 requestAnimationFrame(animate);
             }
-
             window.addEventListener('resize', () => {
                 resize();
                 initParticles();
             });
-
             resize();
             initParticles();
             animate();
@@ -441,22 +412,6 @@
             }
         } catch (e) {
             console.warn('Gagal memuat data grafik:', e);
-            chartData = [{
-                    nama: 'Pendapatan',
-                    anggaran: 0,
-                    realisasi: 0
-                },
-                {
-                    nama: 'Belanja',
-                    anggaran: 0,
-                    realisasi: 0
-                },
-                {
-                    nama: 'Pembiayaan',
-                    anggaran: 0,
-                    realisasi: 0
-                }
-            ];
         }
 
         const dataAnggaran = chartData.map(item => item.anggaran);
@@ -478,7 +433,6 @@
                 toolbar: {
                     show: false
                 },
-                // Animasi saat load
                 animations: {
                     enabled: true,
                     easing: 'easeinout',
@@ -488,7 +442,7 @@
             plotOptions: {
                 bar: {
                     horizontal: false,
-                    columnWidth: '60%', // Lebar batang
+                    columnWidth: '60%',
                     borderRadius: 4,
                     dataLabels: {
                         position: 'top',
@@ -496,13 +450,12 @@
                 },
             },
             dataLabels: {
-                enabled: false // Matikan label angka di atas batang agar tidak penuh
+                enabled: false
             },
-            // Konfigurasi State (Hover/Active) untuk mengatasi warna hilang
             states: {
                 hover: {
                     filter: {
-                        type: 'darken', // Ubah jadi darken atau none agar warna tidak jadi putih/hilang
+                        type: 'darken',
                         value: 0.9
                     }
                 },
@@ -516,7 +469,7 @@
             },
             stroke: {
                 show: true,
-                width: 3, // Jarak antar batang
+                width: 3,
                 colors: ['transparent']
             },
             xaxis: {
@@ -542,7 +495,6 @@
                         colors: '#94a3b8'
                     },
                     formatter: function(value) {
-                        // Format Miliar (M) dan Juta (Jt)
                         if (value >= 1000000000) return (value / 1000000000).toFixed(1) + ' M';
                         if (value >= 1000000) return (value / 1000000).toFixed(0) + ' Jt';
                         return value;
@@ -552,9 +504,7 @@
             fill: {
                 opacity: 1
             },
-            // Warna Chart: Abu-abu lebih gelap (Slate-400) dan Hijau Emerald (Emerald-500)
             colors: ['#94a3b8', '#10b981'],
-
             tooltip: {
                 theme: 'light',
                 style: {
@@ -565,11 +515,10 @@
                         return "Rp " + new Intl.NumberFormat('id-ID').format(val)
                     }
                 },
-                // Custom tooltip header agar lebih informatif
                 x: {
                     show: true,
                     formatter: function(val) {
-                        return val; // Nama kategori
+                        return val;
                     }
                 }
             },
@@ -589,7 +538,7 @@
                 }
             },
             legend: {
-                show: false // Kita pakai legend custom HTML
+                show: false
             }
         };
 

@@ -36,21 +36,32 @@
 <!-- Hero Section -->
 <section class="w-full h-screen relative overflow-hidden">
 
-    <!-- Slides -->
     <div id="hero-slider" class="absolute inset-0">
         @php
-            $slides = [
+            // 1. Siapkan gambar default (Placeholder kalau DB kosong)
+            $defaultSlides = [
                 'https://png.pngtree.com/thumb_back/fh260/background/20210902/pngtree-aerial-photography-of-green-rice-seedlings-in-beautiful-rural-agricultural-rice-image_786584.jpg',
                 'https://awsimages.detik.net.id/community/media/visual/2024/11/19/desa-wisata-mekarbuana-karawang-jawa-barat-1_169.jpeg?w=700&q=90',
-                'https://travelspromo.com/wp-content/uploads/2022/12/Hijaunya-area-persawahan-di-desa-wisata-kemetul-semarang.webp',
-                'https://travelspromo.com/wp-content/uploads/2021/03/Indah-Hijaunya-Nepal-van-Java.-Foto-Gmap-YA-Studio-e1617161041478-1200x674.jpg',
-                'https://thumb.viva.id/vivabanyuwangi/1265x711/2025/09/04/68b8d811c72f3-sejuk-dan-hijaunya-desa-wukirsari-yogyakarta_banyuwangi.jpg',
             ];
+
+            // 2. Inisialisasi variable slides dengan default dulu
+            $slides = $defaultSlides;
+
+            // 3. Cek apakah variable $beranda ada isinya DAN kolom banner_images tidak kosong
+            if (isset($beranda) && !empty($beranda->banner_images)) {
+                $slides = []; // Kosongkan array untuk diisi data DB
+                foreach ($beranda->banner_images as $imagePath) {
+                    // Pastikan path gambar mengarah ke storage (jika upload lokal)
+                    // Kalau di DB isinya sudah "http...", function asset() tidak perlu dipakai.
+                    // Asumsi standar Laravel upload: path/to/image.jpg
+                    $slides[] = asset('storage/' . $imagePath);
+                }
+            }
         @endphp
 
         @foreach ($slides as $index => $img)
             <div class="hero-slide absolute inset-0 bg-cover bg-center transition-opacity duration-[1200ms] 
-                        {{ $index === 0 ? 'opacity-100' : 'opacity-0' }}"
+                    {{ $index === 0 ? 'opacity-100' : 'opacity-0' }}"
                 style="background-image: url('{{ $img }}')">
             </div>
         @endforeach
@@ -63,8 +74,7 @@
                 Selamat Datang di Website <span class="subtle-underline">{{ $aplikasi->nama_desa }}</span>
             </h1>
             <p class="text-lg md:text-xl max-w-2xl text-shadow-md">
-                Wujudkan Desa Digital yang Transparan. Akses informasi, anggaran, dan layanan publik secara terbuka,
-                mendorong kemajuan Desa Kembiritan.
+                {{ $beranda->deskripsi }}
             </p>
         </div>
     </div>

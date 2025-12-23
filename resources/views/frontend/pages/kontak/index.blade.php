@@ -27,7 +27,13 @@
         .animate-fadeIn {
             animation: fadeInOut 2.8s ease-in-out;
         }
+
+        /* Tambahan style transisi untuk alert */
+        #success-alert {
+            transition: opacity 0.5s ease-out;
+        }
     </style>
+
     <div class="content-offset">
         <canvas id="particleCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-60"></canvas>
 
@@ -53,8 +59,7 @@
                 @endif
             @endif
 
-
-            {{-- Overlay gradient tipis di bawah peta agar transisi ke kartu lebih halus --}}
+            {{-- Overlay gradient tipis --}}
             <div
                 class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-black/10 to-transparent pointer-events-none">
             </div>
@@ -64,12 +69,10 @@
         <section data-aos="flip-down" class="px-4 -mt-24 relative z-10">
             <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row">
 
-                {{-- Bagian Kiri: Informasi Kontak (Background Hijau Gelap) --}}
-                {{-- KEMBALI KE AWAL: Pakai 'justify-between' biar penuh atas-bawah, tapi kita isi kekosongannya dengan konten yg lebih besar --}}
+                {{-- Bagian Kiri: Informasi Kontak --}}
                 <div
                     class="md:w-5/12 bg-green-800 text-white p-8 md:p-10 flex flex-col justify-between relative overflow-hidden">
-
-                    {{-- Pattern hiasan lingkaran transparan --}}
+                    {{-- Pattern hiasan --}}
                     <div class="absolute top-0 right-0 -mr-10 -mt-10 w-40 h-40 rounded-full bg-green-700 opacity-50"></div>
                     <div class="absolute bottom-0 left-0 -ml-10 -mb-10 w-40 h-40 rounded-full bg-green-700 opacity-50">
                     </div>
@@ -77,22 +80,16 @@
                     <div class="relative z-10">
                         <h3 class="text-3xl font-bold mb-8 border-b border-green-600 pb-4 inline-block">Info Kontak</h3>
 
-                        {{-- UPDATE: Balik ke space-y-8 biar jaraknya lega --}}
                         <div class="space-y-8">
-
                             {{-- Item 1: Alamat --}}
                             <div class="flex items-start gap-4">
-                                {{-- Icon diperbesar jadi w-10 --}}
                                 <div class="flex-shrink-0 w-10 flex justify-center mt-1">
-                                    {{-- Text icon jadi text-2xl (lebih besar) --}}
                                     <i class="fa-solid fa-location-dot text-2xl text-green-300"></i>
                                 </div>
                                 <div>
-                                    {{-- Judul jadi text-xl --}}
                                     <h4 class="font-semibold text-xl text-green-100">Alamat Kantor</h4>
-                                    {{-- Isi teks jadi text-base (standar) bukan text-sm lagi, biar lebih penuh --}}
                                     <p class="text-green-50 mt-1 leading-relaxed text-base">
-                                        {{ $aplikasi->alamat ?? 'Jl. Contoh Alamat No.123, Desa Contoh, Kecamatan Contoh, Kabupaten Contoh, Kode Pos 12345' }}
+                                        {{ $aplikasi->alamat ?? 'Jl. Contoh Alamat No.123, Desa Contoh' }}
                                     </p>
                                 </div>
                             </div>
@@ -116,8 +113,8 @@
                                 </div>
                                 <div>
                                     <h4 class="font-semibold text-xl text-green-100">Email</h4>
-                                    <p class="text-green-50 mt-1 text-base">
-                                        {{ $aplikasi->email ?? 'kantordesa@example.com' }}</p>
+                                    <p class="text-green-50 mt-1 text-base">{{ $aplikasi->email ?? 'kantor@example.com' }}
+                                    </p>
                                 </div>
                             </div>
 
@@ -133,28 +130,41 @@
                                     </p>
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
-                    {{-- Bagian Peringatan Bawah --}}
                     <div class="mt-8 relative z-10">
-                        {{-- Text diperbesar jadi text-sm (sebelumnya xs) biar lebih terbaca dan mengisi ruang --}}
                         <p class="text-sm text-green-200 italic">
                             *Silakan datang langsung untuk keperluan administrasi mendesak.
                         </p>
                     </div>
                 </div>
 
-                {{-- Bagian Kanan: Form Kontak (Tetap Rapi) --}}
+                {{-- Bagian Kanan: Form Kontak --}}
                 <div class="md:w-7/12 p-8 md:p-10 bg-white">
                     <h3 class="text-2xl font-bold text-gray-800 mb-2">Kirim Pesan</h3>
                     <p class="text-gray-500 mb-6 text-sm">Silakan isi formulir di bawah ini untuk mengirim pesan atau
                         pengaduan.</p>
 
+                    {{-- NOTIFIKASI SUKSES (Dengan ID untuk JS) --}}
                     @if (session('success'))
-                        <div class="mb-6 p-4 bg-green-50 text-green-700 rounded-lg border-l-4 border-green-500 text-sm">
-                            <strong>Terima kasih!</strong> {{ session('success') }}
+                        <div id="success-alert"
+                            class="mb-6 p-4 bg-green-50 text-green-700 rounded-lg border-l-4 border-green-500 text-sm flex items-center shadow-sm">
+                            <i class="fa-solid fa-check-circle mr-2 text-lg"></i>
+                            <div>
+                                <strong>Berhasil!</strong> {{ session('success') }}
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- Menampilkan Error Validasi (Opsional tapi penting) --}}
+                    @if ($errors->any())
+                        <div class="mb-6 p-4 bg-red-50 text-red-700 rounded-lg border-l-4 border-red-500 text-sm">
+                            <ul class="list-disc pl-5">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
                         </div>
                     @endif
 
@@ -164,13 +174,13 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>
-                                <input type="text" name="nama"
+                                <input type="text" name="nama" value="{{ old('nama') }}"
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 transition outline-none text-sm"
                                     placeholder="Jhon Doe" required>
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">No. HP / WhatsApp</label>
-                                <input type="text" name="telepon"
+                                <input type="text" name="telepon" value="{{ old('telepon') }}"
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 transition outline-none text-sm"
                                     placeholder="0812xxxxx" required>
                             </div>
@@ -178,14 +188,14 @@
 
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
-                            <input type="email" name="email"
+                            <input type="email" name="email" value="{{ old('email') }}"
                                 class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 transition outline-none text-sm"
                                 placeholder="email@anda.com" required>
                         </div>
 
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Subjek / Perihal</label>
-                            <input type="text" name="subject"
+                            <input type="text" name="subject" value="{{ old('subject') }}"
                                 class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 transition outline-none text-sm"
                                 placeholder="Contoh: Pengaduan Jalan Rusak" required>
                         </div>
@@ -194,31 +204,46 @@
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Isi Pesan</label>
                             <textarea name="pesan" rows="4"
                                 class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 transition outline-none text-sm"
-                                placeholder="Tuliskan detail pesan Anda..." required></textarea>
+                                placeholder="Tuliskan detail pesan Anda..." required>{{ old('pesan') }}</textarea>
                         </div>
 
                         <button type="submit"
-                            class="w-full py-3 cursor-pointer bg-green-700 hover:bg-green-800 text-white font-bold rounded-lg shadow-md hover:shadow-lg transition transform hover:-translate-y-1 text-sm">
-                            Kirim Pesan Sekarang <i class="fa-solid fa-paper-plane ml-2"></i>
+                            class="w-full py-3 cursor-pointer bg-green-700 hover:bg-green-800 text-white font-bold rounded-lg shadow-md hover:shadow-lg transition transform hover:-translate-y-1 text-sm flex justify-center items-center gap-2">
+                            Kirim Pesan Sekarang <i class="fa-solid fa-paper-plane"></i>
                         </button>
                     </form>
                 </div>
-
             </div>
         </section>
     </div>
+
     <script>
-        // --- PARTICLE ANIMATION LOGIC ---
+        // --- AUTO HIDE NOTIFICATION LOGIC ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const alertBox = document.getElementById('success-alert');
+
+            if (alertBox) {
+                // Tunggu 4 detik (4000ms)
+                setTimeout(function() {
+                    // Ubah opacity jadi 0 (efek fade out)
+                    alertBox.style.opacity = '0';
+
+                    // Setelah transisi fade out selesai (500ms sesuai CSS), hilangkan elemen dari layout
+                    setTimeout(function() {
+                        alertBox.style.display = 'none';
+                    }, 500);
+                }, 4000);
+            }
+        });
+
+        // --- PARTICLE ANIMATION LOGIC (TETAP SAMA) ---
         (function() {
             const canvas = document.getElementById('particleCanvas');
+            if (!canvas) return; // Guard clause biar aman
             const ctx = canvas.getContext('2d');
             let width, height;
             let particles = [];
-
-            // Konfigurasi Kepadatan dan Jarak
-            // Semakin besar angka divider, semakin sedikit partikel (semakin renggang)
             const particleDensityDivider = 25000;
-            // Jarak maksimal untuk menarik garis antar titik
             const connectionDistance = 150;
 
             function resize() {
@@ -230,25 +255,19 @@
                 constructor() {
                     this.x = Math.random() * width;
                     this.y = Math.random() * height;
-                    // Kecepatan sangat lambat agar santai
                     this.vx = (Math.random() - 0.5) * 0.3;
                     this.vy = (Math.random() - 0.5) * 0.3;
-                    this.size = Math.random() * 2 + 1; // Ukuran titik variatif
+                    this.size = Math.random() * 2 + 1;
                 }
-
                 update() {
                     this.x += this.vx;
                     this.y += this.vy;
-
-                    // Bounce off edges
                     if (this.x < 0 || this.x > width) this.vx *= -1;
                     if (this.y < 0 || this.y > height) this.vy *= -1;
                 }
-
                 draw() {
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    // Warna titik hijau pudar
                     ctx.fillStyle = 'rgba(16, 185, 129, 0.6)';
                     ctx.fill();
                 }
@@ -264,22 +283,17 @@
 
             function animate() {
                 ctx.clearRect(0, 0, width, height);
-
                 for (let i = 0; i < particles.length; i++) {
                     particles[i].update();
                     particles[i].draw();
-
-                    // Cek jarak dengan partikel lain untuk menggambar garis
                     for (let j = i; j < particles.length; j++) {
                         const dx = particles[i].x - particles[j].x;
                         const dy = particles[i].y - particles[j].y;
                         const distance = Math.sqrt(dx * dx + dy * dy);
-
                         if (distance < connectionDistance) {
                             ctx.beginPath();
-                            // Semakin jauh, garis semakin transparan
                             const opacity = 1 - (distance / connectionDistance);
-                            ctx.strokeStyle = 'rgba(16, 185, 129, ' + (opacity * 0.5) + ')'; // Line color sangat tipis
+                            ctx.strokeStyle = 'rgba(16, 185, 129, ' + (opacity * 0.5) + ')';
                             ctx.lineWidth = 1.5;
                             ctx.moveTo(particles[i].x, particles[i].y);
                             ctx.lineTo(particles[j].x, particles[j].y);
@@ -294,7 +308,6 @@
                 resize();
                 initParticles();
             });
-
             resize();
             initParticles();
             animate();

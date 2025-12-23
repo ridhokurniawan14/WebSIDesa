@@ -13,6 +13,7 @@ class BerandaController extends Controller
     {
         // Ambil data pertama, atau null jika belum ada
         $beranda = Beranda::first();
+        // Path view disesuaikan request
         return view('admin.pages.beranda.index', compact('beranda'));
     }
 
@@ -22,6 +23,11 @@ class BerandaController extends Controller
 
         // Handle Banner Images
         $data['banner_images'] = $this->handleBannerUpload($request);
+
+        // Handle Foto Kades (Single File)
+        if ($request->hasFile('foto_kepala_desa')) {
+            $data['foto_kepala_desa'] = $request->file('foto_kepala_desa')->store('beranda/kades', 'public');
+        }
 
         $beranda = Beranda::create($data);
 
@@ -46,6 +52,15 @@ class BerandaController extends Controller
         // Handle Banner Images
         $data['banner_images'] = $this->handleBannerUpload($request);
 
+        // Handle Foto Kades (Single File)
+        if ($request->hasFile('foto_kepala_desa')) {
+            // Hapus foto lama jika ada
+            if ($beranda->foto_kepala_desa) {
+                Storage::disk('public')->delete($beranda->foto_kepala_desa);
+            }
+            $data['foto_kepala_desa'] = $request->file('foto_kepala_desa')->store('beranda/kades', 'public');
+        }
+
         // Ambil data lama untuk log
         $oldData = $beranda->only([
             'deskripsi',
@@ -63,7 +78,9 @@ class BerandaController extends Controller
             'jumlah_dusun',
             'desa_adat',
             'keluarga_miskin',
-            'banner_images'
+            'banner_images',
+            'nama_kepala_desa',
+            'foto_kepala_desa'
         ]);
 
         $beranda->update($data);
@@ -98,6 +115,8 @@ class BerandaController extends Controller
     {
         return $request->validate([
             'deskripsi' => 'nullable|string',
+            'nama_kepala_desa' => 'nullable|string',
+            'foto_kepala_desa' => 'nullable|image|max:2048',
             'sambutan_kades' => 'nullable|string',
             'periode_jabatan' => 'nullable|string',
 

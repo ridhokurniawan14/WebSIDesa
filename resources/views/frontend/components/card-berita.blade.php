@@ -1,112 +1,82 @@
-<!-- BAGIAN BERITA TERBARU (6 ITEM) -->
 <section class="max-w-7xl mx-auto mt-16 px-6 sm:px-8">
-    <!-- Warna border diubah menjadi green-600 -->
     <h2 data-aos="fade-right" data-aos-delay="100"
         class="text-3xl font-extrabold text-gray-900 mb-3 border-b-2 border-green-600 pb-2">Berita Terbaru</h2>
 
-    <!-- Tambahan: Headline deskriptif sesuai permintaan -->
-    <p data-aos="fade-left" data-aos-delay="100" class="text-lg text-gray-600 mb-10">Kumpulan berita terhangat, terkini,
-        dan terpercaya dari berbagai sektor.
-        Jangan lewatkan perkembangan terbaru!</p>
+    <p data-aos="fade-left" data-aos-delay="100" class="text-lg text-gray-600 mb-10">
+        Kumpulan berita terhangat, terkini, dan terpercaya dari berbagai sektor.
+        Jangan lewatkan perkembangan terbaru!
+    </p>
 
-    <!-- Grid akan menampilkan 1 kolom di mobile, 2 kolom di tablet, dan 3 kolom di desktop (total 6 item akan menjadi 2 baris) -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-        <!-- Kartu Berita 1 -->
-        <div data-aos="flip-right" data-aos-delay="100"
-            class="bg-white shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden transform hover:scale-[1.02]">
-            <!-- Warna placeholder diubah ke nuansa hijau -->
-            <img src="https://placehold.co/600x350/047857/ffffff?text=Berita+1" alt="Gambar Ilustrasi Berita 1"
-                class="w-full h-48 object-cover">
-            <div class="p-5">
-                <!-- Tanggal dipindah ke sini, dengan gaya metadata yang lebih halus -->
-                <p class="text-xs text-gray-500 font-medium mb-1">23 November 2025</p>
-                <h3 class="font-bold text-xl mb-2 text-gray-900">Kebijakan Baru Energi Terbarukan Disahkan</h3>
-                <p class="text-sm text-gray-600">Pemerintah mengumumkan inisiatif besar untuk mendorong penggunaan
-                    tenaga surya di seluruh wilayah...</p>
-            </div>
-        </div>
+        {{-- LOOPING DATA BERITA --}}
+        @forelse($beritaTerbaru as $item)
+            <div data-aos="flip-right" data-aos-delay="100"
+                class="group relative bg-white shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden transform hover:scale-[1.02] flex flex-col h-full">
 
-        <!-- Kartu Berita 2 -->
-        <div data-aos="flip-right" data-aos-delay="100"
-            class="bg-white shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden transform hover:scale-[1.02]">
-            <img src="https://placehold.co/600x350/059669/ffffff?text=Berita+2" alt="Gambar Ilustrasi Berita 2"
-                class="w-full h-48 object-cover">
-            <div class="p-5">
-                <!-- Tanggal dipindah ke sini, dengan gaya metadata yang lebih halus -->
-                <p class="text-xs text-gray-500 font-medium mb-1">22 November 2025</p>
-                <h3 class="font-bold text-xl mb-2 text-gray-900">Inovasi Pertanian Mampu Lipat Gandakan Hasil Panen</h3>
-                <p class="text-sm text-gray-600">Teknologi irigasi cerdas terbaru terbukti efektif meningkatkan
-                    efisiensi air dan produksi pangan...</p>
-            </div>
-        </div>
+                {{-- Bagian Gambar --}}
+                <div class="relative h-48 overflow-hidden">
+                    @if ($item->thumbnail)
+                        <img src="{{ asset('storage/' . $item->thumbnail) }}" alt="{{ $item->title }}"
+                            class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    @else
+                        <img src="https://placehold.co/600x350/047857/ffffff?text={{ urlencode($item->title) }}"
+                            alt="Default Image"
+                            class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    @endif
 
-        <!-- Kartu Berita 3 -->
-        <div data-aos="flip-right" data-aos-delay="100"
-            class="bg-white shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden transform hover:scale-[1.02]">
-            <img src="https://placehold.co/600x350/ef4444/ffffff?text=Berita+3" alt="Gambar Ilustrasi Berita 3"
-                class="w-full h-48 object-cover">
-            <div class="p-5">
-                <!-- Tanggal dipindah ke sini, dengan gaya metadata yang lebih halus -->
-                <p class="text-xs text-gray-500 font-medium mb-1">21 November 2025</p>
-                <h3 class="font-bold text-xl mb-2 text-gray-900">Perkembangan Pasar Saham Global Tetap Stabil</h3>
-                <p class="text-sm text-gray-600">Analisis terbaru menunjukkan optimisme investor seiring dengan
-                    penguatan fundamental ekonomi...</p>
-            </div>
-        </div>
+                    {{-- Overlay tipis saat hover agar gambar sedikit gelap --}}
+                    <div
+                        class="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300">
+                    </div>
+                </div>
 
-        <!-- Kartu Berita 4 -->
-        <div data-aos="flip-left" data-aos-delay="100"
-            class="bg-white shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden transform hover:scale-[1.02]">
-            <img src="https://placehold.co/600x350/9333ea/ffffff?text=Berita+4" alt="Gambar Ilustrasi Berita 4"
-                class="w-full h-48 object-cover">
-            <div class="p-5">
-                <!-- Tanggal dipindah ke sini, dengan gaya metadata yang lebih halus -->
-                <p class="text-xs text-gray-500 font-medium mb-1">20 November 2025</p>
-                <h3 class="font-bold text-xl mb-2 text-gray-900">Peluncuran Satelit Baru Membuka Akses Internet Pedesaan
-                </h3>
-                <p class="text-sm text-gray-600">Misi luar angkasa sukses mengirimkan satelit komunikasi generasi
-                    terbaru ke orbit...</p>
-            </div>
-        </div>
+                <div class="p-5 flex flex-col flex-grow">
+                    {{-- Metadata Tanggal --}}
+                    <p class="text-xs text-gray-500 font-medium mb-1">
+                        {{ $item->date ? $item->date->format('d F Y') : '-' }}
+                    </p>
 
-        <!-- Kartu Berita 5 -->
-        <div data-aos="flip-left" data-aos-delay="100"
-            class="bg-white shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden transform hover:scale-[1.02]">
-            <img src="https://placehold.co/600x350/f97316/ffffff?text=Berita+5" alt="Gambar Ilustrasi Berita 5"
-                class="w-full h-48 object-cover">
-            <div class="p-5">
-                <!-- Tanggal dipindah ke sini, dengan gaya metadata yang lebih halus -->
-                <p class="text-xs text-gray-500 font-medium mb-1">19 November 2025</p>
-                <h3 class="font-bold text-xl mb-2 text-gray-900">Tren Makanan Sehat Lokal Meningkat Drastis</h3>
-                <p class="text-sm text-gray-600">Semakin banyak konsumen beralih ke produk organik dan hasil tani dari
-                    perkebunan dekat rumah...</p>
-            </div>
-        </div>
+                    {{-- Judul Berita --}}
+                    <h3
+                        class="font-bold text-xl mb-2 text-gray-900 line-clamp-2 group-hover:text-green-700 transition-colors">
+                        {{-- Link Utama (Menggunakan class "after:absolute after:inset-0" agar seluruh card bisa diklik) --}}
+                        <a href="{{ route('berita.show', $item->slug) }}" class="after:absolute after:inset-0">
+                            {{ $item->title }}
+                        </a>
+                    </h3>
 
-        <!-- Kartu Berita 6 -->
-        <div data-aos="flip-left" data-aos-delay="100"
-            class="bg-white shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden transform hover:scale-[1.02]">
-            <!-- Warna placeholder diubah ke nuansa hijau -->
-            <img src="https://placehold.co/600x350/14b8a6/ffffff?text=Berita+6" alt="Gambar Ilustrasi Berita 6"
-                class="w-full h-48 object-cover">
-            <div class="p-5">
-                <!-- Tanggal dipindah ke sini, dengan gaya metadata yang lebih halus -->
-                <p class="text-xs text-gray-500 font-medium mb-1">18 November 2025</p>
-                <h3 class="font-bold text-xl mb-2 text-gray-900">Konferensi Internasional Bahas Perubahan Iklim</h3>
-                <p class="text-sm text-gray-600">Para pemimpin dunia berkumpul untuk menyepakati target baru dalam
-                    pengurangan emisi karbon...</p>
+                    {{-- Ringkasan/Excerpt --}}
+                    <p class="text-sm text-gray-600 line-clamp-3 mb-4 flex-grow">
+                        {{ $item->excerpt ?? Str::limit(strip_tags($item->content), 100) }}
+                    </p>
+
+                    {{-- Tombol Lihat Selengkapnya (Tanpa Underline) --}}
+                    <div class="mt-auto pt-4 border-t border-gray-100">
+                        <div
+                            class="inline-flex items-center text-sm font-bold text-green-600 group-hover:text-green-800 transition-colors">
+                            Lihat Selengkapnya
+                            <svg class="ml-1 w-4 h-4 transform group-hover:translate-x-2 transition-transform duration-300"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        @empty
+            <div class="col-span-full text-center py-10">
+                <p class="text-gray-500 text-lg">Belum ada berita yang diterbitkan saat ini.</p>
+            </div>
+        @endforelse
 
     </div>
 
-    <!-- Tombol Lihat Lebih Banyak diubah ke green-700 -->
     <div data-aos="flip-up" data-aos-delay="100" class="mt-12 text-center">
-        <a href="/berita"
+        <a href="{{ url('/berita') }}"
             class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600 transition duration-150 ease-in-out">
             Lihat Berita Lainnya
-            <!-- Icon panah kanan dari Lucide Icons (sebagai pengganti SVG Tailwind) -->
             <svg class="ml-2 -mr-1 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3">

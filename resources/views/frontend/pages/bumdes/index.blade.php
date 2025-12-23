@@ -287,12 +287,18 @@
                         </div>
 
                         <div class="space-y-4 relative z-10">
-                            @foreach ($pengurus as $jabatan => $nama)
+                            {{-- Kode BARU (Benar untuk struktur JSON kamu) --}}
+                            @foreach ($pengurus as $item)
                                 <div
                                     class="flex items-center justify-between border-b border-slate-100 pb-4 last:border-0 last:pb-0 hover:bg-slate-50 transition-colors rounded-lg px-2 -mx-2">
-                                    <span
-                                        class="text-sm font-semibold text-emerald-600 uppercase tracking-wide">{{ $jabatan }}</span>
-                                    <span class="text-slate-700 font-medium text-right">{{ $nama }}</span>
+                                    {{-- Panggil Key 'jabatan' dari JSON --}}
+                                    <span class="text-sm font-semibold text-emerald-600 uppercase tracking-wide">
+                                        {{ $item['jabatan'] }}
+                                    </span>
+                                    {{-- Panggil Key 'nama' dari JSON --}}
+                                    <span class="text-slate-700 font-medium text-right">
+                                        {{ $item['nama'] }}
+                                    </span>
                                 </div>
                             @endforeach
                         </div>
@@ -328,9 +334,9 @@
                                 </div>
                                 <div>
                                     <strong class="block text-slate-900 mb-1">Telepon / WhatsApp</strong>
-                                    <a href="tel:{{ $kontak['telepon'] }}"
+                                    <a href="https://wa.me/{{ $kontak['telepon'] }}" target="_blank"
                                         class="text-emerald-600 font-medium hover:text-emerald-500 transition-colors">
-                                        {{ $kontak['telepon'] }}
+                                        +{{ $kontak['telepon'] }}
                                     </a>
                                 </div>
                             </li>
