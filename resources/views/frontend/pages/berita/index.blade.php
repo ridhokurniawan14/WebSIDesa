@@ -124,7 +124,7 @@
                                 {{-- Container Gambar dengan Efek Zoom Hover --}}
                                 <div class="h-52 w-full overflow-hidden relative">
                                     <div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 ease-in-out group-hover:scale-110"
-                                        style="background-image: url('{{ $item['thumbnail'] }}')">
+                                        style="background-image: url('{{ asset('storage/' . $item['thumbnail']) }}')">
                                     </div>
                                     <!-- Overlay halus saat hover (opsional, biar teks makin jelas pas hover) -->
                                     <div

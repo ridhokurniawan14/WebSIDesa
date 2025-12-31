@@ -1,8 +1,8 @@
 <section class="max-w-7xl mx-auto mt-16 px-6 sm:px-8">
-    <h2 data-aos="fade-right" data-aos-delay="100"
+    <h2 data-aos="fade" data-aos-delay="100"
         class="text-3xl font-extrabold text-gray-900 mb-3 border-b-2 border-green-600 pb-2">Berita Terbaru</h2>
 
-    <p data-aos="fade-left" data-aos-delay="100" class="text-lg text-gray-600 mb-10">
+    <p data-aos="fade" data-aos-delay="100" class="text-lg text-gray-600 mb-10">
         Kumpulan berita terhangat, terkini, dan terpercaya dari berbagai sektor.
         Jangan lewatkan perkembangan terbaru!
     </p>

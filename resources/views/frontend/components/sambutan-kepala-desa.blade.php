@@ -35,7 +35,7 @@
                 <!-- Foto -->
                 <div class="flex justify-center mb-8 md:mb-0">
                     <div class="relative w-48 h-48 sm:w-56 sm:h-56">
-                        <img src="{{ $beranda->foto_kepala_desa }}" alt="Kepala Desa"
+                        <img src="{{ asset('storage/' . $beranda->foto_kepala_desa) }}" alt="Kepala Desa"
                             class="w-full h-full object-cover rounded-full shadow-2xl 
                             ring-4 ring-green-500 ring-offset-4 ring-offset-white">
                     </div>
