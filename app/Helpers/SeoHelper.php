@@ -13,7 +13,10 @@ class SeoHelper
         string $url = ''
     ) {
         $fullUrl = $url ?: url()->current();
-        $imageUrl = $image ?: 'https://ridhokurniawan.my.id/img/rk.png';
+
+        // Pastikan image URL valid & HTTPS
+        // Gunakan default image jika kosong
+        $imageUrl = $image ?: 'https://desakembiritan.com/img/rk.png'; // Sesuaikan path defaultmu
 
         // Title
         SEOTools::setTitle($title);
@@ -29,9 +32,16 @@ class SeoHelper
         SEOTools::opengraph()->setUrl($fullUrl);
         SEOTools::setCanonical($fullUrl);
 
-        // Image
+        // --- PERBAIKAN UTAMA DI SINI ---
+        // 1. Set Type (Menghilangkan warning og:type)
+        SEOTools::opengraph()->setType('article');
+
+        // 2. Add Image
         SEOTools::opengraph()->addImage($imageUrl);
         SEOTools::twitter()->setImage($imageUrl);
+
+        // 3. Site Name (Opsional tapi disukai WA)
+        SEOTools::opengraph()->setSiteName('Website Desa Kembiritan');
 
         // Site Defaults
         SEOTools::jsonLd()->setType('WebSite');

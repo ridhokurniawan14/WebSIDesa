@@ -101,7 +101,7 @@
             </p>
             <p class="text-xs text-gray-500 hover:text-green-500 transition duration-300">
                 Dibuat dengan <i class="bi bi-heart-fill text-red-500 mx-1"></i> oleh
-                <a href="https://ridhokurniawan.my.id" target="_blank" class="font-medium hover:text-white">
+                <a href="#" class="font-medium hover:text-white">
                     Tim {{ $aplikasi->nama_desa }}
                 </a>
             </p>

@@ -1,11 +1,5 @@
 @extends('frontend.layouts.main')
 
-{{-- 
-    CATATAN: 
-    Bagian @section('meta') SUDAH DIHAPUS.
-    SEO Meta Tag sekarang otomatis dihandle oleh Controller via SeoHelper.
---}}
-
 @section('content')
     <div class="content-offset">
         <section class="mt-20">

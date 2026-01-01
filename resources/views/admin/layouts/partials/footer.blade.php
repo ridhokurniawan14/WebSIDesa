@@ -7,9 +7,9 @@
             &copy; <span id="year"></span> Dibuat dengan <span class="text-red-500" aria-label="cinta">💖</span> oleh
             <b>
                 <!-- Update: Hover Emerald, No Underline, efek tracking-wide -->
-                <a href="https://ridhokurniawan.my.id/" target="_blank"
+                <a href="#"
                     class="transition-all duration-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:tracking-wide">
-                    Ridho Kurniawan
+                    Tim {{ $aplikasi->nama_desa }}
                 </a>
             </b>
         </p>

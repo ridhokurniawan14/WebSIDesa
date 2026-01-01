@@ -51,8 +51,7 @@
         openEdit(item) {
             this.itemData = { ...item };
     
-            // FIX: Normalisasi 'jenis' agar sesuai dengan value Option (Huruf Depan Kapital)
-            // Ini mengatasi jika data di DB tertulis 'belanja' (kecil) tapi Option-nya 'Belanja'
+            // Normalisasi 'jenis' agar sesuai dengan value Option
             if (this.itemData.jenis) {
                 this.itemData.jenis = this.itemData.jenis.charAt(0).toUpperCase() + this.itemData.jenis.slice(1).toLowerCase();
             }
@@ -73,7 +72,6 @@
             {{-- JUDUL --}}
             <div>
                 <h1 class="text-2xl font-bold tracking-tight text-gray-800 dark:text-white flex items-center gap-2">
-                    {{-- REVISI ICON: Icon Banknotes Solid yang Simpel & Jelas --}}
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                         class="w-8 h-8 text-emerald-600 dark:text-emerald-400">
                         <path d="M12 7.5a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" />
@@ -222,7 +220,7 @@
                                     {{ $item->tahun }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{-- REVISI BADGE: Logic Match Case-Insensitive --}}
+                                    {{-- Badge Logic Case-Insensitive --}}
                                     @php
                                         $jenisLower = strtolower($item->jenis);
                                         $badgeClass = match ($jenisLower) {
@@ -245,10 +243,10 @@
                                     {{ $item->uraian }}
                                 </td>
                                 <td class="px-6 py-4 text-right font-mono text-gray-600 dark:text-gray-400">
-                                    Rp {{ number_format($item->anggaran, 0, ',', '.') }}
+                                    Rp {{ number_format($item->anggaran, 2, ',', '.') }}
                                 </td>
                                 <td class="px-6 py-4 text-right font-mono text-gray-600 dark:text-gray-400">
-                                    Rp {{ number_format($item->realisasi, 0, ',', '.') }}
+                                    Rp {{ number_format($item->realisasi, 2, ',', '.') }}
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     @php
@@ -401,7 +399,9 @@
                                         <label
                                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Anggaran
                                             (Rp)</label>
-                                        <input type="number" name="anggaran" min="0" placeholder="0"
+                                        {{-- STEP 0.01 ADDED --}}
+                                        <input type="number" name="anggaran" min="0" step="0.01"
+                                            placeholder="0"
                                             class="block w-full text-sm border border-gray-400 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white px-3 py-2.5 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm"
                                             required>
                                     </div>
@@ -410,7 +410,9 @@
                                         <label
                                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Realisasi
                                             (Rp)</label>
-                                        <input type="number" name="realisasi" min="0" placeholder="0"
+                                        {{-- STEP 0.01 ADDED --}}
+                                        <input type="number" name="realisasi" min="0" step="0.01"
+                                            placeholder="0"
                                             class="block w-full text-sm border border-gray-400 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white px-3 py-2.5 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm">
                                     </div>
                                 </div>
@@ -445,7 +447,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-amber-600">
                                     <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                 </svg>
                                 Edit Data APBDes
                             </h3>
@@ -497,7 +499,9 @@
                                         <label
                                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Anggaran
                                             (Rp)</label>
+                                        {{-- STEP 0.01 ADDED --}}
                                         <input type="number" name="anggaran" x-model="itemData.anggaran" min="0"
+                                            step="0.01"
                                             class="block w-full text-sm border border-gray-400 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white px-3 py-2.5 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
                                             required>
                                     </div>
@@ -506,8 +510,9 @@
                                         <label
                                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Realisasi
                                             (Rp)</label>
+                                        {{-- STEP 0.01 ADDED --}}
                                         <input type="number" name="realisasi" x-model="itemData.realisasi"
-                                            min="0"
+                                            min="0" step="0.01"
                                             class="block w-full text-sm border border-gray-400 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white px-3 py-2.5 focus:ring-blue-500 focus:border-blue-500 shadow-sm">
                                     </div>
                                 </div>
