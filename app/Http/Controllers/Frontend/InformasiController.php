@@ -28,7 +28,7 @@ class InformasiController extends Controller
         $aplikasi = Aplikasi::first();
         $namaDesa = $aplikasi->nama_desa ?? 'Desa';
 
-        // Image: Gunakan Logo Desa (karena APBDes itu data angka, logo lebih representatif)
+        // Image: Gunakan Logo Desa
         $seoImage = '';
         if ($aplikasi && !empty($aplikasi->logo)) {
             $seoImage = asset('storage/' . $aplikasi->logo);
@@ -40,8 +40,9 @@ class InformasiController extends Controller
             image: $seoImage
         );
 
-        // --- 2. LOGIC DATA (Tetap Sama) ---
+        // --- 2. LOGIC DATA ---
 
+        // Ambil daftar tahun untuk filter
         $daftarTahun = Apbdes::select('tahun')
             ->distinct()
             ->orderBy('tahun', 'desc')
@@ -51,63 +52,86 @@ class InformasiController extends Controller
             $daftarTahun = [date('Y')];
         }
 
+        // Ambil semua data di tahun tersebut
         $dataApbdes = Apbdes::where('tahun', $tahun)->get();
 
+        // Filter per Jenis
+        // Pastikan penulisan 'pendapatan', 'belanja', 'pembiayaan' sesuai dengan yang ada di Database (Case Sensitive)
         $dataPendapatan = $dataApbdes->where('jenis', 'pendapatan');
-        $dataBelanja = $dataApbdes->where('jenis', 'belanja');
-        $dataPembiayaan = $dataApbdes->where('jenis', 'pembiayaan');
+        $dataBelanja    = $dataApbdes->where('jenis', 'belanja');
 
+        // --- KHUSUS LOGIC PEMBIAYAAN (NETTO) ---
+        // 1. Ambil data pembiayaan dan urutkan berdasarkan ID (Input 1 vs Input 2)
+        $listPembiayaan = $dataApbdes->where('jenis', 'pembiayaan')->sortBy('id')->values();
+
+        // 2. Tentukan Penerimaan (Input 1) dan Pengeluaran (Input 2)
+        $p1_anggaran  = $listPembiayaan[0]->anggaran ?? 0;
+        $p1_realisasi = $listPembiayaan[0]->realisasi ?? 0;
+
+        $p2_anggaran  = $listPembiayaan[1]->anggaran ?? 0;
+        $p2_realisasi = $listPembiayaan[1]->realisasi ?? 0;
+
+        // 3. Hitung Total Pembiayaan Netto (Penerimaan - Pengeluaran)
+        $totalPembiayaan = [
+            'anggaran'  => $p1_anggaran - $p2_anggaran,
+            'realisasi' => $p1_realisasi - $p2_realisasi
+        ];
+        // --- END LOGIC PEMBIAYAAN ---
+
+        // Hitung Total Pendapatan & Belanja (Logic Sum Biasa)
         $totalPendapatan = [
-            'anggaran' => $dataPendapatan->sum('anggaran'),
+            'anggaran'  => $dataPendapatan->sum('anggaran'),
             'realisasi' => $dataPendapatan->sum('realisasi')
         ];
 
         $totalBelanja = [
-            'anggaran' => $dataBelanja->sum('anggaran'),
+            'anggaran'  => $dataBelanja->sum('anggaran'),
             'realisasi' => $dataBelanja->sum('realisasi')
         ];
 
-        $totalPembiayaan = [
-            'anggaran' => $dataPembiayaan->sum('anggaran'),
-            'realisasi' => $dataPembiayaan->sum('realisasi')
-        ];
-
+        // Hitung Surplus/Defisit (Pendapatan - Belanja)
         $surplusRealisasi = $totalPendapatan['realisasi'] - $totalBelanja['realisasi'];
+
+        // Hitung SILPA (Surplus + Pembiayaan Netto)
         $silpaRealisasi = $surplusRealisasi + $totalPembiayaan['realisasi'];
 
+        // Data Ringkasan untuk Chart/Card Atas
         $ringkasan = [
             'pendapatan' => $totalPendapatan['realisasi'],
             'belanja'    => $totalBelanja['realisasi'],
-            'pembiayaan' => $totalPembiayaan['realisasi'],
+            'pembiayaan' => $totalPembiayaan['realisasi'], // Hasil Netto
             'surplus'    => $surplusRealisasi,
             'silpa'      => $silpaRealisasi,
         ];
 
+        // Data Pelaksanaan untuk Tabel/Grafik Batang
         $pelaksanaan = [
             [
-                'nama' => 'Pendapatan',
-                'anggaran' => (int)$totalPendapatan['anggaran'],
+                'nama'      => 'Pendapatan',
+                'anggaran'  => (int)$totalPendapatan['anggaran'],
                 'realisasi' => (int)$totalPendapatan['realisasi']
             ],
             [
-                'nama' => 'Belanja',
-                'anggaran' => (int)$totalBelanja['anggaran'],
+                'nama'      => 'Belanja',
+                'anggaran'  => (int)$totalBelanja['anggaran'],
                 'realisasi' => (int)$totalBelanja['realisasi']
             ],
             [
-                'nama' => 'Pembiayaan',
-                'anggaran' => (int)$totalPembiayaan['anggaran'],
+                'nama'      => 'Pembiayaan',
+                'anggaran'  => (int)$totalPembiayaan['anggaran'],
                 'realisasi' => (int)$totalPembiayaan['realisasi']
             ],
         ];
 
         return view('frontend.pages.transparansi.apbdes', [
-            'tahun' => $tahun,
-            'daftarTahun' => $daftarTahun,
-            'ringkasan' => $ringkasan,
-            'pelaksanaan' => $pelaksanaan,
-            'pendapatan' => $dataPendapatan,
+            'tahun'        => $tahun,
+            'daftarTahun'  => $daftarTahun,
+            'ringkasan'    => $ringkasan,
+            'pelaksanaan'  => $pelaksanaan,
+            'pendapatan'   => $dataPendapatan,
             'pembelanjaan' => $dataBelanja,
+            // Saya tambahkan 'pembiayaan' disini siapa tau view butuh detail item-nya
+            'pembiayaan'   => $listPembiayaan,
         ]);
     }
 

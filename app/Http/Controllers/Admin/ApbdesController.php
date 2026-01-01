@@ -60,6 +60,23 @@ class ApbdesController extends Controller
             'tahun'     => 'required|integer|digits:4',
         ]);
 
+        // --- LOGIC TAMBAHAN START ---
+        // Cek jika user memilih jenis 'Pembiayaan'
+        if ($validated['jenis'] === 'Pembiayaan') {
+            // Hitung berapa kali 'Pembiayaan' sudah diinput di tahun tersebut
+            $jumlahPembiayaan = Apbdes::where('jenis', 'Pembiayaan')
+                ->where('tahun', $validated['tahun'])
+                ->count();
+
+            // Jika sudah ada 2 atau lebih, tolak inputan
+            if ($jumlahPembiayaan >= 2) {
+                return back()
+                    ->withInput()
+                    ->with('error', 'Gagal! Jenis Pembiayaan hanya boleh diinput maksimal 2 kali dalam tahun ' . $validated['tahun']);
+            }
+        }
+        // --- LOGIC TAMBAHAN END ---
+
         $apbdes = Apbdes::create($validated);
 
         // Simpan activity log
@@ -107,6 +124,22 @@ class ApbdesController extends Controller
             'tahun'     => 'required|integer|digits:4',
         ]);
 
+        // --- LOGIC TAMBAHAN START ---
+        if ($validated['jenis'] === 'Pembiayaan') {
+            // Hitung jumlah data lain (selain data ini) yang jenisnya Pembiayaan di tahun tsb
+            $jumlahPembiayaanLain = Apbdes::where('jenis', 'Pembiayaan')
+                ->where('tahun', $validated['tahun'])
+                ->where('id', '!=', $id) // PENTING: Jangan hitung diri sendiri agar bisa diedit
+                ->count();
+
+            if ($jumlahPembiayaanLain >= 2) {
+                return back()
+                    ->withInput()
+                    ->with('error', 'Gagal! Jenis Pembiayaan hanya boleh diinput maksimal 2 kali dalam tahun ' . $validated['tahun']);
+            }
+        }
+        // --- LOGIC TAMBAHAN END ---
+
         // Ambil data lama sebelum update
         $oldData = $apbdes->only(['uraian', 'jenis', 'anggaran', 'realisasi', 'tahun']);
 
@@ -139,7 +172,6 @@ class ApbdesController extends Controller
 
         return redirect()->route('apbdes.index')->with('success', 'Data APBDes berhasil diperbarui.');
     }
-
     /**
      * Remove the specified resource from storage.
      */

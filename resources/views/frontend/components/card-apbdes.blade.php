@@ -1,4 +1,4 @@
-{{-- Pastikan structure halamanmu sudah benar, ini konten utamanya --}}
+Pastikan structure halamanmu sudah benar, ini konten utamanya --}}
 
 <style>
     #bg-network-apbdes {
@@ -42,7 +42,7 @@
                     <p class="text-gray-500 text-sm">Pendapatan Desa</p>
                     {{-- Menggunakan variabel dari Controller --}}
                     <p class="text-2xl font-bold text-gray-800">
-                        Rp {{ number_format($totalPendapatan, 0, ',', '.') }}
+                        Rp {{ number_format($totalPendapatan, 2, ',', '.') }}
                     </p>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                 <div>
                     <p class="text-gray-500 text-sm">Belanja Desa</p>
                     <p class="text-2xl font-bold text-gray-800">
-                        Rp {{ number_format($totalBelanja, 0, ',', '.') }}
+                        Rp {{ number_format($totalBelanja, 2, ',', '.') }}
                     </p>
                 </div>
             </div>
@@ -68,7 +68,7 @@
                 <div>
                     <p class="text-gray-500 text-sm">Pembiayaan Desa</p>
                     <p class="text-2xl font-bold text-gray-800">
-                        Rp {{ number_format($totalPembiayaan, 0, ',', '.') }}
+                        Rp {{ number_format($totalPembiayaan, 2, ',', '.') }}
                     </p>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                     <p class="text-gray-500 text-sm">Surplus / Defisit</p>
                     {{-- Tambahkan class text-red-600 jika nilainya minus agar lebih jelas --}}
                     <p class="text-2xl font-bold {{ $surplusDefisit < 0 ? 'text-red-600' : 'text-gray-800' }}">
-                        Rp {{ number_format($surplusDefisit, 0, ',', '.') }}
+                        Rp {{ number_format($surplusDefisit, 2, ',', '.') }}
                     </p>
                 </div>
             </div>
@@ -95,7 +95,7 @@
                 <div>
                     <p class="text-gray-500 text-sm">SiLPA / SiKPA</p>
                     <p class="text-2xl font-bold text-gray-800">
-                        Rp {{ number_format($silpa, 0, ',', '.') }}
+                        Rp {{ number_format($silpa, 2, ',', '.') }}
                     </p>
                 </div>
             </div>
@@ -248,8 +248,11 @@
                 tooltip: {
                     y: {
                         formatter: function(val) {
-                            // Tooltip Hover
-                            return "Rp " + val.toLocaleString("id-ID");
+                            // Tooltip Hover: Pakai options untuk memaksa 2 digit desimal
+                            return "Rp " + val.toLocaleString("id-ID", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            });
                         }
                     }
                 },

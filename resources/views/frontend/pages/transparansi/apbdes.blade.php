@@ -70,19 +70,15 @@
                                                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                         </svg>
                                     </div>
-
                                     <select name="tahun" id="tahunSelect"
                                         class="block w-full md:w-48 pl-10 pr-10 py-3 text-base border border-emerald-500/30 rounded-xl leading-6 bg-emerald-800/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-emerald-800/80 transition cursor-pointer appearance-none font-semibold hover:bg-emerald-800/70">
-
                                         @foreach ($daftarTahun as $t)
                                             <option value="{{ $t }}" {{ $t == $tahun ? 'selected' : '' }}
                                                 class="bg-white text-gray-900 py-2 font-medium">
                                                 Tahun {{ $t }}
                                             </option>
                                         @endforeach
-
                                     </select>
-
                                     <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                                         <svg class="h-4 w-4 text-emerald-200" fill="none" viewBox="0 0 24 24"
                                             stroke="currentColor">
@@ -100,6 +96,7 @@
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-20">
 
+            {{-- LOOPING KARTU RINGKASAN --}}
             <div data-aos="fade-up" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6 mb-8">
                 @php
                     $cardStyles = [
@@ -138,8 +135,9 @@
                                     <span class="w-1.5 h-1.5 rounded-full {{ $style['bg'] }}"></span>
                                     {{ ucfirst($key) }}
                                 </p>
+                                {{-- UPDATE DESIMAL DI SINI --}}
                                 <p class="text-lg lg:text-xl font-bold text-gray-800 tracking-tight break-words">
-                                    Rp {{ number_format($value, 0, ',', '.') }}
+                                    Rp {{ number_format($value, 2, ',', '.') }}
                                 </p>
                             </div>
                             <div
@@ -184,13 +182,13 @@
                         </div>
                     </div>
                 </div>
-
                 <div id="grafik-data-source" data-chart="{{ json_encode($pelaksanaan) }}" class="hidden"></div>
                 <div id="grafikPelaksanaan" class="w-full h-96"></div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
+                {{-- KOLOM PENDAPATAN --}}
                 <div data-aos="fade-right"
                     class="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border-t-4 border-emerald-500 p-6 relative">
                     <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
@@ -211,9 +209,7 @@
                     <div class="space-y-6">
                         @forelse ($pendapatan as $item)
                             @php
-                                // MENGGUNAKAN ACCESSOR DARI MODEL
                                 $persen = $item->persen_capaian;
-
                                 $barColor = 'bg-emerald-500';
                                 if ($persen < 50) {
                                     $barColor = 'bg-emerald-300';
@@ -240,10 +236,11 @@
                                     </div>
                                 </div>
                                 <div class="flex justify-between text-xs text-gray-500">
+                                    {{-- UPDATE DESIMAL PENDAPATAN --}}
                                     <span>Pagu: <span class="font-medium text-gray-600">Rp
-                                            {{ number_format($item->anggaran, 0, ',', '.') }}</span></span>
+                                            {{ number_format($item->anggaran, 2, ',', '.') }}</span></span>
                                     <span>Real: <span class="font-medium text-emerald-600">Rp
-                                            {{ number_format($item->realisasi, 0, ',', '.') }}</span></span>
+                                            {{ number_format($item->realisasi, 2, ',', '.') }}</span></span>
                                 </div>
                             </div>
                         @empty
@@ -254,6 +251,7 @@
                     </div>
                 </div>
 
+                {{-- KOLOM BELANJA --}}
                 <div data-aos="fade-left"
                     class="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border-t-4 border-rose-500 p-6 relative">
                     <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
@@ -272,9 +270,7 @@
                     <div class="space-y-6">
                         @forelse ($pembelanjaan as $item)
                             @php
-                                // MENGGUNAKAN ACCESSOR DARI MODEL
                                 $persen = $item->persen_capaian;
-
                                 $barColor = 'bg-rose-500';
                                 if ($persen < 50) {
                                     $barColor = 'bg-rose-300';
@@ -296,10 +292,11 @@
                                         style="width: {{ $persen }}%"></div>
                                 </div>
                                 <div class="flex justify-between text-xs text-gray-500">
+                                    {{-- UPDATE DESIMAL BELANJA --}}
                                     <span>Pagu: <span class="font-medium text-gray-600">Rp
-                                            {{ number_format($item->anggaran, 0, ',', '.') }}</span></span>
+                                            {{ number_format($item->anggaran, 2, ',', '.') }}</span></span>
                                     <span>Real: <span class="font-medium text-rose-600">Rp
-                                            {{ number_format($item->realisasi, 0, ',', '.') }}</span></span>
+                                            {{ number_format($item->realisasi, 2, ',', '.') }}</span></span>
                                 </div>
                             </div>
                         @empty
@@ -512,7 +509,11 @@
                 },
                 y: {
                     formatter: function(val) {
-                        return "Rp " + new Intl.NumberFormat('id-ID').format(val)
+                        // Tooltip Hover: Memaksa 2 desimal
+                        return "Rp " + val.toLocaleString("id-ID", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
                     }
                 },
                 x: {
