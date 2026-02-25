@@ -1,5 +1,3 @@
-Pastikan structure halamanmu sudah benar, ini konten utamanya --}}
-
 <style>
     #bg-network-apbdes {
         position: absolute;
